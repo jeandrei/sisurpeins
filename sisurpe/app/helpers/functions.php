@@ -217,6 +217,15 @@ function RandomPassword($length = 6){
 }
 
 
+//função para verificar conteúdo de dados
+function debug($data){
+  echo("<pre>");
+  print_r($data);
+  echo("</pre>");
+  die();
+}
+
+
 
 
 
