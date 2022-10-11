@@ -29,12 +29,14 @@
             
             if(empty($error['inscricoes_id_err'])){
                 
-                    if($this->inscritoModel->gravaInscricao($inscricoes_id,$_SESSION[DB_NAME . '_user_id'])){
-                        return true; 
-                    } else {
-                        return false;
-                    }
-                
+                if($this->inscritoModel->gravaInscricao($inscricoes_id,$_SESSION[DB_NAME . '_user_id'])){ 
+                    $data = [
+                        'title' => 'Inscrições Abertas',
+                        'description'=> 'Inscrições Abertas',
+                        'inscricoes' => $this->inscricaoModel->getInscricoesAberto()
+                    ];                        
+                    $this->view('inscricoes/index', $data);  
+                }                 
                 
             } else {
                 return $error['inscricoes_id_err'];
@@ -52,11 +54,14 @@
             
             if(empty($error['inscricoes_id_err'])){
                 
-                    if($this->inscritoModel->cancelaInscricao($inscricoes_id,$_SESSION[DB_NAME . '_user_id'])){
-                        return true; 
-                    } else {
-                        return false;
-                    }
+                if($this->inscritoModel->cancelaInscricao($inscricoes_id,$_SESSION[DB_NAME . '_user_id'])){
+                    $data = [
+                        'title' => 'Inscrições Abertas',
+                        'description'=> 'Inscrições Abertas',
+                        'inscricoes' => $this->inscricaoModel->getInscricoesAberto()
+                    ];                        
+                    $this->view('inscricoes/index', $data); 
+                } 
                 
                 
             } else {
