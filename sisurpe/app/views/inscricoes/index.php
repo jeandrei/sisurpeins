@@ -33,7 +33,12 @@ if(isset($data['error'])){
     <div class="card-body">
       <h5 class="card-title"><?php echo($registro->descricao);?></h5>
       <p class="card-text"><?php echo('Período: ' . formatadata($registro->data_inicio) . ' a '. formatadata($registro->data_termino));?></p>
-      <a href="<?php echo URLROOT; ?>/inscricoes/gravar/<?php echo $registro->id?>" class="btn btn-primary">Se Inscrever</a>
+      
+      <?php if(!$this->inscritoModel->estaInscrito($registro->id,$_SESSION[DB_NAME . '_user_id'])) : ?>
+          <a href="<?php echo URLROOT; ?>/inscricoes/gravar/<?php echo $registro->id?>" class="btn btn-primary">Se Inscrever</a>
+      <?php else: ?>
+      <a href="<?php echo URLROOT; ?>/inscricoes/cancelar/<?php echo $registro->id?>" class="btn btn-warning">Cancelar Inscrição</a>
+      <?php endif; ?>    
     </div>
     <div class="card-footer text-muted">
       <?php echo($registro->carga_horaria);?>Horas

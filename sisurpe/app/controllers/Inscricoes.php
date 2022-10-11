@@ -40,6 +40,33 @@
                 return $error['inscricoes_id_err'];
             } 
         }
+
+
+        public function cancelar($inscricoes_id){
+            
+            $error=[];
+            if(empty($inscricoes_id)){
+                $error['inscricoes_id_err'] = 'Id obrigatório';
+            }
+
+            
+            if(empty($error['inscricoes_id_err'])){
+                
+                    if($this->inscritoModel->cancelaInscricao($inscricoes_id,$_SESSION[DB_NAME . '_user_id'])){
+                        return true; 
+                    } else {
+                        return false;
+                    }
+                
+                
+            } else {
+                return $error['inscricoes_id_err'];
+            } 
+        }
+
+
+
+        
         
         
         
