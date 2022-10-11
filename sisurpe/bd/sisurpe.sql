@@ -258,9 +258,83 @@ INSERT INTO `bairros` (`id`, `bairro`) VALUES
 (3, 'SÃO NICOLAU'),
 (4, 'MARISCAL');
 
+
+
 --
--- Índices de tabelas apagadas
+-- Estrutura para tabela `inscricoes`
 --
+
+CREATE TABLE `inscricoes` (
+  `id` int(11) NOT NULL,
+  `nome_curso` varchar(255) NOT NULL,
+  `descricao` varchar(255) NOT NULL,
+  `carga_horaria` int(11) NOT NULL,
+  `data_inicio` date DEFAULT NULL,
+  `data_termino` date DEFAULT NULL,
+  `numero_certificado` int(11) DEFAULT NULL,
+  `livro` varchar(255) DEFAULT NULL,
+  `folha` varchar(255) DEFAULT NULL,
+  `aberto` char(1) NULL NULL DEFAULT 'S'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `inscricoes` (`id`, `nome_curso`, `descricao`, `carga_horaria`, `data_inicio`, `data_termino`, `numero_certificado`, `livro`, `folha`, `aberto`) VALUES
+(1, 'FORMACAO CONTINUADA ANOS', 'CURSO DE FOMACAO CONTINUADA ANOS FINAIS', 20, '2022-10-17', '2022-10-21', NULL, NULL, NULL, 'S');
+
+INSERT INTO `inscricoes` (`id`, `nome_curso`, `descricao`, `carga_horaria`, `data_inicio`, `data_termino`, `numero_certificado`, `livro`, `folha`, `aberto`) VALUES
+(2, 'FORMACAO CONTINUADA', 'CURSO DE FOMACAO CONTINUADA ANOS INICIAIS', 30, '2022-10-24', '2022-10-28', NULL, NULL, NULL, 'S');
+
+INSERT INTO `inscricoes` (`id`, `nome_curso`, `descricao`, `carga_horaria`, `data_inicio`, `data_termino`, `numero_certificado`, `livro`, `folha`, `aberto`) VALUES
+(3, 'FORMACAO CONTINUADA', 'CURSO DE FOMACAO CONTINUADA EDUCAÇÃO ESPECIAL', 40, '2022-10-31', '2022-11-04', NULL, NULL, NULL, 'S');
+
+
+--
+-- Estrutura para tabela `inscricoes_temas`
+--
+
+CREATE TABLE `inscricoes_temas` (
+  `id` int(11) NOT NULL,
+  `inscricoes_id` int(11) NOT NULL,
+  `formador` varchar(255) NOT NULL,
+  `tema` varchar(255) NOT NULL,
+  `carga_horaria` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+--
+-- Estrutura para tabela `presenca_inscricoes`
+--
+
+CREATE TABLE `abre_presenca` (
+  `id` int(11) NOT NULL,
+  `inscricoes_id` int(11) NOT NULL,  
+  `carga_horaria` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+--
+-- Estrutura para tabela `inscritos`
+--
+
+CREATE TABLE `inscritos` (
+  `id` int(11) NOT NULL,
+  `inscricoes_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `data_inscricao` DATETIME ON UPDATE CURRENT_TIMESTAMP DEFAULT CURRENT_TIMESTAMP  
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Estrutura para tabela `presenca`
+--
+
+ CREATE TABLE `presenca` (
+  `id` int(11) NOT NULL,
+  `abre_presenca_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `registro` DATETIME ON UPDATE CURRENT_TIMESTAMP DEFAULT CURRENT_TIMESTAMP  
+) ENGINE=InnoDB DEFAULT CHARSET=utf8; 
+
+
 
 --
 -- Índices de tabela `escola`
@@ -313,7 +387,43 @@ ALTER TABLE `dados_anuais`
 --
 ALTER TABLE `bairros`
   ADD PRIMARY KEY (`id`);
- 
+
+
+--
+-- Índices de tabela `inscricoes`
+--
+ALTER TABLE `inscricoes`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices de tabela `inscricoes_temas`
+--
+ALTER TABLE `inscricoes_temas`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices de tabela `abre_presenca`
+--
+ALTER TABLE `abre_presenca`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices de tabela `presenca`
+--
+ALTER TABLE `presenca`
+  ADD PRIMARY KEY (`id`);  
+
+--
+-- Índices de tabela `inscritos`
+--
+ALTER TABLE `inscritos`
+  ADD PRIMARY KEY (`id`);
+
+
+
+
+  
+  
 
 --
 -- AUTO_INCREMENT de tabelas apagadas
@@ -370,6 +480,41 @@ ALTER TABLE `bairros`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de tabela `inscricoes`
+--
+ALTER TABLE `inscricoes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `presenca`
+--
+ALTER TABLE `presenca`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+
+--
+-- AUTO_INCREMENT de tabela `inscricoes_temas`
+--
+ALTER TABLE `inscricoes_temas`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `abre_presenca`
+--
+ALTER TABLE `abre_presenca`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+
+
+--
+-- AUTO_INCREMENT de tabela `inscritos`
+--
+ALTER TABLE `inscritos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  
+  
+
+--
 -- Restrições para dumps de tabelas
 --
 
@@ -380,6 +525,33 @@ ALTER TABLE `aluno_linhas`
 
 ALTER TABLE `aluno_linhas` 
   ADD CONSTRAINT `linha_id` FOREIGN KEY (`linha_id`) REFERENCES `linhas`(`id`);
+
+
+ALTER TABLE `inscricoes_temas` 
+  ADD CONSTRAINT `inscricoes_id` FOREIGN KEY (`inscricoes_id`) REFERENCES `inscricoes`(`id`);
+
+
+
+ALTER TABLE `abre_presenca` 
+  ADD CONSTRAINT `abre_presenca_id` FOREIGN KEY (`inscricoes_id`) REFERENCES `inscricoes`(`id`);
+
+
+
+ALTER TABLE `inscritos` 
+  ADD CONSTRAINT `inscritos_id` FOREIGN KEY (`inscricoes_id`) REFERENCES `inscricoes`(`id`);
+
+
+ALTER TABLE `inscritos` 
+  ADD CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`);
+
+
+ALTER TABLE `presenca` 
+  ADD CONSTRAINT `presenca_user_id` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`);
+
+ALTER TABLE `presenca` 
+  ADD CONSTRAINT `presenca_abre_presenca` FOREIGN KEY (`abre_presenca_id`) REFERENCES `abre_presenca`(`id`);
+
+
 
 
 --

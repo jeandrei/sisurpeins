@@ -38,6 +38,10 @@
                 <a class="nav-link" href="<?php echo URLROOT; ?>/pages/about">Sobre</a>
             </li> 
 
+            <li class="nav-item">
+                <a class="nav-link" href="<?php echo URLROOT; ?>/inscricoes/index">Inscrições</a>
+            </li> 
+
         </ul>
 
 
