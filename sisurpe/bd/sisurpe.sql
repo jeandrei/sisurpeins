@@ -274,17 +274,17 @@ CREATE TABLE `inscricoes` (
   `numero_certificado` int(11) DEFAULT NULL,
   `livro` varchar(255) DEFAULT NULL,
   `folha` varchar(255) DEFAULT NULL,
-  `aberto` char(1) NULL NULL DEFAULT 'S'
+  `fase` char(2) NOT NULL DEFAULT 'A'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `inscricoes` (`id`, `nome_curso`, `descricao`, `carga_horaria`, `data_inicio`, `data_termino`, `numero_certificado`, `livro`, `folha`, `aberto`) VALUES
-(1, 'FORMACAO CONTINUADA ANOS', 'CURSO DE FOMACAO CONTINUADA ANOS FINAIS', 20, '2022-10-17', '2022-10-21', NULL, NULL, NULL, 'S');
+INSERT INTO `inscricoes` (`id`, `nome_curso`, `descricao`, `carga_horaria`, `data_inicio`, `data_termino`, `numero_certificado`, `livro`, `folha`, `fase`) VALUES
+(1, 'FORMACAO CONTINUADA ANOS', 'CURSO DE FOMACAO CONTINUADA ANOS FINAIS', 20, '2022-10-17', '2022-10-21', NULL, NULL, NULL, 'A');
 
-INSERT INTO `inscricoes` (`id`, `nome_curso`, `descricao`, `carga_horaria`, `data_inicio`, `data_termino`, `numero_certificado`, `livro`, `folha`, `aberto`) VALUES
-(2, 'FORMACAO CONTINUADA', 'CURSO DE FOMACAO CONTINUADA ANOS INICIAIS', 30, '2022-10-24', '2022-10-28', NULL, NULL, NULL, 'S');
+INSERT INTO `inscricoes` (`id`, `nome_curso`, `descricao`, `carga_horaria`, `data_inicio`, `data_termino`, `numero_certificado`, `livro`, `folha`, `fase`) VALUES
+(2, 'FORMACAO CONTINUADA', 'CURSO DE FOMACAO CONTINUADA ANOS INICIAIS', 30, '2022-10-24', '2022-10-28', NULL, NULL, NULL, 'A');
 
-INSERT INTO `inscricoes` (`id`, `nome_curso`, `descricao`, `carga_horaria`, `data_inicio`, `data_termino`, `numero_certificado`, `livro`, `folha`, `aberto`) VALUES
-(3, 'FORMACAO CONTINUADA', 'CURSO DE FOMACAO CONTINUADA EDUCAÇÃO ESPECIAL', 40, '2022-10-31', '2022-11-04', NULL, NULL, NULL, 'S');
+INSERT INTO `inscricoes` (`id`, `nome_curso`, `descricao`, `carga_horaria`, `data_inicio`, `data_termino`, `numero_certificado`, `livro`, `folha`, `fase`) VALUES
+(3, 'FORMACAO CONTINUADA', 'CURSO DE FOMACAO CONTINUADA EDUCAÇÃO ESPECIAL', 40, '2022-10-31', '2022-11-04', NULL, NULL, NULL, 'A');
 
 
 --

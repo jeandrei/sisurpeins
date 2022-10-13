@@ -2,18 +2,32 @@
 
 <?php flash('mensagem');?>
 
-<div class="alert alert-info p-3" role="alert">
-  <?php echo $data['title'];?>
+<hr>
+<div class="p-3 text-center">
+  <h2><?php echo $data['title'];?></h2>
 </div>
- 
-<?php // var_dump($data);?>
+<hr>
+
 
  
+<?php  //var_dump($data);?>
+
+
+
+<div class="row mb-3">  
+    <div class="col-md-12">
+        <a href="<?php echo URLROOT; ?>/inscricoes/add" class="btn btn-primary pull-right">
+            <i class="fa fa-pencil"></i> Criar uma Inscrição
+        </a>
+    </div>
+</div> 
+
+
 
 <?php
 
 // Caso ainda não tenham registros de aluno para o usuário
-if(empty($data)){ 
+if(empty($data['inscricoes'])){ 
   $data = ['error' => "No momento não temos nenhuma inscrição em aberto"]; 
 }
 
@@ -35,7 +49,7 @@ if(isset($data['error'])){
       <p class="card-text"><?php echo('Período: ' . formatadata($registro->data_inicio) . ' a '. formatadata($registro->data_termino));?></p>
       
       <?php if(!$this->inscritoModel->estaInscrito($registro->id,$_SESSION[DB_NAME . '_user_id'])) : ?>
-          <a href="<?php echo URLROOT; ?>/inscricoes/gravar/<?php echo $registro->id?>" class="btn btn-primary">Se Inscrever</a>
+          <a href="<?php echo URLROOT; ?>/inscricoes/gravar/<?php echo $registro->id?>" class="btn btn-primary">Inscrever-se</a>
       <?php else: ?>
       <a href="<?php echo URLROOT; ?>/inscricoes/cancelar/<?php echo $registro->id?>" class="btn btn-warning">Cancelar Inscrição</a>
       <?php endif; ?>    

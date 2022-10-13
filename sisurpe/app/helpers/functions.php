@@ -179,8 +179,8 @@ function valida($data){
     return false;
   }
   
-  // se a data for maior que a data atual retorna falso
-  if($data > date("Y-m-d")){
+  // se a data for menor que a data atual retorna falso
+  if($data < date("Y-m-d")){
     return false;
   }
 
