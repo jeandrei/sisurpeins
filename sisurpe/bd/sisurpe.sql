@@ -294,7 +294,7 @@ INSERT INTO `inscricoes` (`id`, `nome_curso`, `descricao`, `carga_horaria`, `dat
 CREATE TABLE `inscricoes_temas` (
   `id` int(11) NOT NULL,
   `inscricoes_id` int(11) NOT NULL,
-  `formador` varchar(255) NOT NULL,
+  `formador` varchar(100) NOT NULL,
   `tema` varchar(255) NOT NULL,
   `carga_horaria` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

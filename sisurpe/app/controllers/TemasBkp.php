@@ -1,25 +1,11 @@
 <?php 
-    class Inscricoes extends Controller{
+    class Temas extends Controller{
          public function __construct(){            
           $this->inscricaoModel = $this->model('Inscricoe');
-          $this->inscritoModel = $this->model('Inscrito');
           $this->temaModel = $this->model('Tema');
         }
         
-        public function index(){  
-            
-                $data = [
-                'title' => 'Inscrições Abertas',
-                'description'=> 'Inscrições Abertas',
-                'inscricoes' => $this->inscricaoModel->getInscricoesAberto()
-            ];
-
-            
-           
-            $this->view('inscricoes/index', $data);
-        }  
-
-        
+                
         public function gravar($inscricoes_id){
             
             $error=[];
@@ -30,11 +16,8 @@
             
             if(empty($error['inscricoes_id_err'])){
                 
-                if($this->inscritoModel->gravaInscricao($inscricoes_id,$_SESSION[DB_NAME . '_user_id'])){ 
-                    $data = [
-                        'title' => 'Inscrições Abertas',
-                        'description'=> 'Inscrições Abertas'                        
-                    ];                        
+                if($this->temaModel->gravaTema($inscricoes_id)){ 
+                                  
                     $this->view('inscricoes/add', $data);  
                 }                 
                 
@@ -73,66 +56,36 @@
 
 
 
-        public function add(){            
+        public function add(){             
+            
             // Check for POST            
             if($_SERVER['REQUEST_METHOD'] == 'POST'){        
                 
               $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);        
               
               $data = [              
-                'nome_curso' => mb_strtoupper(trim($_POST['nome_curso'])),
-                'descricao' => mb_strtoupper(trim($_POST['descricao'])),
+                'tema' => mb_strtoupper(trim($_POST['tema'])),                
                 'carga_horaria' => $_POST['carga_horaria'],
-                'data_inicio' => $_POST['data_inicio'],
-                'data_termino' => trim($_POST['data_termino']),
-                'fase' => $_POST['fase']                
+                'formador' => mb_strtoupper(trim($_POST['formador']))
+                             
               ];
               
               
-              if(empty($data['nome_curso'])){
-                  $data['nome_curso_err'] = 'Por favor informe o nome do curso';
-              }
-              
-              if(empty($data['descricao'])){
-                  $data['descricao_err'] = 'Por favor informe a descrição do curso';
-              }
-
-              if(empty($data['carga_horaria'])){
-                $data['carga_horaria_err'] = 'Por favor informe a carga horária';
-              }
-              
-               if (!valida($data['data_inicio'])){
-                $data['data_inicio_err'] = 'Data inválida';
-              }
-
-              if (!valida($data['data_termino'])){
-                $data['data_termino_err'] = 'Data inválida';
-              } else {
-                if($data['data_termino'] < $data['data_inicio']){
-                    $data['data_termino_err'] = 'Data de termino menor que data de início';
-                }
-              }
-
-
-             
+              if(empty($data['tema'])){
+                  $data['tema_err'] = 'Por favor informe o tema';
+              }                  
               
               // Make sure errors are empty
               if(                    
-                  empty($data['nome_curso_err']) &&
-                  empty($data['descricao_err']) && 
-                  empty($data['carga_horaria_err']) &&
-                  empty($data['data_inicio_err']) &&
-                  empty($data['data_termino_err']) 
-                  ){ 
+                  empty($data['tema_err'])  
+              ){ 
                     
                       try {                          
                         if($lastId = $this->inscricaoModel->register($data)){
                           // verifico se a inscrição é editavel ou seja se ela não está fechada ou arquivada
                           $data['editavel'] = $this->inscricaoModel->inscricaoEditavel($lastId);
                           // pego o id da inscrição criada
-                          $data['inscricoes_id'] = $lastId; 
-                          // pega os temas se o usuário estiver adicionando
-                          $data['temas'] = $this->temaModel->getTemasInscricoesById($lastId);
+                          $data['inscricao_id'] = $lastId; 
                           flash('mensagem', 'Dados registrados com sucesso');  
                           $this->view('inscricoes/add', $data);  
                         } else {

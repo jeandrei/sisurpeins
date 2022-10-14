@@ -36,7 +36,8 @@
         $this->db->bind(':id',$id_inscricao);  
         $result = $this->db->resultSet(); 
         if($this->db->rowCount() > 0){
-            return $result;
+            //return $result;
+            return true;
         } else {
             return false;
         }           

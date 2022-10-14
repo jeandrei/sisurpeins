@@ -6,21 +6,21 @@
         $this->db = new Database;        
     }
   
-    public function gravaTema($inscricoes_id){
-      $this->db->query('
-                        INSERT INTO inscricoes_temas SET
-                        inscricoes_id   = :inscricoes_id, 
-                        formador        = :formador,
-                        tema            = :tema,  
-                        carga_horaria        = :carga_horaria,               
-        ');
-        $this->db->bind(':inscricoes_id',$inscricoes_id);           
-        if($this->db->execute()){
-            return true;
-        } else {
-            return false;
-        }
-    }
+    public function register($data){        
+      $this->db->query('INSERT INTO inscricoes_temas (inscricoes_id, formador, tema,carga_horaria) VALUES (:inscricoes_id, :formador, :tema, :carga_horaria)');
+      // Bind values
+      $this->db->bind(':inscricoes_id',$data['inscricoes_id']);
+      $this->db->bind(':formador',$data['formador']);
+      $this->db->bind(':tema',$data['tema']);
+      $this->db->bind(':carga_horaria',$data['carga_horaria']); 
+      
+      // Execute
+      if($this->db->execute()){
+          return  true;              
+      } else {
+          return false;
+      }
+  }
 
     public function deletaTema($tema_id){
       $this->db->query('
@@ -33,6 +33,21 @@
         } else {
             return false;
         }
-    }    
+    }
+    
+
+
+    public function getTemasInscricoesById($id){
+      $this->db->query("SELECT itemas.id , itemas.inscricoes_id,itemas.formador, itemas.tema, itemas.carga_horaria FROM inscricoes insc, inscricoes_temas itemas WHERE itemas.inscricoes_id = :id AND itemas.inscricoes_id = insc.id ORDER BY itemas.tema ASC");
+      $this->db->bind(':id',$id); 
+      $result = $this->db->resultSet(); 
+      if($this->db->rowCount() > 0){
+          return $result;
+      } else {
+          return false;
+      }           
+  }  
+    
+    
 
   }
