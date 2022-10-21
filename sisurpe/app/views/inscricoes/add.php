@@ -292,6 +292,30 @@
                 }
             });//Fecha o ajax
    }
+
+   function remover(id){
+        const confirma = confirm('Tem certeza que deseja excluir o tema?');
+        
+        if(confirma){
+            $.ajax({  
+            url: `<?php echo URLROOT; ?>/temas/delete/${id}`,                
+            method:'POST',
+            success: function(retorno_php){                     
+                var responseObj = JSON.parse(retorno_php); 
+                carregaTemas();                   
+                $("#msgAddTema")
+                    .removeClass()  
+                    .addClass(responseObj.classe) 
+                    .html(responseObj.message) 
+                    .fadeIn(2000).fadeOut(2000);
+                    
+            }        
+        });//Fecha o ajax
+
+        carregaTemas();
+        }
+        
+   }//remover
    
 
     document.getElementById('tema').addEventListener('keyup', validate);

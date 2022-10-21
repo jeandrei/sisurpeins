@@ -47,6 +47,21 @@
           return false;
       }           
   }  
+
+
+  public function deleteTema($id){  
+    
+    $this->db->query('DELETE FROM inscricoes_temas WHERE id = :id');
+    // Bind values
+    $this->db->bind(':id',$id);           
+                
+    // Execute
+    if($this->db->execute()){
+        return true;
+    } else {
+        return false;
+    }
+  }
     
     
 

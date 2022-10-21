@@ -10,7 +10,7 @@
             $html = "
                 <thead class='thead-dark'>
                 <tr class='text-center'>
-                    <th scope='col'>#</th>
+                    <th scope='col'>Ações</th>
                     <th scope='col'>Tema</th>
                     <th scope='col'>Formador</th>
                     <th scope='col'>Carga Horária</th>
@@ -27,7 +27,9 @@
                 $i++;                
                 $html .= "
                     <tr class='text-center'>
-                        <th scope='row'>$i</th>
+                        <th scope='row'>
+                            <button type='button' class='btn btn-danger' onClick=remover($tema->id)>Remover</button>
+                        </th>
                         <td>$tema->tema</td>
                         <td>$tema->formador</td>
                         <td>$tema->carga_horaria</td>
@@ -109,6 +111,26 @@
                 );
                 echo json_encode($json_ret);
             }                               
+        }
+
+        public function delete($id){            
+            try{
+
+                if($this->temaModel->deleteTema($id)){                        
+                    $json_ret = array(                                            
+                                        'error'=>false
+                                    );                     
+                    
+                    echo json_encode($json_ret); 
+                }     
+            } catch (Exception $e) {
+                $json_ret = array(
+                        'classe'=>'alert alert-danger', 
+                        'message'=>'Erro ao tentar excluir os dados',
+                        'error'=>$data
+                        );                     
+                echo json_encode($json_ret); 
+            }
         }
        
     }
