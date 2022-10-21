@@ -4,10 +4,10 @@
 
  <div class="row align-items-center mb-3">
     <div class="col-md-12">
-        <h2>Dados do Curso</h2>        
+        <h2>Dados do Curso</h2>               
            
 
-        <?php  var_dump($data);?>
+        <?php // var_dump($data);?>
 
 
         <form action="<?php echo URLROOT; ?>/inscricoes/add" method="post" enctype="multipart/form-data">   
@@ -48,32 +48,28 @@
             </div>
 
 
-            <!--CARGA HORÁRIA-->
+            
             <div class="form-row">
-              <div class="form-group col-md-2">
-                  <label for="carga_horaria"><sup class="obrigatorio">*</sup> Carga Horária:</label>  
-                  <input 
-                      class="form-control <?php echo (!empty($data['carga_horaria_err'])) ? 'is-invalid' : ''; ?>"
-                      type="text" 
-                      name="carga_horaria"
-                      id="carga_horaria"
-                      value="<?php echo $data['carga_horaria']; ?>"                       
-                      placeholder="Carga Horária"
-                  >
-                  <div class="invalid-feedback">
-                      <?php echo $data['carga_horaria_err']; ?>
-                  </div>                   
-              </div>
-            </div>                                 
-            
-            
-                              
-            <legend>Período do Curso</legend>
-            <fieldset>
-              <!--PERÍODO-->
-              <div class="form-row">
-                  
-                  <div class="form-group col-md-2">
+              
+                <!--CARGA HORÁRIA-->
+                <div class="form-group col-md-2">
+                    <label for="carga_horaria"><sup class="obrigatorio">*</sup> Carga Horária:</label>  
+                    <input 
+                        class="form-control <?php echo (!empty($data['carga_horaria_err'])) ? 'is-invalid' : ''; ?>"
+                        type="text" 
+                        name="carga_horaria"
+                        id="carga_horaria"
+                        value="<?php echo $data['carga_horaria']; ?>"                       
+                        placeholder="Carga Horária"
+                    >
+                    <div class="invalid-feedback">
+                        <?php echo $data['carga_horaria_err']; ?>
+                    </div>                   
+                </div>
+                
+                <!--PERÍODO-->
+                <!-- INÍCIO -->
+                <div class="form-group col-md-2">
                       <label for="data_inicio"><sup class="obrigatorio">*</sup>Início</label>
                       <input 
                         class="form-control <?php echo (!empty($data['data_inicio_err'])) ? 'is-invalid' : ''; ?>"
@@ -87,22 +83,23 @@
                       </div>  
                   </div>
 
-                  <div class="form-group col-md-2">
-                      <label for="data_termino"><sup class="obrigatorio">*</sup>Fim</label>
-                      <input 
-                        class="form-control <?php echo (!empty($data['data_termino_err'])) ? 'is-invalid' : ''; ?>"
-                        type="date"  
-                        id="data_termino"
-                        name="data_termino"
-                        value="<?php echo $data['data_termino']; ?>"
-                      > 
-                      <div class="invalid-feedback">
-                          <?php echo $data['data_termino_err']; ?>
-                      </div>  
-                  </div>
+                <!-- FIM -->
+                <div class="form-group col-md-2">
+                    <label for="data_termino"><sup class="obrigatorio">*</sup>Fim</label>
+                    <input 
+                    class="form-control <?php echo (!empty($data['data_termino_err'])) ? 'is-invalid' : ''; ?>"
+                    type="date"  
+                    id="data_termino"
+                    name="data_termino"
+                    value="<?php echo $data['data_termino']; ?>"
+                    > 
+                    <div class="invalid-feedback">
+                        <?php echo $data['data_termino_err']; ?>
+                    </div>  
+                </div>
 
-              </div>  
-            <fieldset>
+            </div><!-- row -->  
+            
 
             <legend>Fase do Curso</legend>
             <fieldset>
@@ -132,7 +129,7 @@
                        
             <?php if($data['editavel']) : ?>
                 <!-- Button trigger modal -->
-                <button type="button" id="addTema" class="btn btn-primary" data-toggle="modal" data-target="#addTemaModal">
+                <button type="button" id="addTema" class="btn btn-primary" data-toggle="modal" data-target="#addTemaModal" onClick="clearInput()">
                 Adicionar Tema
                 </button>           
             <?php endif; ?>
@@ -150,10 +147,13 @@
 </div><!--div class="row align-items-center mb-3--> 
 
 
-<!-- fazer o foreach imprimindo os temas -->
-<?php var_dump($data['temas']);?>
 
 
+
+
+<!-- TEMAS -->
+<div role="alert" id="msgAddTema"></div> 
+<table class="table" id="tabelaTemas"></table>
 
 
 
@@ -236,104 +236,69 @@
             <button type="button" class="btn btn-primary gravar" data-dismiss="modal" disabled>Gravar</button>
         </div>
         <!-- FIM BOTÕES -->
-
       </form>
-    
-    
+      
     </div>
   </div>
+  
 </div>
 
 <script>
-    $( document ).ready(function() {    
+    
+    $(document ).ready(function() { 
+        
+        carregaTemas();
+
         $('.gravar').click(function() {
-            //Pego os valores dos inputs            
-            let tema=$("#tema").val();  
-            let carga_horaria=$("#carga_horaria_tema").val(); 
-            let formador=$("#formador").val();
-            
-            $.ajax({
-                /* aqui em url passamos a url do controler e o método que iremos utilizar nesse caso ajaxs/gravar */
-                
-                url: '<?php echo URLROOT; ?>/temas/add/<?php echo $data['inscricoes_id']; ?>',
-                /* aqui o método que utilizamos nesse caso POST */
-                method:'POST', 
-                //Aqui passamos os dados que queremos através do POST para o controller/método
+            gravaTema(<?php echo $data['inscricoes_id']; ?>);   
+        });//Fecha o .gravar click
+
+    });//Fecha document ready function
+
+
+    function carregaTemas(){
+        $.ajax({ 
+            url: '<?php echo URLROOT; ?>/temas/index/<?php echo $data['inscricoes_id']; ?>',                
+            method:'POST', 
+            success: function(retorno_php){   
+                document.getElementById('tabelaTemas').innerHTML = retorno_php;
+            }
+        });//Fecha o ajax    
+   }//carregaTemas
+
+   function gravaTema(id){
+        //Pego os valores dos inputs            
+        let tema=$("#tema").val();  
+        let carga_horaria=$("#carga_horaria_tema").val(); 
+        let formador=$("#formador").val();
+
+        $.ajax({  
+                url: `<?php echo URLROOT; ?>/temas/add/${id}`,                
+                method:'POST',                 
                 data:{                    
                     tema:tema,
                     carga_horaria:carga_horaria,
                     formador:formador                    
-                },                                                   
-                /* em retorno_php sempre receberemos o que for passado na linha lá do controller
-                em  echo json_encode($json_ret);
-                que sempre vai ser um array similar a este:
-                {"classe":"alert alert-success","mensagem":"Dados gravados com sucesso"}
-                O que a linha JSON.parse(retorno_php) faz é possibilitar o acesso aos valores como:
-                responseObj.classe e responseObj.mensagem
-                  */                   
+                },         
                 success: function(retorno_php){                     
-                    var responseObj = JSON.parse(retorno_php);
-                    window.location.reload();  
-                    //console.log(responseObj.error);
-                    
-                                       
-                    //se o status for true quer dizer que a validação passou
-                    //se for false a validação falhou
-                    if(responseObj.error!==false){                                              
-                        /**
-                        IMPORTANTE TEM QUE TER ID NO SPAN PARA FUNCIONAR
-                        aqui key traz a chave exemplo pessoaNome_err
-                        e value traz o erro exemplo Por favor informe o nome
-                        então na linha  $("#"+key) ele monta $("#pessoaNome_err")
-                        para cada erro que tiver no array responseObj.error que vem
-                        do controller
-                        */ 
-                        for (let [key, value] of entries(responseObj.error)) {                            
-                            $("#"+key) 
-                                .addClass("text-danger")
-                                .html(value)  
-                                .fadeIn(4000).fadeOut(4000)                                                                            
-                        }
-                    }                   
-                    
-                    
-                    //aqui o exemplo de como seria sem o for
-                    /* if(responseObj.error.pessoaNome_err){                        
-                        $("#pessoaNome_err")
-                            .addClass("text-danger")
-                            .html(responseObj.error.pessoaNome_err)  
-                            .fadeIn(4000).fadeOut(4000)                                
-                     */
-
-                    //#messageBox é a id da <div role="alert" id="messageBox"
-                    $("#messageBox")
-                        .removeClass()
-                        /* aqui em addClass adiciono a classe que vem do php se sucesso ou danger */
-                        /* pode adicionar mais classes se precisar ficaria assim .addClass("confirmbox "+responseObj.classe) */
+                    var responseObj = JSON.parse(retorno_php); 
+                    carregaTemas();                   
+                    $("#msgAddTema")
+                        .removeClass()  
                         .addClass(responseObj.classe) 
-                        /* aqui a mensagem que vem la do php responseObj.mensagem */                       
                         .html(responseObj.message) 
                         .fadeIn(2000).fadeOut(2000);
+                        
                 }
             });//Fecha o ajax
-        });//Fecha o .gravar click
-    });//Fecha document ready function
-
-
-
-    //Função necessária para rodar esse for  for (let [key, value] of entries(responseObj.error)) {
-    function* entries(obj) {
-        for (let key of Object.keys(obj)) {
-            yield [key, obj[key]];
-        }
-    }
+   }
+   
 
     document.getElementById('tema').addEventListener('keyup', validate);
     document.getElementById('carga_horaria_tema').addEventListener('keyup', validate);
     document.getElementById('formador').addEventListener('keyup', validate);
 
-    
-   
+       
 
     function isEmpty(val){    
         switch (val){
@@ -415,11 +380,10 @@
         $("#addTemaModal").on("shown.bs.modal", function(){
             $(this).find("input").first().focus()
         })
-    }
+    }   
 
-    document.getElementById('addTema').addEventListener('click',clearInput);
+   
 
-    //document.getElementById('.gravar').addEventListener('click',clearInput);
 </script>
 
 
