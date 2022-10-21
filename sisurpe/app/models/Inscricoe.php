@@ -17,6 +17,23 @@
       }           
   }
 
+
+  public function getInscricaoById($id){
+    $this->db->query("SELECT * FROM inscricoes WHERE id = :id"); 
+    
+    $this->db->bind(':id', $id);        
+    
+    $row = $this->db->single();
+    if($this->db->rowCount() > 0){
+        return $row;
+    } else {
+        return false;
+    }           
+}
+
+
+
+  
     public function inscricaoEditavel($id_inscricao=null){
         $this->db->query('
                         SELECT 

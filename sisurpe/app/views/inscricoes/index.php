@@ -13,14 +13,22 @@
 <?php  //var_dump($data);?>
 
 
-
-<div class="row mb-3">  
+<!-- SE FOR UM USUÁRIO ADMIN OU SEC ADICIONO O BOTÃO CRIAR INSCRIÇÃO -->
+<?php if((isset($_SESSION[DB_NAME . '_user_type']))&&((($_SESSION[DB_NAME . '_user_type']) == "admin")||(($_SESSION[DB_NAME . '_user_type']) == "sec"))) : ?>
+  
+  <div class="row mb-3">  
     <div class="col-md-12">
         <a href="<?php echo URLROOT; ?>/inscricoes/add" class="btn btn-primary pull-right">
             <i class="fa fa-pencil"></i> Criar uma Inscrição
         </a>
     </div>
 </div> 
+
+<?php endif; ?>
+
+
+
+
 
 
 
@@ -44,13 +52,35 @@ if(isset($data['error'])){
     
     <!-- CARD HEADER -->
     <div class="card-header">
-      <?php echo($registro->nome_curso);?>   
+     
+    <!-- SE FOR UM USUÁRIO ADMIN OU SEC ADICIONO O BOTÃO EDITAR -->
+    <?php if((isset($_SESSION[DB_NAME . '_user_type']))&&((($_SESSION[DB_NAME . '_user_type']) == "admin")||(($_SESSION[DB_NAME . '_user_type']) == "sec"))) : ?>
+      <div class="row">
+        <div class="col-11">
+        <?php echo($registro->nome_curso);?> 
+        </div>
+        
+        <div class="col-1 text-right">
+          <a href="<?php echo URLROOT; ?>/inscricoes/edit/<?php echo $registro->id?>" class="edit card-link">
+            <i class="fa fa-pencil"></i>
+          </a> 
+        </div>
+      </div>
+    <?php else : ?>
+      <!-- CASO CONTRÁRIO IMPRIMO SÓ O TÍTULO DO CURSO -->
+      <?php echo($registro->nome_curso);?>
+    <?php endif; ?>
+
+     
+
     </div>
+    
     <!-- CARD HEADER -->
 
     <!-- CARD BODY -->
     <div class="card-body">
-      <h5 class="card-title"><?php echo($registro->descricao);?></h5>
+      <h5 class="card-title"><?php echo($registro->descricao);?></h5>     
+     
 
         <!-- FASE -->
         <!-- função retornaFase está lá em funções retorna a fase e a classe -->     
