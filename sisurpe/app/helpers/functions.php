@@ -227,6 +227,28 @@ function debug($data){
 
 
 
+function retornaClasseFase($fase){
+  switch ($fase){
+    case 'ABERTO': 
+      return "badge badge-success";
+      break;
+    case 'FECHADO':      
+      return "badge badge-danger";
+      break;
+    case 'CANCELADO';     
+      return "badge badge-warning";
+      break;
+      case 'CERTIFICADO';      
+      return "badge badge-primary";
+      break;
+    case 'ARQUIVADO';      
+      return "badge badge-secondary";
+      break;
+  }
+}
+
+
+
 
 
 

@@ -112,10 +112,11 @@
                           class="form-control <?php echo (!empty($data['fase_err'])) ? 'is-invalid' : ''; ?>"                                       
                       >
                           <option value="">Selecione a fase atual do curso</option>
-                          <option value="A" <?php echo $data['fase'] == 'A' ? 'selected':'';?>>Aberto</option>
-                          <option value="F" <?php echo $data['fase'] == 'F' ? 'selected':'';?>>Fechado</option>  
-                          <option value="C" <?php echo $data['fase'] == 'C' ? 'selected':'';?>>Certificado Liberado</option>    
-                          <option value="AR" <?php echo $data['fase'] == 'AR' ? 'selected':'';?>>Arquivado</option>                                                                                                               
+                          <option value="ABERTO" <?php echo $data['fase'] == 'ABERTO' ? 'selected':'';?>>Aberto</option>
+                          <option value="FECHADO" <?php echo $data['fase'] == 'FECHADO' ? 'selected':'';?>>Fechado</option>  
+                          <option value="CANCELADO" <?php echo $data['fase'] == 'CANCELADO' ? 'selected':'';?>>Cancelado</option>    
+                          <option value="ARQUIVADO" <?php echo $data['fase'] == 'ARQUIVADO' ? 'selected':'';?>>Arquivado</option>  
+                          <option value="CERTIFICADO" <?php echo $data['fase'] == 'CERTIFICADO' ? 'selected':'';?>>Certificado liberado</option>                                                                                                              
                                   
                       </select>                                           
                       <span class="text-danger">
@@ -126,7 +127,8 @@
               <!-- FASE -->
             </fieldset>
             
-                       
+            <!-- $data['editavel'] se for verdadeiro é que pode ser editado
+            vem de controller\inscricoes -->      
             <?php if($data['editavel']) : ?>
                 <!-- Button trigger modal -->
                 <button type="button" id="addTema" class="btn btn-primary" data-toggle="modal" data-target="#addTemaModal" onClick="clearInput()">

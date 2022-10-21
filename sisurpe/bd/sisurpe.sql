@@ -274,17 +274,23 @@ CREATE TABLE `inscricoes` (
   `numero_certificado` int(11) DEFAULT NULL,
   `livro` varchar(255) DEFAULT NULL,
   `folha` varchar(255) DEFAULT NULL,
-  `fase` char(2) NOT NULL DEFAULT 'A'
+  `fase` char(30) NOT NULL DEFAULT 'A'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `inscricoes` (`id`, `nome_curso`, `descricao`, `carga_horaria`, `data_inicio`, `data_termino`, `numero_certificado`, `livro`, `folha`, `fase`) VALUES
-(1, 'FORMACAO CONTINUADA ANOS', 'CURSO DE FOMACAO CONTINUADA ANOS FINAIS', 20, '2022-10-17', '2022-10-21', NULL, NULL, NULL, 'A');
+(1, 'FORMACAO CONTINUADA ANOS', 'CURSO DE FOMACAO CONTINUADA ANOS FINAIS', 20, '2022-10-17', '2022-10-21', NULL, NULL, NULL, 'ABERTO');
 
 INSERT INTO `inscricoes` (`id`, `nome_curso`, `descricao`, `carga_horaria`, `data_inicio`, `data_termino`, `numero_certificado`, `livro`, `folha`, `fase`) VALUES
-(2, 'FORMACAO CONTINUADA', 'CURSO DE FOMACAO CONTINUADA ANOS INICIAIS', 30, '2022-10-24', '2022-10-28', NULL, NULL, NULL, 'A');
+(2, 'FORMACAO CONTINUADA', 'CURSO DE FOMACAO CONTINUADA ANOS INICIAIS', 30, '2022-10-24', '2022-10-28', NULL, NULL, NULL, 'ABERTO');
 
 INSERT INTO `inscricoes` (`id`, `nome_curso`, `descricao`, `carga_horaria`, `data_inicio`, `data_termino`, `numero_certificado`, `livro`, `folha`, `fase`) VALUES
-(3, 'FORMACAO CONTINUADA', 'CURSO DE FOMACAO CONTINUADA EDUCAÇÃO ESPECIAL', 40, '2022-10-31', '2022-11-04', NULL, NULL, NULL, 'A');
+(3, 'FORMACAO CONTINUADA', 'CURSO DE FOMACAO CONTINUADA EDUCAÇÃO ESPECIAL', 40, '2022-10-31', '2022-11-04', NULL, NULL, NULL, 'CERTIFICADO');
+
+INSERT INTO `inscricoes` (`id`, `nome_curso`, `descricao`, `carga_horaria`, `data_inicio`, `data_termino`, `numero_certificado`, `livro`, `folha`, `fase`) VALUES
+(4, 'FORMACAO FROTA', 'CURSO DE FOMACAO TRABALHADORES DE FROTA', 40, '2022-10-31', '2022-11-04', NULL, NULL, NULL, 'FECHADO');
+
+INSERT INTO `inscricoes` (`id`, `nome_curso`, `descricao`, `carga_horaria`, `data_inicio`, `data_termino`, `numero_certificado`, `livro`, `folha`, `fase`) VALUES
+(5, 'FORMACAO BIBLIOTECA', 'CURSO DE FOMACAO TRABALHADORES DA BIBLIOTECA', 40, '2022-10-31', '2022-11-04', NULL, NULL, NULL, 'ARQUIVADO');
 
 
 --

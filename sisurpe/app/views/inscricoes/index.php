@@ -39,25 +39,51 @@ if(isset($data['error'])){
 
                
 <?php foreach ($data['inscricoes'] as $registro): ?>
- 
-<div class="card text-center mb-3">
+  <!-- CARD -->
+  <div class="card text-center mb-3">
+    
+    <!-- CARD HEADER -->
     <div class="card-header">
-      <?php echo($registro->nome_curso);?>
+      <?php echo($registro->nome_curso);?>   
     </div>
+    <!-- CARD HEADER -->
+
+    <!-- CARD BODY -->
     <div class="card-body">
       <h5 class="card-title"><?php echo($registro->descricao);?></h5>
-      <p class="card-text"><?php echo('Período: ' . formatadata($registro->data_inicio) . ' a '. formatadata($registro->data_termino));?></p>
-      
-      <?php if(!$this->inscritoModel->estaInscrito($registro->id,$_SESSION[DB_NAME . '_user_id'])) : ?>
-          <a href="<?php echo URLROOT; ?>/inscricoes/gravar/<?php echo $registro->id?>" class="btn btn-primary">Inscrever-se</a>
-      <?php else: ?>
-      <a href="<?php echo URLROOT; ?>/inscricoes/cancelar/<?php echo $registro->id?>" class="btn btn-warning">Cancelar Inscrição</a>
-      <?php endif; ?>    
+
+        <!-- FASE -->
+        <!-- função retornaFase está lá em funções retorna a fase e a classe -->     
+        <span class="text-center <?php echo(retornaClasseFase($registro->fase));?>">Fase: <?php echo($registro->fase);?></span>  
+
+        <!-- PERIODO -->
+        <p class="card-text"><?php echo('Período: ' . formatadata($registro->data_inicio) . ' a '. formatadata($registro->data_termino));?></p>
+
+        <!-- SE FASE FOR HABILITAMOS O BOTÃO INSCREVER-SE -->
+        <?php if($registro->fase == 'ABERTO') : ?>
+
+            <?php if(!$this->inscritoModel->estaInscrito($registro->id,$_SESSION[DB_NAME . '_user_id'])) : ?>
+              <a href="<?php echo URLROOT; ?>/inscricoes/inscrever/<?php echo $registro->id?>" class="btn btn-primary">Inscrever-se</a>
+            <?php else: ?>
+            <a href="<?php echo URLROOT; ?>/inscricoes/cancelar/<?php echo $registro->id?>" class="btn btn-warning">Cancelar Inscrição</a>
+            <?php endif; ?>  
+
+
+        <?php endif; ?>
+
+        
+
     </div>
+    <!-- CARD BODY -->
+
+    <!-- CARD FOOTER -->
     <div class="card-footer text-muted">
-      <?php echo($registro->carga_horaria);?>Horas
+      <?php echo($registro->carga_horaria);?> Horas
     </div>
-  </div>      
+    <!-- CARD FOOTER -->
+
+  </div>
+  <!-- CARD -->
 <?php endforeach; ?>
 
 

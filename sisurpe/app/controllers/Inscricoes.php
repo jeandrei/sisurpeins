@@ -11,7 +11,7 @@
                 $data = [
                 'title' => 'Inscrições Abertas',
                 'description'=> 'Inscrições Abertas',
-                'inscricoes' => $this->inscricaoModel->getInscricoesAberto()
+                'inscricoes' => $this->inscricaoModel->getInscricoes()
             ];
 
             
@@ -20,7 +20,7 @@
         }  
 
         
-        public function gravar($inscricoes_id){
+        public function inscrever($inscricoes_id){
             
             $error=[];
             if(empty($inscricoes_id)){
@@ -33,9 +33,10 @@
                 if($this->inscritoModel->gravaInscricao($inscricoes_id,$_SESSION[DB_NAME . '_user_id'])){ 
                     $data = [
                         'title' => 'Inscrições Abertas',
-                        'description'=> 'Inscrições Abertas'                        
+                        'description'=> 'Inscrições Abertas',
+                        'inscricoes' => $this->inscricaoModel->getInscricoes()                      
                     ];                        
-                    $this->view('inscricoes/add', $data);  
+                    $this->view('inscricoes/index', $data);  
                 }                 
                 
             } else {
@@ -58,7 +59,7 @@
                     $data = [
                         'title' => 'Inscrições Abertas',
                         'description'=> 'Inscrições Abertas',
-                        'inscricoes' => $this->inscricaoModel->getInscricoesAberto()
+                        'inscricoes' => $this->inscricaoModel->getInscricoes()
                     ];                        
                     $this->view('inscricoes/index', $data); 
                 } 

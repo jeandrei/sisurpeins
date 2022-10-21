@@ -7,8 +7,8 @@
     }
 
 
-    public function getInscricoesAberto(){
-      $this->db->query("SELECT * FROM inscricoes WHERE fase = 'A' ORDER BY data_inicio DESC"); 
+    public function getInscricoes(){
+      $this->db->query("SELECT * FROM inscricoes WHERE fase != 'ARQUIVADO' ORDER BY data_inicio DESC"); 
       $result = $this->db->resultSet(); 
       if($this->db->rowCount() > 0){
           return $result;
@@ -26,9 +26,9 @@
                         WHERE 
                             id = :id
                         AND
-                            fase = "A" 
+                            fase = "ABERTO" 
                         OR 
-                            fase = "C" 
+                            fase = "CERTIFICADO" 
                         ORDER BY 
                             data_inicio 
                         DESC
