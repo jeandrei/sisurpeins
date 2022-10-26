@@ -132,7 +132,7 @@
             $data['nascimento_err'] = 'Por favor informe a data de nascimento do aluno';
         }
         
-        if (!valida($data['nascimento'])){
+        if (!validaData($data['nascimento'])){
           $data['nascimento_err'] = 'Data inválida';
         }
 
@@ -318,7 +318,7 @@
             $data['nascimento_err'] = 'Por favor informe a data de nascimento do aluno';
         }
         
-        if (!valida($data['nascimento'])){
+        if (!validaNascimento($data['nascimento'])){
           $data['nascimento_err'] = 'Data inválida';
         }
 
@@ -371,7 +371,7 @@
         }
 
         if(!empty($data['data_emissao_cert'])){
-          if(!valida($data['data_emissao_cert'])){
+          if(!validaData($data['data_emissao_cert'])){
             $data['data_emissao_cert_err'] = 'Data inválida';
           }
         }

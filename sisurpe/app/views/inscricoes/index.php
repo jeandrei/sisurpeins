@@ -89,7 +89,7 @@ if(isset($data['error'])){
         <!-- PERIODO -->
         <p class="card-text"><?php echo('Período: ' . formatadata($registro->data_inicio) . ' a '. formatadata($registro->data_termino));?></p>
 
-        <!-- SE FASE FOR HABILITAMOS O BOTÃO INSCREVER-SE -->
+        <!-- SE FASE ABERTO FOR HABILITAMOS O BOTÃO INSCREVER-SE -->
         <?php if($registro->fase == 'ABERTO') : ?>
 
             <?php if(!$this->inscritoModel->estaInscrito($registro->id,$_SESSION[DB_NAME . '_user_id'])) : ?>
@@ -100,6 +100,18 @@ if(isset($data['error'])){
 
 
         <?php endif; ?>
+
+
+        <!-- SE A FASE FOR CERTIFICADO -->
+        <?php if($registro->fase == 'CERTIFICADO') : ?>
+            <!-- SE O USUÁRIO ESTIVER INSCRITO NO CURSO IMPRIMIMOS O BOTÃO CERTIFICADO -->
+            <?php if($this->inscritoModel->estaInscrito($registro->id,$_SESSION[DB_NAME . '_user_id'])) : ?>
+              <a href="<?php echo URLROOT; ?>/inscricoes/certificado/<?php echo $registro->id?>" class="btn btn-success">Certificado Disponível</a>           
+            <?php endif; ?>  
+
+
+        <?php endif; ?>
+
 
         
 

@@ -173,14 +173,14 @@ function htmlout($text)
 	echo html($text);
 }
 
-function valida($data){  
+function validaData($data){  
   
   if(empty($data)){
     return false;
   }
   
   // se a data for menor que a data atual retorna falso
-  if($data < date("Y-m-d")){
+  if($data > date("Y-m-d")){
     return false;
   }
 
@@ -191,6 +191,9 @@ function valida($data){
     return false;
   }  
 }
+
+
+
 
 
 

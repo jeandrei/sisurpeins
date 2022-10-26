@@ -93,6 +93,21 @@ class User extends Pagination{
         } 
     }
 
+    public function getUserById($id){
+        $this->db->query('SELECT name,email,cpf FROM users WHERE id = :id');
+        // Bind value
+        $this->db->bind(':id', $id);
+
+        $row = $this->db->single();
+
+        // Check row
+        if($this->db->rowCount() > 0){
+            return $row;
+        } else {
+            return false;
+        } 
+    }
+
     public function sendemail($email, $senha){                
 
         /* Exception class. */

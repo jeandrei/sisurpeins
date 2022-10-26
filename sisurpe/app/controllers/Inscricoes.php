@@ -4,6 +4,7 @@
           $this->inscricaoModel = $this->model('Inscricoe');
           $this->inscritoModel = $this->model('Inscrito');
           $this->temaModel = $this->model('Tema');
+          $this->userModel = $this->model('User');
         }
         
         public function index(){  
@@ -261,6 +262,21 @@
             $this->view('inscricoes/edit', $data);
           }     
         }//edit
+
+
+        public function certificado($inscricoes_id){
+          if($this->inscritoModel->estaInscrito($inscricoes_id,$_SESSION[DB_NAME . '_user_id'])){
+                        
+            $data = [
+              'curso' => $this->inscricaoModel->getInscricaoById($inscricoes_id),
+              'temas' => $this->temaModel->getTemasInscricoesById($inscricoes_id),
+              'usuario' =>$this->userModel->getUserById($_SESSION[DB_NAME . '_user_id'])
+            ];            
+            $this->view('relatorios/certificado', $data);
+          } else {
+            echo "Você não está inscrito para este curso!";
+          }          
+        }
 
 
 
