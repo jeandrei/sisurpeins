@@ -1,6 +1,6 @@
 <?php require APPROOT . '/views/inc/header.php';?>
 
-<?php flash('mensagem');?>
+<?php flash('message');?>
 
  <div class="row align-items-center mb-3">
     <div class="col-md-12">
@@ -137,11 +137,10 @@
             <?php endif; ?>
 
             
-            <?php if($data['inscricoes_id'] == NULL) : ?>
-                <button type="submit" class="btn btn-primary">Gravar</button>         
-            <?php else: ?>
-                <button type="submit" class="btn btn-warning">Atualizar</button>
-            <?php endif; ?>
+            
+            <button type="submit" class="btn btn-primary">Gravar</button>         
+          
+               
             
         </form>
 

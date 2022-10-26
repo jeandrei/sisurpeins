@@ -134,7 +134,7 @@
                           $data['inscricoes_id'] = $lastId; 
                           // pega os temas se o usuário estiver adicionando
                           $data['temas'] = $this->temaModel->getTemasInscricoesById($lastId);
-                          flash('mensagem', 'Dados registrados com sucesso');  
+                          flash('message', 'Dados registrados com sucesso');  
                           $this->view('inscricoes/add', $data);  
                         } else {
                             throw new Exception('Ops! Algo deu errado ao tentar gravar os dados!');
@@ -172,7 +172,8 @@
               
           $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);        
           
-          $data = [              
+          $data = [     
+            'id' => $id,                     
             'nome_curso' => mb_strtoupper(trim($_POST['nome_curso'])),
             'descricao' => mb_strtoupper(trim($_POST['descricao'])),
             'carga_horaria' => $_POST['carga_horaria'],
@@ -218,20 +219,18 @@
               empty($data['data_termino_err']) 
               ){ 
                 
-                  try {                          
-                    if($lastId = $this->inscricaoModel->update($data)){
+                  try { 
+                    if($this->inscricaoModel->update($data)){                      
                       // verifico se a inscrição é editavel ou seja se ela não está fechada ou arquivada
-                      $data['editavel'] = $this->inscricaoModel->inscricaoEditavel($lastId);
-                      // pego o id da inscrição criada
-                      $data['inscricoes_id'] = $lastId; 
-                      // pega os temas se o usuário estiver adicionando
-                      $data['temas'] = $this->temaModel->getTemasInscricoesById($lastId);
-                      flash('mensagem', 'Dados registrados com sucesso');  
+                      $data['editavel'] = $this->inscricaoModel->inscricaoEditavel($id);
+                      // pego o id da inscrição 
+                      $data['inscricoes_id'] = $id;  
+                      flash('message', 'Dados atualizados com sucesso');  
                       $this->view('inscricoes/edit', $data);  
                     } else {
                         throw new Exception('Ops! Algo deu errado ao tentar gravar os dados!');
                     }                 
-                  } catch (Exception $e) {
+                  } catch (Exception $e) {        
                     $erro = 'Erro: '.  $e->getMessage(). "\n";
                     flash('message', $erro,'alert alert-danger');
                     $this->view('inscricoes/edit');
@@ -246,7 +245,17 @@
             $data = $this->inscricaoModel->getInscricaoById($id); 
             
             $data = [
-              'nome_curso' => $data->nome_curso
+              'editavel' => $this->inscricaoModel->inscricaoEditavel($id),
+              'inscricoes_id' => $id,
+              'nome_curso' => $data->nome_curso,
+              'descricao' => $data->descricao,
+              'carga_horaria' => $data->carga_horaria,
+              'data_inicio' => $data->data_inicio,
+              'data_termino' => $data->data_termino,
+              'numero_certificado' => $data->numero_certificado,
+              'livro' => $data->livro,
+              'folha' => $data->folha,
+              'fase' => $data->fase              
             ];
             // Load view
             $this->view('inscricoes/edit', $data);

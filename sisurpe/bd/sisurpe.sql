@@ -274,7 +274,7 @@ CREATE TABLE `inscricoes` (
   `numero_certificado` int(11) DEFAULT NULL,
   `livro` varchar(255) DEFAULT NULL,
   `folha` varchar(255) DEFAULT NULL,
-  `fase` char(30) NOT NULL DEFAULT 'A'
+  `fase` char(30) NOT NULL DEFAULT 'ABERTO'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `inscricoes` (`id`, `nome_curso`, `descricao`, `carga_horaria`, `data_inicio`, `data_termino`, `numero_certificado`, `livro`, `folha`, `fase`) VALUES

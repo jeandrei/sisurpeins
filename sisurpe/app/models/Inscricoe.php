@@ -43,9 +43,7 @@
                         WHERE 
                             id = :id
                         AND
-                            fase = "ABERTO" 
-                        OR 
-                            fase = "CERTIFICADO" 
+                            fase != "ARQUIVADO"
                         ORDER BY 
                             data_inicio 
                         DESC
@@ -82,6 +80,42 @@
         // Execute
         if($this->db->execute()){
             return  $this->db->lastId;              
+        } else {
+            return false;
+        }
+    }
+
+
+
+
+    public function update($data){
+        $this->db->query('UPDATE inscricoes  SET                                           
+                                            nome_curso = :nome_curso,
+                                            descricao = :descricao, 
+                                            carga_horaria = :carga_horaria, 
+                                            data_inicio = :data_inicio, 
+                                            data_termino = :data_termino, 
+                                            numero_certificado = :numero_certificado, 
+                                            livro = :livro, 
+                                            folha = :folha, 
+                                            fase = :fase  
+                                            WHERE id = :id');
+                  
+        // Bind values 
+        $this->db->bind(':id',$data['id']);            
+        $this->db->bind(':nome_curso',$data['nome_curso']);
+        $this->db->bind(':descricao',$data['descricao']);
+        $this->db->bind(':carga_horaria',$data['carga_horaria']);
+        $this->db->bind(':data_inicio',$data['data_inicio']);
+        $this->db->bind(':data_termino',$data['data_termino']);
+        $this->db->bind(':numero_certificado',$data['numero_certificado']);
+        $this->db->bind(':livro',$data['livro']);
+        $this->db->bind(':folha',$data['folha']);
+        $this->db->bind(':fase',$data['fase']);  
+
+        // Execute
+        if($this->db->execute()){
+            return true;
         } else {
             return false;
         }
