@@ -5,15 +5,15 @@
 <div class="row align-items-center mb-3">
   <div class="col-md-12">
     <h2>Dados do Curso</h2> 
-    <h6>Nome: <?php echo $data['curso']->nome_curso;?></h6>   
-    <h6>Descrição: <?php echo $data['curso']->descricao;?></h6>            
+    <h6><b>Nome:</b> <?php echo $data['curso']->nome_curso;?></h6>   
+    <h6><b>Descrição:</b> <?php echo $data['curso']->descricao;?></h6>            
            
 
       <?php // var_dump($data);?>
 
 
       <form action="<?php echo URLROOT; ?>/presencas/add" method="post" enctype="multipart/form-data">   
-        <input type="hidden" id="inscricoes_id" name="inscricoes_id" value="<?php echo $data['inscricoes_id'];?>"> 
+        <input type="hidden" id="inscricoes_id" name="inscricoes_id" value="<?php echo $data['curso']->id;?>"> 
             
           <div class="form-row">
             
@@ -35,7 +35,7 @@
 
           </div><!-- row --> 
             
-          <button type="submit" class="btn btn-primary">Gravar</button> 
+          <button type="submit" class="btn btn-primary">Abrir Presença</button> 
       </form>
 
   </div><!--col-md-12-->
