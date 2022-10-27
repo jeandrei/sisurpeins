@@ -61,10 +61,20 @@ if(isset($data['error'])){
         </div>
         
         <div class="col-1 text-right">
+         
+        <?php if($registro->fase == 'FECHADO') : ?>
+          <a href="<?php echo URLROOT; ?>/presencas/index/<?php echo $registro->id?>" class="edit card-link">
+            <i class="fa fa-check"></i>
+          </a> 
+        <?php endif;?>
+
           <a href="<?php echo URLROOT; ?>/inscricoes/edit/<?php echo $registro->id?>" class="edit card-link">
             <i class="fa fa-pencil"></i>
           </a> 
+
         </div>
+
+        
       </div>
     <?php else : ?>
       <!-- CASO CONTRÁRIO IMPRIMO SÓ O TÍTULO DO CURSO -->
