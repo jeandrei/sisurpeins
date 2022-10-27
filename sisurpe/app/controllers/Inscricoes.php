@@ -103,11 +103,11 @@
                 $data['carga_horaria_err'] = 'Por favor informe a carga horária';
               }
               
-               if (!valida($data['data_inicio'])){
+               if (!validaData($data['data_inicio'])){
                 $data['data_inicio_err'] = 'Data inválida';
               }
 
-              if (!valida($data['data_termino'])){
+              if (!validaData($data['data_termino'])){
                 $data['data_termino_err'] = 'Data inválida';
               } else {
                 if($data['data_termino'] < $data['data_inicio']){
@@ -196,11 +196,11 @@
             $data['carga_horaria_err'] = 'Por favor informe a carga horária';
           }
           
-            if (!valida($data['data_inicio'])){
+            if (!validaData($data['data_inicio'])){
             $data['data_inicio_err'] = 'Data inválida';
           }
 
-          if (!valida($data['data_termino'])){
+          if (!validaData($data['data_termino'])){
             $data['data_termino_err'] = 'Data inválida';
           } else {
             if($data['data_termino'] < $data['data_inicio']){
@@ -270,7 +270,8 @@
             $data = [
               'curso' => $this->inscricaoModel->getInscricaoById($inscricoes_id),
               'temas' => $this->temaModel->getTemasInscricoesById($inscricoes_id),
-              'usuario' =>$this->userModel->getUserById($_SESSION[DB_NAME . '_user_id'])
+              'usuario' =>$this->userModel->getUserById($_SESSION[DB_NAME . '_user_id']),
+              'presencas' =>$this->inscricaoModel->getPresencasUsuarioById($_SESSION[DB_NAME . '_user_id'],$inscricoes_id)
             ];            
             $this->view('relatorios/certificado', $data);
           } else {

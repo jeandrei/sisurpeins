@@ -180,7 +180,7 @@ function validaData($data){
   }
   
   // se a data for menor que a data atual retorna falso
-  if($data > date("Y-m-d")){
+  if($data < date("Y-m-d")){
     return false;
   }
 

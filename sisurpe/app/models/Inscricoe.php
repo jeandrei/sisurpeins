@@ -121,6 +121,34 @@
         }
     }
 
+    public function getPresencasUsuarioById($user_id,$insc_id){
+        $this->db->query('
+                        SELECT 
+                            abre_presenca.carga_horaria as carga_horaria_tema, inscricoes.carga_horaria as carga_horaria_curso 
+                        FROM 
+                            presenca, 
+                            abre_presenca, 
+                            inscricoes 
+                        WHERE 
+                            presenca.abre_presenca_id = abre_presenca.id 
+                        AND 
+                            abre_presenca.inscricoes_id = inscricoes.id 
+                        AND 
+                            presenca.user_id = :user_id 
+                        AND 
+                            inscricoes.id = :insc_id
+                        '); 
+        $this->db->bind(':user_id',$user_id);  
+        $this->db->bind(':insc_id',$insc_id); 
+        $result = $this->db->resultSet(); 
+        if($this->db->rowCount() > 0){
+            //return $result;
+            return $result;
+        } else {
+            return false;
+        }           
+    }
+
   
 
 
