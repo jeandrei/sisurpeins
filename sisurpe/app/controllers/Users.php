@@ -399,5 +399,15 @@
     }
 
 
+    public function getUsersCpf($cpf){
+       try {
+        $user_id = $this->userModel->getUserIdByCpf($cpf);
+        echo json_encode($user_id);         
+       } catch (Exception $e) {
+        return false;
+       }
+    }
+
+
 }   
 ?>

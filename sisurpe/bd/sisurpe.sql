@@ -314,7 +314,8 @@ CREATE TABLE `inscricoes_temas` (
 CREATE TABLE `abre_presenca` (
   `id` int(11) NOT NULL,
   `inscricoes_id` int(11) NOT NULL,  
-  `carga_horaria` int(11) DEFAULT NULL
+  `carga_horaria` int(11) DEFAULT NULL,
+  `status` char(30) NOT NULL DEFAULT 'ABERTO'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 

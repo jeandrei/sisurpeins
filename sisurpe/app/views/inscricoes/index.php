@@ -63,7 +63,7 @@ if(isset($data['error'])){
         <div class="col-1 text-right">
          
         <?php if($registro->fase == 'FECHADO') : ?>
-          <a href="<?php echo URLROOT; ?>/presencas/index/<?php echo $registro->id?>" class="edit card-link">
+          <a href="<?php echo URLROOT; ?>/abrepresencas/index/<?php echo $registro->id?>" class="edit card-link">
             <i class="fa fa-check"></i>
           </a> 
         <?php endif;?>

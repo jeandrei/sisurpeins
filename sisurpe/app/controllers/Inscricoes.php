@@ -280,6 +280,15 @@
         }
 
 
+        function estaInscrito(){
+          $userId = $_POST['user_id'];
+          $inscricoes_id = $_POST['inscricoes_id'];          
+          $json_ret = $this->inscritoModel->estaInscrito($inscricoes_id,$userId);   
+          echo json_encode($json_ret); 
+          //return $this->inscritoModel->estaInscrito($inscricoes_id,$userId);
+        }
+
+
 
         
         

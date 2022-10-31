@@ -1,83 +1,94 @@
 <?php 
     class Presencas extends Controller{
          public function __construct(){            
-          //$this->presencaModel = $this->model('Presenca');    
+          $this->abrePresencaModel = $this->model('Abrepresenca');    
           $this->inscricaoModel = $this->model('Inscricoe');
           $this->inscritoModel = $this->model('Inscrito');
           $this->temaModel = $this->model('Tema');
-          $this->userModel = $this->model('User');      
+          $this->userModel = $this->model('User');    
+          $this->presencaModel = $this->model('Presenca');  
         }
         
-        public function index($id){  
-
-                $data = [                
-                'title' => 'Abrir presença',
-                'description'=> 'Abrir presença para o curso',
-                'curso' => $this->inscricaoModel->getInscricaoById($id)
-            ];
-
-            
+        public function index($abre_presenca_id){            
+            $inscricoes_id = $this->abrePresencaModel->getInscricaoId($abre_presenca_id)->inscricoes_id; 
+            $data = [
+                'abre_presenca_id' => $abre_presenca_id, 
+                'inscricoes_id' => $inscricoes_id,        
+                'title' => 'Registro de Presenca',
+                'description'=> 'Registre aqui sua presença',
+                'curso' => $this->inscricaoModel->getInscricaoById($inscricoes_id),
+                'presenca_em_andamento' => $this->abrePresencaModel->temPresencaEmAndamento($inscricoes_id)
+            ];            
            
             $this->view('presencas/index', $data);
         }  
 
 
-        public function add(){ 
-          // Check for POST            
-          if($_SERVER['REQUEST_METHOD'] == 'POST'){        
-              
-            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);        
-            
-            $data = [              
-              'id' => $_POST['inscricoes_id'],              
-              'carga_horaria' => $_POST['carga_horaria'] ,
-              'curso' => $this->inscricaoModel->getInscricaoById($_POST['inscricoes_id'])                        
-            ];       
-                    
-                      
-
-            if(empty($data['carga_horaria'])){
-              $data['carga_horaria_err'] = 'Por favor informe a carga horária';
-            }  
-           
-            
-            // Make sure errors are empty
-            if(     
-                empty($data['carga_horaria_err'])
-              ){ 
-                  die('vai gravar');
-                    try {                          
-                      if($lastId = $this->inscricaoModel->register($data)){
-                        // verifico se a inscrição é editavel ou seja se ela não está fechada ou arquivada
-                        $data['editavel'] = $this->inscricaoModel->inscricaoEditavel($lastId);
-                        // pego o id da inscrição criada
-                        $data['inscricoes_id'] = $lastId; 
-                        // pega os temas se o usuário estiver adicionando
-                        $data['temas'] = $this->temaModel->getTemasInscricoesById($lastId);
-                        flash('message', 'Dados registrados com sucesso');  
-                        $this->view('presencas/add', $data);  
-                      } else {
-                          throw new Exception('Ops! Algo deu errado ao tentar gravar os dados!');
-                      }                 
-                    } catch (Exception $e) {
-                      $erro = 'Erro: '.  $e->getMessage(). "\n";
-                      flash('message', $erro,'alert alert-danger');
-                      $this->view('presencas/index', $data);
-                    }  
-    
-                } else {                  
-                  // Load the view with errors
-                  $this->view('presencas/index', $data);
-                } 
-        
-          } else {
-            // Init data             
-            $data = [  
-              'carga_horaria' => ''             
+        public function add(){
+          $data=[
+            'abre_presenca_id' => $_POST['abre_presenca_id'],
+            'user_id'=>$_POST['user_id']               
           ];
-            // Load view          
-            $this->view('presencas/index/', $data);
-          }     
+        
+
+        $error=[];
+       
+        if(empty($data['abre_presenca_id'])){
+            $error['abre_presenca_id_err'] = 'Erro ao tentar recuperar o id da presença!';
+        }
+
+        if(empty($data['user_id'])){
+          $error['user_id_err'] = 'Erro ao tentar recuperar o id usuário!';
+        }
+
+
+
+        //Se o usuário já tiver presença nesse curso eu dou a mensagem de erro
+        if($this->presencaModel->jaRegistrado($data)){
+          $json_ret = array(
+            'classe'=>'alert alert-danger', 
+            'message'=>'Usuário já registrado para esta presença!',
+            'error'=>$data
+            );                     
+            echo json_encode($json_ret); 
+            return;
+        }
+                   
+
+
+        if(
+            empty($error['abre_presenca_id_err']) && 
+            empty($error['user_id_err']) 
+          )
+        {                
+            try{
+
+                if($this->presencaModel->register($data)){                        
+                    $json_ret = array(                                            
+                                        'error'=>false
+                                    );                     
+                    
+                    echo json_encode($json_ret); 
+                }     
+            } catch (Exception $e) {
+                $json_ret = array(
+                        'classe'=>'alert alert-danger', 
+                        'message'=>'Erro ao gravar os dados',
+                        'error'=>$data
+                        );                     
+                echo json_encode($json_ret); 
+            }
+
+
+            
+        }   else {
+            $json_ret = array(
+                'classe'=>'alert alert-danger', 
+                'message'=>'Erro ao tentar gravar os dados',
+                'error'=>$error
+            );
+            echo json_encode($json_ret);
+        }                             
       }//add
 
         

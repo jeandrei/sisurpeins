@@ -167,6 +167,20 @@ class User extends Pagination{
     }
 
 
+    public function getUserIdByCpf($cpf){
+        $this->db->query('SELECT users.id FROM users WHERE cpf = :cpf');
+        // Bind value
+        $this->db->bind(':cpf', $cpf);
+        $row = $this->db->single();
+        // Check row
+        if($this->db->rowCount() > 0){
+            return $row;
+        } else {
+            return false;
+        } 
+    }
+
+
 //class
 }
 ?>
