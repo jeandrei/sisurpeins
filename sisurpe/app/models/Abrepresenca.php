@@ -59,9 +59,9 @@
       }           
   }
 
-  public function fecharPresenca($inscricoes_id){
-    $this->db->query("UPDATE abre_presenca SET status = 'FECHADO' WHERE inscricoes_id=:inscricoes_id");              
-    $this->db->bind(':inscricoes_id',$inscricoes_id); 
+  public function fecharPresenca($id){    
+    $this->db->query("UPDATE abre_presenca SET status = 'FECHADO' WHERE id=:id");              
+    $this->db->bind(':id',$id); 
     // Execute
     if($this->db->execute()){
       return true;

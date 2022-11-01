@@ -39,8 +39,12 @@
           </div><!-- row --> 
             
           <?php if($data['presenca_em_andamento']) : ?>
-            <button type="submit" class="btn btn-danger">Fechar Presença</button> 
+            
+            
+            <a class="btn btn-danger" href="<?php echo URLROOT; ?>/presencas/fechar/<?php echo $data['presenca_em_andamento']->id;?>" role="button">Fechar Presença</a>
+
             <a class="btn btn-success" href="<?php echo URLROOT; ?>/presencas/index/<?php echo $data['presenca_em_andamento']->id;?>" role="button">Iniciar Presença</a>
+
           <?php else: ?>
             <button type="submit" class="btn btn-primary">Abrir Presença</button> 
           <?php endif; ?>

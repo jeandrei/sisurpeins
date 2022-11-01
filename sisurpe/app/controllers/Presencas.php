@@ -9,7 +9,16 @@
           $this->presencaModel = $this->model('Presenca');  
         }
         
-        public function index($abre_presenca_id){            
+        public function index($abre_presenca_id){ 
+          
+            if((!isLoggedIn())){                
+              redirect('users/login');
+            } 
+            elseif(($_SESSION[DB_NAME . '_user_type']) != "admin" && ($_SESSION[DB_NAME . '_user_type']) != "sec")
+            {
+                die("Você não tem acesso a esta página!");
+            }
+          
             $inscricoes_id = $this->abrePresencaModel->getInscricaoId($abre_presenca_id)->inscricoes_id; 
             $data = [
                 'abre_presenca_id' => $abre_presenca_id, 
@@ -24,7 +33,34 @@
         }  
 
 
+
+        public function fechar($abre_presenca_id){        
+          
+          if((!isLoggedIn())){                
+            redirect('users/login');
+          } 
+          elseif(($_SESSION[DB_NAME . '_user_type']) != "admin" && ($_SESSION[DB_NAME . '_user_type']) != "sec")
+          {
+              die("Você não tem acesso a esta página!");
+          }
+        
+          $this->abrePresencaModel->fecharPresenca($abre_presenca_id);
+          $inscricoes_id = $this->abrePresencaModel->getInscricaoId($abre_presenca_id);
+          
+          redirect('abrepresencas/index/' . $inscricoes_id->inscricoes_id);
+      } 
+
+
         public function add(){
+
+          if((!isLoggedIn())){                
+            redirect('users/login');
+          } 
+          elseif(($_SESSION[DB_NAME . '_user_type']) != "admin" && ($_SESSION[DB_NAME . '_user_type']) != "sec")
+          {
+              die("Você não tem acesso a esta página!");
+          }
+
           $data=[
             'abre_presenca_id' => $_POST['abre_presenca_id'],
             'user_id'=>$_POST['user_id']               

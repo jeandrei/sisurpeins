@@ -5,14 +5,20 @@
           $this->inscritoModel = $this->model('Inscrito');
           $this->temaModel = $this->model('Tema');
           $this->userModel = $this->model('User');
+          $this->abrePresencaModel = $this->model('Abrepresenca');
         }
         
-        public function index(){  
+        public function index(){ 
+          
+                if((!isLoggedIn())){                  
+                  redirect('users/login');
+                } 
+                
             
                 $data = [
                 'title' => 'Inscrições Abertas',
                 'description'=> 'Inscrições Abertas',
-                'inscricoes' => $this->inscricaoModel->getInscricoes()
+                'inscricoes' => $this->inscricaoModel->getInscricoes()               
             ];
 
             
@@ -22,6 +28,10 @@
 
         
         public function inscrever($inscricoes_id){
+          
+            if((!isLoggedIn())){                  
+              redirect('users/login');
+            } 
             
             $error=[];
             if(empty($inscricoes_id)){
@@ -47,6 +57,10 @@
 
 
         public function cancelar($inscricoes_id){
+            
+            if((!isLoggedIn())){                  
+              redirect('users/login');
+            } 
             
             $error=[];
             if(empty($inscricoes_id)){
@@ -75,7 +89,16 @@
 
 
 
-        public function add(){            
+        public function add(){ 
+          
+            if((!isLoggedIn())){                  
+              redirect('users/login');
+            } 
+            elseif(($_SESSION[DB_NAME . '_user_type']) != "admin" && ($_SESSION[DB_NAME . '_user_type']) != "sec")
+            {
+              die("Você não tem acesso a esta página!");
+            }
+
             // Check for POST            
             if($_SERVER['REQUEST_METHOD'] == 'POST'){        
                 
@@ -168,6 +191,15 @@
 
 
         public function edit($id){
+
+          if((!isLoggedIn())){                  
+            redirect('users/login');
+          } 
+          elseif(($_SESSION[DB_NAME . '_user_type']) != "admin" && ($_SESSION[DB_NAME . '_user_type']) != "sec")
+          {
+            die("Você não tem acesso a esta página!");
+          }
+
           // Check for POST            
           if($_SERVER['REQUEST_METHOD'] == 'POST'){        
               

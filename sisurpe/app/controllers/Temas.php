@@ -7,6 +7,14 @@
 
         public function index($id=null){
 
+            if((!isLoggedIn())){                
+                redirect('users/login');
+            } 
+            elseif(($_SESSION[DB_NAME . '_user_type']) != "admin" && ($_SESSION[DB_NAME . '_user_type']) != "sec")
+            {
+                die("Você não tem acesso a esta página!");
+            }
+
             $html = "
                 <thead class='thead-dark'>
                 <tr class='text-center'>
@@ -62,6 +70,15 @@
         
         
         public function add($inscricoes_id){
+            
+            if((!isLoggedIn())){                
+                redirect('users/login');
+            } 
+            elseif(($_SESSION[DB_NAME . '_user_type']) != "admin" && ($_SESSION[DB_NAME . '_user_type']) != "sec")
+            {
+                die("Você não tem acesso a esta página!");
+            }
+
              $data=[
                 'inscricoes_id' => $inscricoes_id,
                 'tema'=>$_POST['tema'],
@@ -113,7 +130,16 @@
             }                               
         }
 
-        public function delete($id){            
+        public function delete($id){
+
+            if((!isLoggedIn())){                
+                redirect('users/login');
+            } 
+            elseif(($_SESSION[DB_NAME . '_user_type']) != "admin" && ($_SESSION[DB_NAME . '_user_type']) != "sec")
+            {
+                die("Você não tem acesso a esta página!");
+            }
+
             try{
 
                 if($this->temaModel->deleteTema($id)){                        

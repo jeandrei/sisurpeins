@@ -56,11 +56,15 @@ if(isset($data['error'])){
     <!-- SE FOR UM USUÁRIO ADMIN OU SEC ADICIONO O BOTÃO EDITAR -->
     <?php if((isset($_SESSION[DB_NAME . '_user_type']))&&((($_SESSION[DB_NAME . '_user_type']) == "admin")||(($_SESSION[DB_NAME . '_user_type']) == "sec"))) : ?>
       <div class="row">
-        <div class="col-11">
+        <div class="col-10">
         <?php echo($registro->nome_curso);?> 
         </div>
         
-        <div class="col-1 text-right">
+        <div class="col-2 text-right">
+
+        <?php if($this->abrePresencaModel->temPresencaEmAndamento($registro->id)) : ?>
+          <span class="badge bg-secondary">P</span></h6>
+        <?endif;?>
          
         <?php if($registro->fase == 'FECHADO') : ?>
           <a href="<?php echo URLROOT; ?>/abrepresencas/index/<?php echo $registro->id?>" class="edit card-link">
