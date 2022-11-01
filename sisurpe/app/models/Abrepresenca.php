@@ -81,6 +81,17 @@
           return false;
       }           
   }
+
+ public function getTotalCargaHorariaPresencas($inscricoes_id){
+  $this->db->query("SELECT SUM(carga_horaria) as carga_horaria FROM abre_presenca WHERE inscricoes_id = :inscricoes_id");
+      $this->db->bind(':inscricoes_id',$inscricoes_id); 
+      $row = $this->db->single();  
+      if($this->db->rowCount() > 0){
+          return $row->carga_horaria;
+      } else {
+          return false;
+      }   
+ }
     
     
 

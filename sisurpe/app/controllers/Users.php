@@ -18,6 +18,7 @@
                 //init data
                 $data = [
                     'name' => trim($_POST['name']),
+                    'cpf' => trim($_POST['cpf']),
                     'email' => trim($_POST['email']),
                     'password' => trim($_POST['password']),
                     'confirm_password' => trim($_POST['confirm_password']),
@@ -45,6 +46,18 @@
                 if(empty($data['name'])){
                     $data['name_err'] = 'Por favor informe o nome';
                 }
+
+                //valida cpf
+                if(empty($data['cpf'])){
+                    $data['cpf_err'] = 'CPF é obrigatório';
+                } elseif(!validaCPF($data['cpf'])){
+                    $data['cpf_err'] = 'CPF inválido';    
+                } elseif($this->userModel->cpfCadastrado($data['cpf'])){
+                     $data['cpf_err'] = 'CPF já cadastrado';       
+                } else {
+                    $data['cpf_err'] = '';
+                } 
+
 
                  // Validate Password
                  if(empty($data['password'])){

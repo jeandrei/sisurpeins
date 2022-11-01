@@ -72,8 +72,8 @@
         
         //Se o usuário não passar a faze da inscrição definimos como Aberto
         if($data['fase'] ==''){
-            $data['fase'] = 'A';
-        };
+            $data['fase'] = 'ABERTO';
+        }; 
         $this->db->bind(':fase',$data['fase']);
 
         

@@ -14,9 +14,10 @@ class User extends Pagination{
 
     // Register User
     public function register($data){
-        $this->db->query('INSERT INTO users (name, email, password) VALUES (:name, :email, :password)');
+        $this->db->query('INSERT INTO users (name, cpf, email, password) VALUES (:name, :cpf, :email, :password)');
         // Bind values
         $this->db->bind(':name',$data['name']);
+        $this->db->bind(':cpf',$data['cpf']);
         $this->db->bind(':email',$data['email']);
         $this->db->bind(':password',$data['password']);
 
@@ -168,13 +169,27 @@ class User extends Pagination{
 
 
     public function getUserIdByCpf($cpf){
-        $this->db->query('SELECT users.id FROM users WHERE cpf = :cpf');
+        $this->db->query('SELECT users.id as id, users.name as name FROM users WHERE cpf = :cpf');
         // Bind value
         $this->db->bind(':cpf', $cpf);
         $row = $this->db->single();
         // Check row
         if($this->db->rowCount() > 0){
             return $row;
+        } else {
+            return false;
+        } 
+    }
+
+
+    public function cpfCadastrado($cpf){
+        $this->db->query('SELECT users.id as id, users.name as name FROM users WHERE cpf = :cpf');
+        // Bind value
+        $this->db->bind(':cpf', $cpf);
+        $row = $this->db->single();
+        // Check row
+        if($this->db->rowCount() > 0){
+            return true;
         } else {
             return false;
         } 

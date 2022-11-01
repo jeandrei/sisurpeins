@@ -65,7 +65,9 @@
 
                 if($this->presencaModel->register($data)){                        
                     $json_ret = array(                                            
-                                        'error'=>false
+                                        'error'=>false,
+                                        'classe'=>'alert alert-success',
+                                        'message'=>'Presença Confirmada',
                                     );                     
                     
                     echo json_encode($json_ret); 

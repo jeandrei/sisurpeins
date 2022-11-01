@@ -22,8 +22,9 @@
         <header class="container h-100">
           <div class="d-flex align-items-center justify-content-center h-100">
             <div class="d-flex flex-column">
-              <h1 class="text align-self-center p-2">Registro de Frequência</h1>          
-
+              <h1 class="text align-self-center p-2">Registro de Frequência</h1>
+              
+              
               <div class="text align-self-center p-2">                 
                   <input 
                       class="form-control cpfmask"
@@ -35,7 +36,10 @@
                   <div class="text-danger" id="cpf_err">
                       <?php echo $data['cpf_err']; ?>                     
                   </div>                   
-              </div>   
+              </div> 
+              
+              <h3 class="text align-self-center p-2" id="nome"></h3>
+              
             </div>
           </div>
         </header>
@@ -55,15 +59,17 @@ function delay(val){
   return new Promise((resolve)=>{
     timer = setTimeout(()=>{
       resolve(val);
-    },3000)
+    },2000)
   })
 }
 
 
 const searchCPF = document.getElementById("cpf");
 
+/* aqui ele faz a busca e se achar grava no bd */
 async function Search(e){
   document.getElementById("cpf_err").innerText = '';
+  document.getElementById('nome').innerText = '';
   const cpf = await delay(e.target.value);
   cpfValido = validacaocpf(cpf);
   
@@ -72,7 +78,7 @@ async function Search(e){
     return;
   }
 
-  gravar(<?php echo $data['abre_presenca_id'];?>)
+  gravar(<?php echo $data['abre_presenca_id'];?>);  
 }
 
 
@@ -104,6 +110,7 @@ $(document).ready(function() {
 
 
 function estaInscrito(user_id,inscricoes_id){
+  
   $.ajax({
       url: `<?php echo URLROOT; ?>/inscricoes/estaInscrito`,
       method:'POST',
@@ -125,8 +132,12 @@ function estaInscrito(user_id,inscricoes_id){
 function gravar(id){
     let cpfInput = document.getElementById("cpf").value;     
     /* pego o id do usuário pelo cpf */
-    let user = getUserId(`${cpfInput}`);  
-    
+    let user = getUserId(`${cpfInput}`);     
+   
+    if(user.name){
+      document.getElementById('nome').innerText = user.name.toUpperCase();
+    }     
+
     /* verifico se o usuário está inscrito */  
     let userInscrito = estaInscrito(`${user.id}`,<?php echo $data['inscricoes_id'];?>);
         
@@ -151,6 +162,7 @@ function gravar(id){
       .addClass('alert alert-danger')
       .html(erro)
       .fadeIn(1000).fadeOut(3000);
+      clearData();       
       return;
     }
 
@@ -165,19 +177,25 @@ function gravar(id){
       let responseObj = JSON.parse(retorno_php);
       console.log(responseObj);
       $("#messageBox")
-      .removeClass()
-      /* aqui em addClass adiciono a classe que vem do php se sucesso ou danger */
-      /* pode adicionar mais classes se precisar ficaria assim .addClass("confirmbox "+responseObj.classe) */
-      .addClass(responseObj.classe) 
-      /* aqui a mensagem que vem la do php responseObj.mensagem */                       
+      .removeClass()      
+      .addClass(responseObj.classe)                           
       .html(responseObj.message) 
-      .fadeIn(1000).fadeOut(6000);
+      .fadeIn(1000).fadeOut(6000);       
       }
     });
+    clearData();
   }
 
   function setFocus(){
     document.getElementById("cpf").focus();
+  }
+
+  function clearData(){
+    setTimeout(()=>{
+      document.getElementById('cpf').value = '';
+      document.getElementById('nome').innerText = '';
+      setFocus();
+    },3000)    
   }
 
   

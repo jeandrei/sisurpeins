@@ -9,56 +9,96 @@
                                                                                                                                            [validaradio=['moradia']]                                                                                                                                               
                                                                                                                                                )">   
                     
-                    <?php
-                         //Nome                        
-                        text($attributes = [
-                          'id' => 'name',
-                          'name' => 'name',
-                          'type' => 'text',
-                          'label' => '<b class="obrigatorio">* </b>Nome',
-                          'placeholder' => 'Informe um nome',                          
-                          'error' => $data['name_err'] = ""
-                      ]);
-                        
-                        
-                        //EMAIL                       
-                        text($attributes = [
-                          'id' => 'email',
-                          'name' => 'email',
-                          'type' => 'text',
-                          'label' => '<b class="obrigatorio">* </b>Email',
-                          'placeholder' => 'Informe um email válido',                          
-                          'error' => $data['email_err']
-                      ]);
-                        
-                        
-                        //PASSWORD                        
-                        text($attributes = [
-                          'id' => 'password',
-                          'name' => 'password',
-                          'type' => 'password',
-                          'label' => '<b class="obrigatorio">* </b>Senha',
-                          'placeholder' => 'Informe uma senha de 6 caracteres',                          
-                          'error' => $data['password_err'] = ""
-                      ]);
-                        
-                        //CONFIRM PASSWORD                       
-                        text($attributes = [
-                          'id' => 'confirm_password',
-                          'name' => 'confirm_password',
-                          'type' => 'password',
-                          'label' => '<b class="obrigatorio">* </b>Confirme a Senha',
-                          'placeholder' => 'Confirme a senha',                          
-                          'error' => $data['confirm_password_err'] = ""
-                      ]);
-                         
-                          
-                    ?>
+                    
+                    <!--Nome-->
+                    <div class="form-group">   
+                        <label 
+                            for="name"><b class="obrigatorio">* </b>Nome:
+                        </label>                        
+                        <input 
+                            type="text" 
+                            name="name" 
+                            class="form-control form-control-lg <?php echo (!empty($data['name_err'])) ? 'is-invalid' : ''; ?>"                             
+                            placeholder="Informe seu nome",
+                            value="<?php echo $data['name'];?>"
+                        >
+                        <span class="invalid-feedback">
+                            <?php echo $data['name_err']; ?>
+                        </span>
+                    </div>
+
+
+                     <!--CPF-->
+                     <div class="form-group">   
+                        <label 
+                            for="cpf"><b class="obrigatorio">* </b>CPF:
+                        </label>                        
+                        <input 
+                            type="text" 
+                            name="cpf" 
+                            class="form-control form-control-lg cpfmask <?php echo (!empty($data['cpf_err'])) ? 'is-invalid' : ''; ?>"                             
+                            placeholder="Informe seu CPF",
+                            value="<?php echo $data['cpf'];?>"
+                        >
+                        <span class="invalid-feedback">
+                            <?php echo $data['cpf_err']; ?>
+                        </span>
+                    </div>
+
+
+                    <!--EMAIL-->
+                    <div class="form-group">   
+                        <label 
+                            for="email"><b class="obrigatorio">* </b>Email: 
+                        </label>                        
+                        <input 
+                            type="text" 
+                            name="email" 
+                            class="form-control form-control-lg <?php echo (!empty($data['email_err'])) ? 'is-invalid' : ''; ?>"                             
+                            placeholder="Informe seu email",
+                            value="<?php echo $data['email'];?>"
+                        >
+                        <span class="invalid-feedback">
+                            <?php echo $data['email_err']; ?>
+                        </span>
+                    </div>
 
 
 
+                    <!--PASSWORD-->
+                    <div class="form-group">   
+                        <label 
+                            for="password"><b class="obrigatorio">* </b>Senha:
+                        </label>                        
+                        <input 
+                            type="password" 
+                            name="password" 
+                            placeholder="Informe sua senha",
+                            class="form-control form-control-lg <?php echo (!empty($data['password_err'])) ? 'is-invalid' : ''; ?>"                             
+                            value="<?php echo $data['password'];?>"
+                        >
+                        <span class="invalid-feedback">
+                            <?php echo $data['password_err']; ?>
+                        </span>
+                    </div>
 
-
+                     
+                     <!--CONFIRM PASSWORD-->
+                     <div class="form-group">   
+                        <label 
+                            for="confirm_password"><b class="obrigatorio">* </b>Confirma Senha:
+                        </label>                        
+                        <input 
+                            type="password" 
+                            name="confirm_password" 
+                            placeholder="Confirme sua senha",
+                            class="form-control form-control-lg <?php echo (!empty($data['confirm_password_err'])) ? 'is-invalid' : ''; ?>"                             
+                            value="<?php echo $data['confirm_password'];?>"
+                        >
+                        <span class="invalid-feedback">
+                            <?php echo $data['confirm_password_err']; ?>
+                        </span>
+                    </div>  
                     
                     <!--BUTTONS-->
                     <div class="row">
@@ -75,7 +115,3 @@
         </div>
     </div>   
 <?php require APPROOT . '/views/inc/footer.php'; ?>
-<script>  
-    //ADICIONA MASCARA DE CPF
-    addclass('cpf','cpfmask');     
-</script>

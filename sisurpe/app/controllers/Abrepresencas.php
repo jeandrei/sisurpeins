@@ -31,16 +31,36 @@
             
             $data = [              
               'inscricoes_id' => $_POST['inscricoes_id'],              
-              'carga_horaria' => $_POST['carga_horaria'],
+              'carga_horaria' => ($_POST['carga_horaria'] ? $_POST['carga_horaria'] : 0),
+              
+              'total_carga_horaria_temas' => $this->temaModel->getTotalCargaHoraria($_POST['inscricoes_id']),
+              
+              'total_carga_horaria_presencas' => $this->abrePresencaModel->getTotalCargaHorariaPresencas($_POST['inscricoes_id']),
+
               'curso' => $this->inscricaoModel->getInscricaoById($_POST['inscricoes_id']),   
               'presenca_em_andamento' => $this->abrePresencaModel->temPresencaEmAndamento($inscricoes_id)                   
             ];       
                     
-                      
+           
 
             if(empty($data['carga_horaria'])){
               $data['carga_horaria_err'] = 'Por favor informe a carga horária';
             }  
+
+            
+
+
+
+            if(($data['total_carga_horaria_presencas'] + $data['carga_horaria']) > $data['total_carga_horaria_temas']) {
+              
+                $err = 'Total de carga horária não pode ser maior que o total de carga horária de todos os temas somados! O total de carga horária dos temas atual é de ' . $data['total_carga_horaria_temas'] . ' Horas.';
+              
+                if($data['total_carga_horaria_presencas'] > 0){                
+                 $err .= ' O total de carga horária já lançada para presença é de ' . $data['total_carga_horaria_presencas'] . 'Horas.' ;
+                } 
+
+                $data['carga_horaria_err'] = $err; 
+            }
            
             
             // Make sure errors are empty

@@ -14,7 +14,8 @@
 
 
       <form action="<?php echo URLROOT; ?>/abrepresencas/add" method="post" enctype="multipart/form-data">   
-        <input type="hidden" id="inscricoes_id" name="inscricoes_id" value="<?php echo $data['curso']->id;?>"> 
+        
+      <input type="hidden" id="inscricoes_id" name="inscricoes_id" value="<?php echo (($data['curso']->id)) ? $data['curso']->id : $_POST['inscricoes_id']; ?>"> 
             
           <div class="form-row">
             
