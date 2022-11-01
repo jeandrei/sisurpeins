@@ -3,9 +3,9 @@
          public function __construct(){            
           $this->abrePresencaModel = $this->model('Abrepresenca');    
           $this->inscricaoModel = $this->model('Inscricoe');
-          //$this->inscritoModel = $this->model('Inscrito');
+          $this->inscritoModel = $this->model('Inscrito');
           $this->temaModel = $this->model('Tema');
-          //$this->userModel = $this->model('User');      
+          $this->userModel = $this->model('User');      
         }
         
         public function index($inscricoes_id){              

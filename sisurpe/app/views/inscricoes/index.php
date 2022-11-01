@@ -62,6 +62,7 @@ if(isset($data['error'])){
         
         <div class="col-2 text-right">
 
+              
         <?php if($this->abrePresencaModel->temPresencaEmAndamento($registro->id)) : ?>
           <span class="badge bg-secondary">P</span></h6>
         <?endif;?>

@@ -5,7 +5,7 @@
           $this->inscritoModel = $this->model('Inscrito');
           $this->temaModel = $this->model('Tema');
           $this->userModel = $this->model('User');
-          //$this->abrePresencaModel = $this->model('Abrepresenca');
+          $this->abrePresencaModel = $this->model('Abrepresenca');
         }
         
         public function index(){ 

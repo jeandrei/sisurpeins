@@ -48,7 +48,7 @@
   }
 
 
-  public function temPresencaEmAndamento($inscricoes_id){
+  public function temPresencaEmAndamento($inscricoes_id){   
     $this->db->query("SELECT * FROM abre_presenca WHERE inscricoes_id = :inscricoes_id AND status = 'ABERTO'");
       $this->db->bind(':inscricoes_id',$inscricoes_id); 
       $data = $this->db->single();
