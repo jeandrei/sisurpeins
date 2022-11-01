@@ -18,7 +18,7 @@
     <div class="col-lg-12">
         <div class="alert alert-info" role="alert">
             <p>Os Dados Escolares e Dados de Transporte Escolar devem ser inseridos <strong>anualmente.</strong></p>
-            <p>Manteinha os dados <strong>atualizados</strong>, as informações registradas aqui 
+            <p>Mantenha os dados <strong>atualizados</strong>, as informações registradas aqui 
             servirão de base para a <strong>distribuição dos uniformes escolares</strong>, bem como ajudarão 
             no <strong>planejamento e melhoria do Trensporte Escolar.</strong></p>
             <p>Você está informando os dados referentes ao ano de <strong><?php echo date("Y"); ?></strong>.

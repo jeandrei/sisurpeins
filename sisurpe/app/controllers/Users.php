@@ -207,7 +207,7 @@
         $_SESSION[DB_NAME . '_user_email'] = $user->email;
         $_SESSION[DB_NAME . '_user_name'] = $user->name;
         $_SESSION[DB_NAME . '_user_type'] = $user->type;
-        redirect('datausers/show');
+        redirect('pages/main');
     }
 
     public function logout(){

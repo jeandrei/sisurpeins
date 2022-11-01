@@ -13,9 +13,9 @@
                 
                 // 3 coloca os valores no array
                 $data = [
-                'title' => 'SISURPE',
-                'description'=> 'Sistema Unificado de Registros de Penha.'
-            ];
+                    'title' => 'Bem vindo!',
+                    'description'=> 'O SISURPE é um sistema de centralização de registros que visa facilitar os processos internos da Secretaria de Educação, bem como auxiliar no planejamento de ações estratégicas.'
+                ];
 
             // 4 Chama o view passando os dados
             $this->view('pages/index', $data);
@@ -28,7 +28,7 @@
             ];
             $this->view('pages/about', $data);           
         }
-        
+              
 
         public function modelo_pagina(){
             $data = [
