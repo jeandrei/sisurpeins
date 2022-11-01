@@ -1,7 +1,7 @@
 <?php 
     class Temas extends Controller{
         public function __construct(){            
-          $this->inscricaoModel = $this->model('Inscricoe');
+          //$this->inscricaoModel = $this->model('Inscricoe');
           $this->temaModel = $this->model('Tema');
         }
 
