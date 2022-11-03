@@ -62,11 +62,10 @@
 
 
     public function register($data){        
-        $this->db->query('INSERT INTO inscricoes (nome_curso, descricao, carga_horaria,data_inicio,data_termino,fase) VALUES (:nome_curso, :descricao, :carga_horaria, :data_inicio, :data_termino, :fase)');
+        $this->db->query('INSERT INTO inscricoes (nome_curso, descricao, data_inicio,data_termino,fase) VALUES (:nome_curso, :descricao, :data_inicio, :data_termino, :fase)');
         // Bind values
         $this->db->bind(':nome_curso',$data['nome_curso']);
-        $this->db->bind(':descricao',$data['descricao']);
-        $this->db->bind(':carga_horaria',$data['carga_horaria']);
+        $this->db->bind(':descricao',$data['descricao']);        
         $this->db->bind(':data_inicio',$data['data_inicio']);
         $this->db->bind(':data_termino',$data['data_termino']);
         
@@ -91,8 +90,7 @@
     public function update($data){
         $this->db->query('UPDATE inscricoes  SET                                           
                                             nome_curso = :nome_curso,
-                                            descricao = :descricao, 
-                                            carga_horaria = :carga_horaria, 
+                                            descricao = :descricao,
                                             data_inicio = :data_inicio, 
                                             data_termino = :data_termino, 
                                             numero_certificado = :numero_certificado, 
@@ -104,8 +102,7 @@
         // Bind values 
         $this->db->bind(':id',$data['id']);            
         $this->db->bind(':nome_curso',$data['nome_curso']);
-        $this->db->bind(':descricao',$data['descricao']);
-        $this->db->bind(':carga_horaria',$data['carga_horaria']);
+        $this->db->bind(':descricao',$data['descricao']);        
         $this->db->bind(':data_inicio',$data['data_inicio']);
         $this->db->bind(':data_termino',$data['data_termino']);
         $this->db->bind(':numero_certificado',$data['numero_certificado']);
@@ -124,7 +121,7 @@
     public function getPresencasUsuarioById($user_id,$insc_id){
         $this->db->query('
                         SELECT 
-                            abre_presenca.carga_horaria as carga_horaria_tema, inscricoes.carga_horaria as carga_horaria_curso 
+                            abre_presenca.carga_horaria as carga_horaria_tema  
                         FROM 
                             presenca, 
                             abre_presenca, 

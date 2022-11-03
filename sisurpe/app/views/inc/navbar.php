@@ -8,9 +8,7 @@
       <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         
         <ul class="navbar-nav mr-auto">          
-            <li class="nav-item">
-              <a class="nav-link" href="<?php echo URLROOT; ?>/datausers/show">Alunos</a>
-            </li>  
+             
 
             <!--FAZ A VERIFICAÇÃO SE O USUÁRIO É ADMINISTRADOR, OU SECRETÁRIO SE SIM CARREGA OS MENUS DE CADASTRO-->
             <?php if((isset($_SESSION[DB_NAME . '_user_type']))&&((($_SESSION[DB_NAME . '_user_type']) == "admin")||(($_SESSION[DB_NAME . '_user_type']) == "sec"))) : ?>           
@@ -39,6 +37,9 @@
             </li> 
 
             <?php if(isLoggedIn()) : ?>
+              <li class="nav-item">
+                  <a class="nav-link" href="<?php echo URLROOT; ?>/datausers/show">Alunos</a>
+              </li> 
               <li class="nav-item">
                   <a class="nav-link" href="<?php echo URLROOT; ?>/inscricoes/index">Inscrições</a>
               </li> 

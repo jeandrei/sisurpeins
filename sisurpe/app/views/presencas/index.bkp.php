@@ -49,7 +49,6 @@
 <?php require APPROOT . '/views/inc/footer.php'; ?>
 
 <script>
-
 // FUNÇÃO TIMER APENAS JOGA UM VALOR PARA A FUNÇÃO E RETORNA DEPOIS DE 2 SEGUNDOS
 let timer;
 function delay(val){
@@ -62,49 +61,75 @@ function delay(val){
 }
 
 
-
-
-// da o foco no input cpf
-$(document).ready(function() {
-  setFocus();
-});
-
-
-//seleciono o campo cpf
 const searchCPF = document.getElementById("cpf");
 
 
-// 1 CHAMO A FUNÇÃO Search(e) para cada tecla pressionada
-searchCPF.addEventListener('keyup',(e)=>{ 
-  clearMessage();
-  Search(e);
-})
-
-
-
 /* 2 aqui ele faz a busca e se achar grava no bd */
-async function Search(e){ document.getElementById("cpf_err").innerText = '';
-
+async function Search(e){
+  document.getElementById("cpf_err").innerText = '';
   document.getElementById('nome').innerText = '';
   // aguarda 2 segundos toda vez que é digitado uma tecla para evitar executar toda a função toda vez que for digitado uma tecla
   const cpf = await delay(e.target.value);
   // uma vez que o usuário demorou mais que dois segundos sem digitar nada ele passa o valor para validar o cpf
   cpfValido = validacaocpf(cpf);
-
+  
   //se o cpf for inválido emito a mensagem de cpf infálido
-  if(cpf.length > 0){
-    if(!cpfValido){  
-      message('CPF Inválido!','alert alert-danger');     
-      return;
-    } 
+  if(!cpfValido){  
+    message('CPF Inválido!','alert alert-danger');     
+    return;
   }
 
   //caso o cpf seja válido gravo a presença no bd
-  gravar(<?php echo $data['abre_presenca_id'];?>); 
-  
+  gravar(<?php echo $data['abre_presenca_id'];?>);  
 }
 
 
+// 1 CHAMO A FUNÇÃO Search(e) para cada tecla pressionada
+searchCPF.addEventListener('keyup',(e)=>{ 
+  Search(e);
+})
+
+
+$(document).ready(function() {
+  setFocus();
+});
+
+  function getUserId(cpf){
+    $.ajax({
+      url: `<?php echo URLROOT; ?>/users/getUsersCpf/${cpf}`,
+      method:'POST',
+      data:{
+        cpf:cpf
+      },    
+      async: false,
+      dataType: 'json'
+    }).done(function (response){
+      ret_val = response;
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+      ret_val = null;
+    });
+   return ret_val;
+}
+
+
+function estaInscrito(user_id,inscricoes_id){
+  
+  $.ajax({
+      url: `<?php echo URLROOT; ?>/inscricoes/estaInscrito`,
+      method:'POST',
+      data:{
+        user_id:user_id,
+        inscricoes_id:inscricoes_id
+      },    
+      async: false,
+      dataType: 'json'
+    }).done(function (response){
+      ret_val = response;
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+      ret_val = null;
+    });
+   return ret_val;
+}
 
 
 // 3 Gravo a presença no bd
@@ -162,57 +187,10 @@ function gravar(id){
   clearData();
 }
 
-
-
-// verifica se o usuário está inscrito em um curso
-// retorna true ou false
-function estaInscrito(user_id,inscricoes_id){
-  
-  $.ajax({
-      url: `<?php echo URLROOT; ?>/inscricoes/estaInscrito`,
-      method:'POST',
-      data:{
-        user_id:user_id,
-        inscricoes_id:inscricoes_id
-      },    
-      async: false,
-      dataType: 'json'
-    }).done(function (response){
-      ret_val = response;
-    }).fail(function (jqXHR, textStatus, errorThrown) {
-      ret_val = null;
-    });
-   return ret_val;
-}
-
-
-// retonra o id e o nome do usuário passando o cpf
-function getUserId(cpf){
-    $.ajax({
-      url: `<?php echo URLROOT; ?>/users/getUsersCpf/${cpf}`,
-      method:'POST',
-      data:{
-        cpf:cpf
-      },    
-      async: false,
-      dataType: 'json'
-    }).done(function (response){
-      ret_val = response;
-    }).fail(function (jqXHR, textStatus, errorThrown) {
-      ret_val = null;
-    });
-   return ret_val;
-}
-
-
-
-// seta o foco no campo cpf
 function setFocus(){
   document.getElementById("cpf").focus();
 }
 
-
-// limpa os dados impressos em tela como cpf e nome do usuário
 function clearData(){
   setTimeout(()=>{
     document.getElementById('cpf').value = '';
@@ -221,23 +199,15 @@ function clearData(){
   },3000)    
 }
 
-
-// emite mensagem abaixo do campo cpf
 function message(msg,classmsg){
   $("#messageBox")
     .removeClass()      
     .addClass(classmsg)                           
     .html(msg) 
-    .fadeIn(1000);
+    .fadeIn(1000).fadeOut(6000);
 }
 
-
-// limpa mensagems abaixo do campo cpf
-function clearMessage(){
-  $("#messageBox")
-    .removeClass()
-    .html('');
-}
+  
 
 </script>
 

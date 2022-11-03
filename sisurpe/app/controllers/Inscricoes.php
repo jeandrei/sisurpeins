@@ -107,7 +107,6 @@
               $data = [              
                 'nome_curso' => mb_strtoupper(trim($_POST['nome_curso'])),
                 'descricao' => mb_strtoupper(trim($_POST['descricao'])),
-                'carga_horaria' => $_POST['carga_horaria'],
                 'data_inicio' => $_POST['data_inicio'],
                 'data_termino' => trim($_POST['data_termino']),
                 'fase' => $_POST['fase']                
@@ -120,11 +119,7 @@
               
               if(empty($data['descricao'])){
                   $data['descricao_err'] = 'Por favor informe a descrição do curso';
-              }
-
-              if(empty($data['carga_horaria'])){
-                $data['carga_horaria_err'] = 'Por favor informe a carga horária';
-              }
+              }              
               
                if (!validaData($data['data_inicio'])){
                 $data['data_inicio_err'] = 'Data inválida';
@@ -144,8 +139,7 @@
               // Make sure errors are empty
               if(                    
                   empty($data['nome_curso_err']) &&
-                  empty($data['descricao_err']) && 
-                  empty($data['carga_horaria_err']) &&
+                  empty($data['descricao_err']) &&                  
                   empty($data['data_inicio_err']) &&
                   empty($data['data_termino_err']) 
                   ){ 
@@ -178,8 +172,7 @@
               // Init data             
               $data = [              
                 'nome_curso' => '',
-                'descricao' => '',
-                'carga_horaria' => '',
+                'descricao' => '',                
                 'data_inicio' => '',
                 'data_termino' => '',
                 'aberto' => ''
@@ -208,8 +201,7 @@
           $data = [     
             'id' => $id,                     
             'nome_curso' => mb_strtoupper(trim($_POST['nome_curso'])),
-            'descricao' => mb_strtoupper(trim($_POST['descricao'])),
-            'carga_horaria' => $_POST['carga_horaria'],
+            'descricao' => mb_strtoupper(trim($_POST['descricao'])),            
             'data_inicio' => $_POST['data_inicio'],
             'data_termino' => trim($_POST['data_termino']),
             'fase' => $_POST['fase']                
@@ -222,11 +214,7 @@
           
           if(empty($data['descricao'])){
               $data['descricao_err'] = 'Por favor informe a descrição do curso';
-          }
-
-          if(empty($data['carga_horaria'])){
-            $data['carga_horaria_err'] = 'Por favor informe a carga horária';
-          }
+          }         
           
             if (!validaData($data['data_inicio'])){
             $data['data_inicio_err'] = 'Data inválida';
@@ -246,8 +234,7 @@
           // Make sure errors are empty
           if(                    
               empty($data['nome_curso_err']) &&
-              empty($data['descricao_err']) && 
-              empty($data['carga_horaria_err']) &&
+              empty($data['descricao_err']) &&               
               empty($data['data_inicio_err']) &&
               empty($data['data_termino_err']) 
               ){ 
@@ -281,8 +268,7 @@
               'editavel' => $this->inscricaoModel->inscricaoEditavel($id),
               'inscricoes_id' => $id,
               'nome_curso' => $data->nome_curso,
-              'descricao' => $data->descricao,
-              'carga_horaria' => $data->carga_horaria,
+              'descricao' => $data->descricao,             
               'data_inicio' => $data->data_inicio,
               'data_termino' => $data->data_termino,
               'numero_certificado' => $data->numero_certificado,
