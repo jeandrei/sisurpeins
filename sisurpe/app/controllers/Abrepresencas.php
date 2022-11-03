@@ -8,18 +8,23 @@
           $this->userModel = $this->model('User');      
         }
         
-        public function index($inscricoes_id){              
+        public function index($inscricoes_id){ 
+                
+                if($this->inscricaoModel->getInscricaoById($inscricoes_id)->fase == 'FECHADO'){
+                  $data = [                
+                    'title' => 'Abrir presença',
+                    'description'=> 'Abrir presença para o curso',
+                    'curso' => $this->inscricaoModel->getInscricaoById($inscricoes_id),
+                    'presenca_em_andamento' => $this->abrePresencaModel->temPresencaEmAndamento($inscricoes_id)
+                ];                  
+               
+                $this->view('abrepresencas/index', $data);
+                  
+                } else {
+                  die('Esta inscrição não está fechada!');
+                }
 
-                $data = [                
-                'title' => 'Abrir presença',
-                'description'=> 'Abrir presença para o curso',
-                'curso' => $this->inscricaoModel->getInscricaoById($inscricoes_id),
-                'presenca_em_andamento' => $this->abrePresencaModel->temPresencaEmAndamento($inscricoes_id)
-            ];
-
-            
-           
-            $this->view('abrepresencas/index', $data);
+                
         }  
 
 
