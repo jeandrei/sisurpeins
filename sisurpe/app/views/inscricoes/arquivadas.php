@@ -73,7 +73,7 @@ if(isset($data['error'])){
         <?php echo $registro['nome_curso'] . ' de ' . $registro['data_inicio'] .' até ' .$registro['data_termino'];?> 
     </div>
     <div class="col-1">
-    <a class="text-warning" href="<?php echo URLROOT; ?>/inscricoes/reabrir/<?php echo $registro->id;?>" role="button">Reabrir</a>
+    <a class="text-warning" href="<?php echo URLROOT; ?>/inscricoes/reabrir/<?php echo $registro['id'];?>" role="button">Reabrir</a>
     </div>
     
   </div>
