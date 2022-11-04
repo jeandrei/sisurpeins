@@ -44,16 +44,13 @@
 
               'curso' => $this->inscricaoModel->getInscricaoById($_POST['inscricoes_id']),   
               'presenca_em_andamento' => $this->abrePresencaModel->temPresencaEmAndamento($inscricoes_id)                   
-            ]; 
-            
-                                
-           //var_dump($data);
+            ];                  
+          
 
             if(empty($data['carga_horaria'])){
               $data['carga_horaria_err'] = 'Por favor informe a carga horária';
             }  
-
-            
+           
 
             if(($data['total_carga_horaria_presencas'] + $data['carga_horaria']) > $data['total_carga_horaria_temas']) {
               

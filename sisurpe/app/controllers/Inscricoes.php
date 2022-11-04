@@ -20,13 +20,12 @@
                 'description'=> 'Inscrições',
                 'inscricoes' => $this->inscricaoModel->getInscricoes()               
             ];
-
-            
            
             $this->view('inscricoes/index', $data);
         }  
 
         
+
         public function inscrever($inscricoes_id){
           
             if((!isLoggedIn())){                  
@@ -54,6 +53,7 @@
                 return $error['inscricoes_id_err'];
             } 
         }
+
 
 
         public function cancelar($inscricoes_id){
@@ -84,7 +84,6 @@
                 return $error['inscricoes_id_err'];
             } 
         }
-
 
 
 
@@ -181,6 +180,8 @@
               $this->view('inscricoes/add', $data);
             }     
         }//add
+
+
 
 
         public function edit($id){
@@ -294,6 +295,8 @@
         }//edit
 
 
+
+
         public function certificado($inscricoes_id){
           if($this->inscritoModel->estaInscrito($inscricoes_id,$_SESSION[DB_NAME . '_user_id'])){
                         
@@ -310,6 +313,9 @@
         }
 
 
+
+
+        // Retorna true or false
         function estaInscrito(){
           $userId = $_POST['user_id'];
           $inscricoes_id = $_POST['inscricoes_id'];          
