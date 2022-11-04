@@ -58,6 +58,27 @@
         }           
     }
 
+    public function inscricaoAberta($id_inscricao=null){
+        $this->db->query('
+                        SELECT 
+                            * 
+                        FROM 
+                            inscricoes 
+                        WHERE 
+                            id = :id
+                        AND
+                            fase = "ABERTO"                        
+                        '); 
+        $this->db->bind(':id',$id_inscricao);  
+        $row = $this->db->single();
+        if($this->db->rowCount() > 0){
+            //return $result;
+            return true;
+        } else {
+            return false;
+        }           
+    }
+
    
 
 
@@ -115,6 +136,22 @@
             return true;
         } else {
             return false;
+        }
+    }
+
+    public function arquivaInscricao($id_inscricao){
+        $this->db->query('UPDATE inscricoes  SET fase = :fase  
+        WHERE id = :id');
+
+        // Bind values    
+        $this->db->bind(':id',$id_inscricao);       
+        $this->db->bind(':fase','ARQUIVADO');  
+
+        // Execute
+        if($this->db->execute()){
+        return true;
+        } else {
+        return false;
         }
     }
 

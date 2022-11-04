@@ -49,24 +49,10 @@
 
 
             
-            <div class="form-row">
-              
-                <!--CARGA HORÁRIA-->
-                <div class="form-group col-md-2">
-                    <label for="carga_horaria"><sup class="obrigatorio">*</sup> Carga Horária:</label>  
-                    <input 
-                        class="form-control <?php echo (!empty($data['carga_horaria_err'])) ? 'is-invalid' : ''; ?>"
-                        type="text" 
-                        name="carga_horaria"
-                        id="carga_horaria"
-                        value="<?php echo $data['carga_horaria']; ?>"                       
-                        placeholder="Carga Horária"
-                    >
-                    <div class="invalid-feedback">
-                        <?php echo $data['carga_horaria_err']; ?>
-                    </div>                   
-                </div>
+            <div class="form-row">              
                 
+                 
+
                 <!--PERÍODO-->
                 <!-- INÍCIO -->
                 <div class="form-group col-md-2">
@@ -77,6 +63,8 @@
                         id="data_inicio"
                         name="data_inicio"
                         value="<?php echo $data['data_inicio']; ?>"
+                        <?php echo (($data['data_atual']) > $data['data_inicio'])?'readonly' : ''?>
+                        
                       > 
                       <div class="invalid-feedback">
                           <?php echo $data['data_inicio_err']; ?>
@@ -92,6 +80,7 @@
                     id="data_termino"
                     name="data_termino"
                     value="<?php echo $data['data_termino']; ?>"
+                        <?php echo (($data['data_atual']) > $data['data_inicio'])?'readonly' : ''?>
                     > 
                     <div class="invalid-feedback">
                         <?php echo $data['data_termino_err']; ?>

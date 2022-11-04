@@ -192,20 +192,45 @@
           {
             die("Você não tem acesso a esta página!");
           }
+          
+          //pego a data atual
+          $dataAtual = new DateTime('now', new DateTimeZone('America/Sao_Paulo'));
+          $dataAtual = $dataAtual->format('Y-m-d');
 
           // Check for POST            
           if($_SERVER['REQUEST_METHOD'] == 'POST'){        
               
           $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);        
           
+          
+
           $data = [     
             'id' => $id,                     
             'nome_curso' => mb_strtoupper(trim($_POST['nome_curso'])),
             'descricao' => mb_strtoupper(trim($_POST['descricao'])),            
             'data_inicio' => $_POST['data_inicio'],
             'data_termino' => trim($_POST['data_termino']),
+            'data_atual' => $dataAtual,
             'fase' => $_POST['fase']                
           ];
+            
+
+          //se a data atual for menor que a data de início permito a edição e faço a validação
+          if ($data['data_atual'] < $data['data_inicio']){
+            if (!validaData($data['data_inicio'])){
+              $data['data_inicio_err'] = 'Data inválida';
+            }
+          }
+          //se a data atual for menor que a data de termino permito a edição e faço a validação
+          if ($data['data_atual'] < $data['data_termino']){
+            if (!validaData($data['data_termino'])){
+              $data['data_termino_err'] = 'Data inválida';
+            } else {
+              if($data['data_termino'] < $data['data_inicio']){
+                  $data['data_termino_err'] = 'Data de termino menor que data de início';
+              }
+            }
+          }
           
           
           if(empty($data['nome_curso'])){
@@ -214,30 +239,16 @@
           
           if(empty($data['descricao'])){
               $data['descricao_err'] = 'Por favor informe a descrição do curso';
-          }         
-          
-            if (!validaData($data['data_inicio'])){
-            $data['data_inicio_err'] = 'Data inválida';
-          }
-
-          if (!validaData($data['data_termino'])){
-            $data['data_termino_err'] = 'Data inválida';
-          } else {
-            if($data['data_termino'] < $data['data_inicio']){
-                $data['data_termino_err'] = 'Data de termino menor que data de início';
-            }
-          }
-
-
+          } 
           
           
           // Make sure errors are empty
           if(                    
               empty($data['nome_curso_err']) &&
-              empty($data['descricao_err']) &&               
+              empty($data['descricao_err']) &&
               empty($data['data_inicio_err']) &&
               empty($data['data_termino_err']) 
-              ){ 
+            ){ 
                 
                   try { 
                     if($this->inscricaoModel->update($data)){                      
@@ -274,7 +285,8 @@
               'numero_certificado' => $data->numero_certificado,
               'livro' => $data->livro,
               'folha' => $data->folha,
-              'fase' => $data->fase              
+              'fase' => $data->fase,
+              'data_atual' => $dataAtual            
             ];
             // Load view
             $this->view('inscricoes/edit', $data);

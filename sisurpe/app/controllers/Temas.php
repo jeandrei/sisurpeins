@@ -32,12 +32,19 @@
                 
             $i = 0;
             foreach($temas as $tema){
+                
+                $aberto = $this->inscricaoModel->inscricaoAberta($tema->inscricoes_id);
+                
                 $i++;                
                 $html .= "
                     <tr class='text-center'>
-                        <th scope='row'>
-                            <button type='button' class='btn btn-danger' onClick=remover($tema->id)>Remover</button>
-                        </th>
+                        <th scope='row'>";                            
+                
+                if($aberto){
+                    $html .="<button type='button' class='btn btn-danger' onClick=remover($tema->id)>Remover</button>";
+                }
+                
+                $html .= "</th>
                         <td>$tema->tema</td>
                         <td>$tema->formador</td>
                         <td>$tema->carga_horaria</td>
