@@ -118,13 +118,11 @@
                 <button type="button" id="addTema" class="btn btn-primary" data-toggle="modal" data-target="#addTemaModal" onClick="clearInput()">
                 Adicionar Tema
                 </button>           
-            <?php endif; ?>
-
+            <?php else : ?>           
             
-            
-            <button type="submit" class="btn btn-primary">Gravar</button>         
+                <button type="submit" class="btn btn-primary">Gravar</button>         
           
-               
+            <?php endif; ?> 
             
         </form>
 
