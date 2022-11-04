@@ -25,6 +25,59 @@
         }  
 
         
+        public function arquivadas(){           
+          
+          if((!isLoggedIn())){                  
+            redirect('users/login');
+          }   
+
+          if(($_SESSION[DB_NAME . '_user_type']) != "admin" && (!$_SESSION[DB_NAME . '_user_type']) != "sec"){
+            die('Você não tem permissão para acessar esta página!');
+          }
+                  
+          
+      
+          /* $data = [
+          'title' => 'Inscrições Arquivadas',
+          'description'=> 'Inscrições Arquivadas',
+          'inscricoes_arquivadas' => $this->inscricaoModel->getInscricoesArquivadas()               
+      ]; */
+
+      if(isset($_GET['page']))  
+        {  
+            $page = $_GET['page'];  
+        }  
+        else  
+        {  
+            $page = 1;  
+        }   
+                    
+      
+        $options = array(
+            'results_per_page' => 10,
+            'url' => URLROOT . '/inscricoes/arquivadas?page=*VAR*&nomeInscricao=' . $_GET['nomeInscricao'],
+            'named_params' => array(                                        
+                                        ':nomeInscricao' => $_GET['nomeInscricao']
+                                    )     
+        );
+      
+        $paginate = $this->inscricaoModel->getArquivadasPag($page, $options);
+       
+
+        if($paginate->success == true){             
+            // $data['paginate'] é só a parte da paginação tem que passar os dois arraya paginate e result
+            $data['paginate'] = $paginate;
+            // $result são os dados propriamente dito depois eu fasso um foreach para passar
+            // os valores como posição que utilizo um métido para pegar
+            $results = $paginate->resultset->fetchAll();         
+            
+        } 
+
+      $data['results'] =  $results;
+      $this->view('inscricoes/arquivadas', $data);
+  }  
+
+        
 
         public function inscrever($inscricoes_id){
           

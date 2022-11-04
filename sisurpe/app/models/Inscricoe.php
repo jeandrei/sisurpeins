@@ -17,6 +17,16 @@
       }           
   }
 
+  public function getInscricoesArquivadas(){
+    $this->db->query("SELECT * FROM inscricoes WHERE fase = 'ARQUIVADO' ORDER BY data_inicio DESC"); 
+    $result = $this->db->resultSet(); 
+    if($this->db->rowCount() > 0){
+        return $result;
+    } else {
+        return false;
+    }           
+}
+
 
   public function getInscricaoById($id){
     $this->db->query("SELECT * FROM inscricoes WHERE id = :id"); 
@@ -182,6 +192,29 @@
             return false;
         }           
     }
+
+
+     //FUNÇÃO QUE EXECUTA A SQL PAGINATE
+     public function getArquivadasPag($page, $options){               
+        $sql = ("SELECT *
+                FROM 
+                  inscricoes
+                WHERE 
+                  fase = 'ARQUIVADO' 
+                "
+              );        
+
+        if(($options['named_params'][':nomeInscricao']) != NULL){                  
+          $sql .= " AND nome_curso LIKE '%" . $options['named_params'][':nomeInscricao']."%'";
+        }
+
+        $sql .= " ORDER BY nome_curso ASC"; 
+        
+       
+        $paginate = new pagination($page, $sql, $options);
+        return  $paginate;
+        
+    }  
 
   
 

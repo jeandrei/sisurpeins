@@ -18,8 +18,12 @@
   
   <div class="row mb-3">  
     <div class="col-md-12">
-        <a href="<?php echo URLROOT; ?>/inscricoes/add" class="btn btn-primary pull-right">
+        <a href="<?php echo URLROOT; ?>/inscricoes/add" class="btn btn-primary pull-right ml-2">
             <i class="fa fa-pencil"></i> Criar uma Inscrição
+        </a>
+    
+        <a href="<?php echo URLROOT; ?>/inscricoes/arquivadas" class="btn btn-secondary pull-right">
+            <i class="fa fa-folder ml-2"></i> Arquivadas
         </a>
     </div>
 </div> 
