@@ -16,7 +16,7 @@
                     <!--EMAIL-->
                     <div class="form-group">   
                         <label 
-                            for="email">Email: <sup>*</sup>
+                            for="email"><b class="obrigatorio">* </b>Email:
                         </label>                        
                         <input 
                             type="text" 
@@ -33,7 +33,7 @@
                      <!--PASSWORD-->
                      <div class="form-group">   
                         <label 
-                            for="password">Senha: <sup>*</sup>
+                            for="password"><b class="obrigatorio">* </b>Senha:
                         </label>                        
                         <input 
                             type="password" 
