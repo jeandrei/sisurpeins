@@ -16,8 +16,8 @@
                 
             
                 $data = [
-                'title' => 'Inscrições Abertas',
-                'description'=> 'Inscrições Abertas',
+                'title' => 'Inscrições',
+                'description'=> 'Inscrições',
                 'inscricoes' => $this->inscricaoModel->getInscricoes()               
             ];
 
