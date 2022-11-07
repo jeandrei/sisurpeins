@@ -51,104 +51,103 @@ if(isset($data['error'])){
 
                
 <?php foreach ($data['inscricoes'] as $registro): ?>
-  <!-- CARD -->
-  <div class="card text-center mb-3">
-    
-    <!-- CARD HEADER -->
-    <div class="card-header">
-     
+<!-- CARD -->
+<div class="card text-center mb-3">
+            
+  <!-- CARD HEADER -->
+  <div class="card-header">
+            
     <!-- SE FOR UM USUÁRIO ADMIN OU SEC ADICIONO O BOTÃO EDITAR -->
     <?php if((isset($_SESSION[DB_NAME . '_user_type']))&&((($_SESSION[DB_NAME . '_user_type']) == "admin")||(($_SESSION[DB_NAME . '_user_type']) == "sec"))) : ?>
-      <div class="row">
-        <div class="col-10">
-        <?php echo($registro->nome_curso);?> 
-        </div>
-        
-        <div class="col-2 text-right">
-
+    <div class="row">
+       
+      <!-- Se existem inscrições mostra a opção de imprimir a lista de inscritos -->
+      <div class="col-2">
+        <?php if($this->inscritoModel->existeInscritos($registro->id)) : ?>
+          <a href="<?php echo URLROOT; ?>/relatorios/inscritos/<?php echo $registro->id?>" class="pull-right">
+            Lista de Inscritos
+          </a>
+        <?endif;?>
+      </div>
               
+      
+      <!-- Titulo do curso -->
+      <div class="col-8">
+        <?php echo($registro->nome_curso);?> 
+      </div>
+           
+      <!-- div com as as ações editar, iniciar presença etc... -->
+      <div class="col-2 text-right"> 
+
         <?php if($this->abrePresencaModel->temPresencaEmAndamento($registro->id)) : ?>
           <span class="badge bg-secondary">P</span></h6>
         <?endif;?>
-         
+                  
         <?php if($registro->fase == 'FECHADO') : ?>
           <a href="<?php echo URLROOT; ?>/abrepresencas/index/<?php echo $registro->id?>" class="edit card-link">
             <i class="fa fa-check"></i>
           </a> 
         <?php endif;?>
 
-          <a href="<?php echo URLROOT; ?>/inscricoes/edit/<?php echo $registro->id?>" class="edit card-link">
-            <i class="fa fa-pencil"></i>
-          </a> 
+        <a href="<?php echo URLROOT; ?>/inscricoes/edit/<?php echo $registro->id?>" class="edit card-link">
+          <i class="fa fa-pencil"></i>
+        </a> 
 
-        </div>
-
-        
-      </div>
+      </div><!-- <div class="col-2 -->
+                
+    </div><!-- <div class="row"> -->
     <?php else : ?>
       <!-- CASO CONTRÁRIO IMPRIMO SÓ O TÍTULO DO CURSO -->
       <?php echo($registro->nome_curso);?>
+    <?php endif; ?><!-- if((isset($_SESSION[DB_NAME -->            
+
+  </div>    
+  <!-- CARD HEADER -->
+
+  <!-- CARD BODY -->
+  <div class="card-body">
+    <h5 class="card-title"><?php echo($registro->descricao);?></h5>  
+
+    <!-- FASE -->
+    <!-- função retornaFase está lá em funções retorna a fase e a classe -->     
+    <span class="text-center <?php echo(retornaClasseFase($registro->fase));?>">Fase: <?php echo($registro->fase);?></span>  
+
+    <!-- PERIODO -->
+    <p class="card-text"><?php echo('Período: ' . formatadata($registro->data_inicio) . ' a '. formatadata($registro->data_termino));?></p>
+
+    <!-- SE FASE ABERTO HABILITAMOS O BOTÃO INSCREVER-SE -->
+    <?php if($registro->fase == 'ABERTO') : ?>
+
+      <?php if(!$this->inscritoModel->estaInscrito($registro->id,$_SESSION[DB_NAME . '_user_id'])) : ?>
+        <a href="<?php echo URLROOT; ?>/inscricoes/inscrever/<?php echo $registro->id?>" class="btn btn-primary">Inscrever-se</a>
+      <?php else: ?>
+      <a href="<?php echo URLROOT; ?>/inscricoes/cancelar/<?php echo $registro->id?>" class="btn btn-warning">Cancelar Inscrição</a>
+      <?php endif; ?>  
+
     <?php endif; ?>
 
-     
 
-    </div>
-    
-    <!-- CARD HEADER -->
+    <!-- SE A FASE FOR CERTIFICADO -->
+    <?php if($registro->fase == 'CERTIFICADO') : ?>
+        <!-- SE O USUÁRIO ESTIVER INSCRITO NO CURSO IMPRIMIMOS O BOTÃO CERTIFICADO -->
+        <?php if($this->inscritoModel->estaInscrito($registro->id,$_SESSION[DB_NAME . '_user_id'])) : ?>
+          <a href="<?php echo URLROOT; ?>/inscricoes/certificado/<?php echo $registro->id?>" class="btn btn-success">Certificado Disponível</a>           
+        <?php endif; ?>  
 
-    <!-- CARD BODY -->
-    <div class="card-body">
-      <h5 class="card-title"><?php echo($registro->descricao);?></h5>     
-     
-
-        <!-- FASE -->
-        <!-- função retornaFase está lá em funções retorna a fase e a classe -->     
-        <span class="text-center <?php echo(retornaClasseFase($registro->fase));?>">Fase: <?php echo($registro->fase);?></span>  
-
-        <!-- PERIODO -->
-        <p class="card-text"><?php echo('Período: ' . formatadata($registro->data_inicio) . ' a '. formatadata($registro->data_termino));?></p>
-
-        <!-- SE FASE ABERTO FOR HABILITAMOS O BOTÃO INSCREVER-SE -->
-        <?php if($registro->fase == 'ABERTO') : ?>
-
-            <?php if(!$this->inscritoModel->estaInscrito($registro->id,$_SESSION[DB_NAME . '_user_id'])) : ?>
-              <a href="<?php echo URLROOT; ?>/inscricoes/inscrever/<?php echo $registro->id?>" class="btn btn-primary">Inscrever-se</a>
-            <?php else: ?>
-            <a href="<?php echo URLROOT; ?>/inscricoes/cancelar/<?php echo $registro->id?>" class="btn btn-warning">Cancelar Inscrição</a>
-            <?php endif; ?>  
-
-
-        <?php endif; ?>
-
-
-        <!-- SE A FASE FOR CERTIFICADO -->
-        <?php if($registro->fase == 'CERTIFICADO') : ?>
-            <!-- SE O USUÁRIO ESTIVER INSCRITO NO CURSO IMPRIMIMOS O BOTÃO CERTIFICADO -->
-            <?php if($this->inscritoModel->estaInscrito($registro->id,$_SESSION[DB_NAME . '_user_id'])) : ?>
-              <a href="<?php echo URLROOT; ?>/inscricoes/certificado/<?php echo $registro->id?>" class="btn btn-success">Certificado Disponível</a>           
-            <?php endif; ?>  
-
-
-        <?php endif; ?>
-
-
-        
-
-    </div>
-    <!-- CARD BODY -->
-
-    <!-- CARD FOOTER -->
-    <div class="card-footer text-muted">
-      <?php echo($registro->carga_horaria);?> Horas
-    </div>
-    <!-- CARD FOOTER -->
+    <?php endif; ?>                
 
   </div>
-  <!-- CARD -->
+  <!-- CARD BODY -->
+
+  <!-- CARD FOOTER -->
+  <div class="card-footer text-muted">
+    <?php echo($registro->carga_horaria);?> Horas
+  </div>
+  <!-- CARD FOOTER -->
+
+</div>
+<!-- CARD -->
 <?php endforeach; ?>
-
-
-
 
 
 <?php require APPROOT . '/views/inc/footer.php'; ?>

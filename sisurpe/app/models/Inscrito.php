@@ -61,4 +61,55 @@
     }
 
 
+    public function existeInscritos($inscricoes_id){
+      $this->db->query('
+                        SELECT 
+                          * 
+                        FROM 
+                          inscritos 
+                        WHERE 
+                          inscricoes_id = :inscricoes_id
+                      ');
+        $this->db->bind(':inscricoes_id',$inscricoes_id);        
+
+        $result = $this->db->resultSet();      
+        if($this->db->rowCount() > 0){
+            return $result;
+        } else {
+            return false;
+        }
+    }
+
+    public function getInscritos($inscricoes_id){
+      $this->db->query('
+                       SELECT 
+                          inscritos.user_id, 
+                          users.name, 
+                          users.cpf, 
+                          users.nascimento 
+                        FROM 
+                          inscritos, 
+                          users, 
+                          inscricoes 
+                        WHERE 
+                          inscritos.inscricoes_id = inscricoes.id 
+                        AND 
+                          inscritos.user_id = users.id 
+                        AND 
+                          inscricoes.id = :inscricoes_id
+                        ORDER BY 
+                          users.name 
+                        ASC
+                      ');
+        $this->db->bind(':inscricoes_id',$inscricoes_id);        
+
+        $result = $this->db->resultSet();      
+        if($this->db->rowCount() > 0){
+            return $result;
+        } else {
+            return false;
+        }
+    }
+
+
   }
