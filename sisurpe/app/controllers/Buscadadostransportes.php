@@ -50,6 +50,7 @@
 
         
         $paginate = $this->buscadadostransportesModel->getDados($page, $options);
+        
 
         if($paginate->success == true)
         {             
@@ -57,7 +58,7 @@
             $data['paginate'] = $paginate;
             // $result são os dados propriamente dito depois eu fasso um foreach para passar
             // os valores como posição que utilizo um métido para pegar
-            $results = $paginate->resultset->fetchAll();
+            $results = $paginate->resultset->fetchAll();            
         }  
         
         $data['results'] =  $results;        

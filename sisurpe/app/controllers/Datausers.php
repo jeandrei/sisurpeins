@@ -67,7 +67,8 @@
             'aluno_id' => $dado->aluno_id,
             'nome_aluno' => $dado->nome_aluno,
             'nascimento' => $dado->nascimento,
-            'ultima_atualizacao' => $this->dadosModel->getUltimaAtualizacaoById($dado->aluno_id)
+            'ultima_atualizacao' => $this->dadosModel->getUltimaAtualizacaoById($dado->aluno_id),
+            'tem_dados_escolares' => $this->dadosModel->temDadosAnuais($dado->aluno_id)
           ];
         }
         $this->view('datausers/show', $data);

@@ -98,10 +98,14 @@ if(isset($data['error'])){
             
                 <a href="<?php echo URLROOT; ?>/anuals/index/<?php echo $registro['aluno_id']; ?>" class="btn btn-dark btn-block">
                 Dados Escolares</a>
-        
-            
-                <a href="<?php echo URLROOT; ?>/transportes/index/<?php echo $registro['aluno_id']; ?>" class="btn btn-secondary btn-block">
-                Dados de Transporte Escolar</a>
+                    
+                <?php if($registro['tem_dados_escolares']) : ?>
+                    <a href="<?php echo URLROOT; ?>/transportes/index/<?php echo $registro['aluno_id']; ?>" class="btn btn-secondary btn-block">
+                    Dados de Transporte Escolar</a>
+                <?php else : ?>
+                    <a href="#" class="btn btn-secondary btn-block disabled">
+                    Para informar os dados de transporte informe os dados escolares</a>
+                <?php endif;?>
             
         </div>   
             

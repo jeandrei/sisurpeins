@@ -22,6 +22,22 @@
     }
 
 
+    public function temDadosAnuais($id){
+        $this->db->query('SELECT * FROM dados_anuais WHERE aluno_id = :aluno_id AND ano = YEAR(NOW())');
+        // Bind value
+        $this->db->bind(':aluno_id', $id);
+
+        $data = $this->db->single();
+
+        // Check row
+        if($this->db->rowCount() > 0){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
     
 
     public function getUltimaAtualizacaoById($id){
