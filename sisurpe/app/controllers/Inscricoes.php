@@ -6,6 +6,7 @@
           $this->temaModel = $this->model('Tema');
           $this->userModel = $this->model('User');
           $this->abrePresencaModel = $this->model('Abrepresenca');
+          $this->presencaModel = $this->model('Presenca'); 
         }
         
     public function index(){ 
@@ -347,6 +348,21 @@
       } else {
         echo "Você não está inscrito para este curso!";
       }          
+    }
+
+
+    public function inscritos($inscricoes_id){      
+      $data['inscritos'] = $this->inscritoModel->getInscritos($inscricoes_id);         
+      $data['curso'] = $this->inscricaoModel->getInscricaoById($inscricoes_id);
+      $this->view('relatorios/inscritos',$data);
+       
+    }
+
+
+    public function presentes($inscricoes_id){
+      $data['presentes'] = $this->presencaModel->getPresencas($inscricoes_id);
+      $data['curso'] = $this->inscricaoModel->getInscricaoById($inscricoes_id);
+      $this->view('relatorios/presentes',$data);           
     }
 
 

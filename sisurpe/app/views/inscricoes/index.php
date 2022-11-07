@@ -110,7 +110,7 @@ if(isset($data['error'])){
         
         <div class="row">
           <?php if($this->inscritoModel->existeInscritos($registro->id)) : ?>
-            <a href="<?php echo URLROOT; ?>/relatorios/inscritos/<?php echo $registro->id?>" class="pull-left">
+            <a href="<?php echo URLROOT; ?>/inscricoes/inscritos/<?php echo $registro->id?>" class="pull-left">
               Lista de Inscritos
             </a>
           <?endif;?>
@@ -118,7 +118,7 @@ if(isset($data['error'])){
         
         <div class="row">
           <?php if($this->inscritoModel->existeInscritos($registro->id)) : ?>
-            <a href="<?php echo URLROOT; ?>/relatorios/presentes/<?php echo $registro->id?>" class="pull-left">
+            <a href="<?php echo URLROOT; ?>/inscricoes/presentes/<?php echo $registro->id?>" class="pull-left">
               Lista de Presentes
             </a>
           <?endif;?>
