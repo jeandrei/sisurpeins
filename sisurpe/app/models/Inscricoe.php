@@ -8,43 +8,43 @@
 
 
     public function getInscricoes(){
-      $this->db->query("SELECT * FROM inscricoes WHERE fase != 'ARQUIVADO' ORDER BY data_inicio DESC"); 
-      $result = $this->db->resultSet(); 
-      if($this->db->rowCount() > 0){
-          return $result;
-      } else {
-          return false;
-      }           
-  }
+        $this->db->query("SELECT * FROM inscricoes WHERE fase != 'ARQUIVADO' ORDER BY data_inicio DESC"); 
+        $result = $this->db->resultSet(); 
+        if($this->db->rowCount() > 0){
+            return $result;
+        } else {
+            return false;
+        }           
+    }
 
-  public function getInscricoesArquivadas(){
-    $this->db->query("SELECT * FROM inscricoes WHERE fase = 'ARQUIVADO' ORDER BY data_inicio DESC"); 
-    $result = $this->db->resultSet(); 
-    if($this->db->rowCount() > 0){
-        return $result;
-    } else {
-        return false;
-    }           
-}
+    public function getInscricoesArquivadas(){
+        $this->db->query("SELECT * FROM inscricoes WHERE fase = 'ARQUIVADO' ORDER BY data_inicio DESC"); 
+        $result = $this->db->resultSet(); 
+        if($this->db->rowCount() > 0){
+            return $result;
+        } else {
+            return false;
+        }           
+    }
 
 
-  public function getInscricaoById($id){
-    $this->db->query("SELECT * FROM inscricoes WHERE id = :id"); 
-    
-    $this->db->bind(':id', $id);        
-    
-    $row = $this->db->single();
-    if($this->db->rowCount() > 0){
-        return $row;
-    } else {
-        return false;
-    }           
-}
+    public function getInscricaoById($id){
+        $this->db->query("SELECT * FROM inscricoes WHERE id = :id"); 
+        
+        $this->db->bind(':id', $id);        
+        
+        $row = $this->db->single();
+        if($this->db->rowCount() > 0){
+            return $row;
+        } else {
+            return false;
+        }           
+    }
 
 
 
   
-    public function inscricaoEditavel($id_inscricao=null){
+    public function inscricaoEditavel($inscricoes_id=null){
         $this->db->query('
                         SELECT 
                             * 
@@ -58,7 +58,7 @@
                             data_inicio 
                         DESC
                         '); 
-        $this->db->bind(':id',$id_inscricao);  
+        $this->db->bind(':id',$inscricoes_id);  
         $result = $this->db->resultSet(); 
         if($this->db->rowCount() > 0){
             //return $result;
@@ -68,7 +68,7 @@
         }           
     }
 
-    public function inscricaoAberta($id_inscricao=null){
+    public function inscricaoAberta($inscricoes_id=null){
         $this->db->query('
                         SELECT 
                             * 
@@ -79,7 +79,7 @@
                         AND
                             fase = "ABERTO"                        
                         '); 
-        $this->db->bind(':id',$id_inscricao);  
+        $this->db->bind(':id',$inscricoes_id);  
         $row = $this->db->single();
         if($this->db->rowCount() > 0){
             //return $result;
@@ -149,19 +149,19 @@
         }
     }
 
-    public function arquivaInscricao($id_inscricao){
+    public function arquivaInscricao($inscricoes_id){
         $this->db->query('UPDATE inscricoes  SET fase = :fase  
         WHERE id = :id');
 
         // Bind values    
-        $this->db->bind(':id',$id_inscricao);       
+        $this->db->bind(':id',$inscricoes_id);       
         $this->db->bind(':fase','ARQUIVADO');  
 
         // Execute
         if($this->db->execute()){
-        return true;
+            return true;
         } else {
-        return false;
+            return false;
         }
     }
 
@@ -215,6 +215,22 @@
         return  $paginate;
         
     }  
+
+
+    public function reabreInscricao($inscricoes_id){
+        $this->db->query('UPDATE inscricoes  SET fase = "ABERTO"  
+        WHERE id = :id');
+
+        // Bind values    
+        $this->db->bind(':id',$inscricoes_id);        
+
+        // Execute
+        if($this->db->execute()){
+            return true;
+        } else {
+            return false;
+        }
+    }
 
   
 
