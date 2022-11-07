@@ -184,7 +184,7 @@ if(isset($data['error'])){
 
   <!-- CARD FOOTER -->
   <div class="card-footer text-muted">
-    <?php echo($registro->carga_horaria);?> Horas
+    <?php echo($this->temaModel->getTotalCargaHoraria($registro->id));?> Horas
   </div>
   <!-- CARD FOOTER -->
 
