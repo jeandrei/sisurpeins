@@ -105,8 +105,7 @@ if(!empty($data['presentes'])){
     }  
 
 } else{                
-$data['erro'] = "Sem dados para emitir";
-$data['link'] = "/buscadadosescolars";
+die('Sem dados para emitir!');
 $this->view('relatorios/erroAoGerarRelatorio', $data); 
 }       
 ?>

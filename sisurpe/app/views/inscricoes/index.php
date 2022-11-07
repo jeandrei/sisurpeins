@@ -110,7 +110,7 @@ if(isset($data['error'])){
         
         <div class="row">
           <?php if($this->inscritoModel->existeInscritos($registro->id)) : ?>
-            <a href="<?php echo URLROOT; ?>/inscricoes/inscritos/<?php echo $registro->id?>" class="pull-left">
+            <a href="<?php echo URLROOT; ?>/inscricoes/inscritos/<?php echo $registro->id?>" class="pull-left" target="_blank">
               Lista de Inscritos
             </a>
           <?endif;?>
@@ -118,7 +118,7 @@ if(isset($data['error'])){
         
         <div class="row">
           <?php if($this->inscritoModel->existeInscritos($registro->id)) : ?>
-            <a href="<?php echo URLROOT; ?>/inscricoes/presentes/<?php echo $registro->id?>" class="pull-left">
+            <a href="<?php echo URLROOT; ?>/inscricoes/presentes/<?php echo $registro->id?>" class="pull-left" target="_blank">
               Lista de Presentes
             </a>
           <?endif;?>
@@ -194,3 +194,4 @@ if(isset($data['error'])){
 
 
 <?php require APPROOT . '/views/inc/footer.php'; ?>
+
