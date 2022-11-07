@@ -61,15 +61,9 @@ if(isset($data['error'])){
     <?php if((isset($_SESSION[DB_NAME . '_user_type']))&&((($_SESSION[DB_NAME . '_user_type']) == "admin")||(($_SESSION[DB_NAME . '_user_type']) == "sec"))) : ?>
     <div class="row">
        
-      <!-- Se existem inscrições mostra a opção de imprimir a lista de inscritos -->
       <div class="col-2">
-        <?php if($this->inscritoModel->existeInscritos($registro->id)) : ?>
-          <a href="<?php echo URLROOT; ?>/relatorios/inscritos/<?php echo $registro->id?>" class="pull-right">
-            Lista de Inscritos
-          </a>
-        <?endif;?>
-      </div>
-              
+       
+      </div>              
       
       <!-- Titulo do curso -->
       <div class="col-8">
@@ -106,38 +100,87 @@ if(isset($data['error'])){
 
   <!-- CARD BODY -->
   <div class="card-body">
-    <h5 class="card-title"><?php echo($registro->descricao);?></h5>  
-
-    <!-- FASE -->
-    <!-- função retornaFase está lá em funções retorna a fase e a classe -->     
-    <span class="text-center <?php echo(retornaClasseFase($registro->fase));?>">Fase: <?php echo($registro->fase);?></span>  
-
-    <!-- PERIODO -->
-    <p class="card-text"><?php echo('Período: ' . formatadata($registro->data_inicio) . ' a '. formatadata($registro->data_termino));?></p>
-
-    <!-- SE FASE ABERTO HABILITAMOS O BOTÃO INSCREVER-SE -->
-    <?php if($registro->fase == 'ABERTO') : ?>
-
-      <?php if(!$this->inscritoModel->estaInscrito($registro->id,$_SESSION[DB_NAME . '_user_id'])) : ?>
-        <a href="<?php echo URLROOT; ?>/inscricoes/inscrever/<?php echo $registro->id?>" class="btn btn-primary">Inscrever-se</a>
-      <?php else: ?>
-      <a href="<?php echo URLROOT; ?>/inscricoes/cancelar/<?php echo $registro->id?>" class="btn btn-warning">Cancelar Inscrição</a>
-      <?php endif; ?>  
-
-    <?php endif; ?>
+    
+    <div class="row">     
 
 
-    <!-- SE A FASE FOR CERTIFICADO -->
-    <?php if($registro->fase == 'CERTIFICADO') : ?>
-        <!-- SE O USUÁRIO ESTIVER INSCRITO NO CURSO IMPRIMIMOS O BOTÃO CERTIFICADO -->
-        <?php if($this->inscritoModel->estaInscrito($registro->id,$_SESSION[DB_NAME . '_user_id'])) : ?>
-          <a href="<?php echo URLROOT; ?>/inscricoes/certificado/<?php echo $registro->id?>" class="btn btn-success">Certificado Disponível</a>           
-        <?php endif; ?>  
 
-    <?php endif; ?>                
+      <!-- coluna da esquerda -->
+      <div class="col-3 ml-2">    
+        
+        <div class="row">
+          <?php if($this->inscritoModel->existeInscritos($registro->id)) : ?>
+            <a href="<?php echo URLROOT; ?>/relatorios/inscritos/<?php echo $registro->id?>" class="pull-left">
+              Lista de Inscritos
+            </a>
+          <?endif;?>
+        </div>
+        
+        <div class="row">
+          <?php if($this->inscritoModel->existeInscritos($registro->id)) : ?>
+            <a href="<?php echo URLROOT; ?>/relatorios/presentes/<?php echo $registro->id?>" class="pull-left">
+              Lista de Presentes
+            </a>
+          <?endif;?>
+        </div>
+        
+      </div>
+      <!-- fim coluna da esquerda -->
+
+
+
+      <!-- coluna do meio -->
+      <div class="col-6">
+        <h5 class="card-title"><?php echo($registro->descricao);?></h5>  
+
+        <!-- FASE -->
+        <!-- função retornaFase está lá em funções retorna a fase e a classe -->     
+        <span class="text-center <?php echo(retornaClasseFase($registro->fase));?>">Fase: <?php echo($registro->fase);?></span>  
+
+        <!-- PERIODO -->
+        <p class="card-text"><?php echo('Período: ' . formatadata($registro->data_inicio) . ' a '. formatadata($registro->data_termino));?></p>
+
+        <!-- SE FASE ABERTO HABILITAMOS O BOTÃO INSCREVER-SE -->
+        <?php if($registro->fase == 'ABERTO') : ?>
+
+          <?php if(!$this->inscritoModel->estaInscrito($registro->id,$_SESSION[DB_NAME . '_user_id'])) : ?>
+            <a href="<?php echo URLROOT; ?>/inscricoes/inscrever/<?php echo $registro->id?>" class="btn btn-primary">Inscrever-se</a>
+          <?php else: ?>
+          <a href="<?php echo URLROOT; ?>/inscricoes/cancelar/<?php echo $registro->id?>" class="btn btn-warning">Cancelar Inscrição</a>
+          <?php endif; ?>  
+
+        <?php endif; ?>
+
+
+        <!-- SE A FASE FOR CERTIFICADO -->
+        <?php if($registro->fase == 'CERTIFICADO') : ?>
+            <!-- SE O USUÁRIO ESTIVER INSCRITO NO CURSO IMPRIMIMOS O BOTÃO CERTIFICADO -->
+            <?php if($this->inscritoModel->estaInscrito($registro->id,$_SESSION[DB_NAME . '_user_id'])) : ?>
+              <a href="<?php echo URLROOT; ?>/inscricoes/certificado/<?php echo $registro->id?>" class="btn btn-success">Certificado Disponível</a>           
+            <?php endif; ?>  
+
+        <?php endif; ?>     
+      </div><!-- fim coluna do meio -->
+      
+
+
+
+
+      <!-- coluna da direita -->
+      <div class="col-3">
+
+      </div>
+      <!-- fim coluna da direita -->
+    
+
+
+
+
+    </div><!-- row -->  
 
   </div>
   <!-- CARD BODY -->
+
 
   <!-- CARD FOOTER -->
   <div class="card-footer text-muted">

@@ -4,6 +4,7 @@
           $this->relatoriosModel = $this->model('Relatorio'); 
           $this->inscritoModel = $this->model('Inscrito');         
           $this->inscricoesModel = $this->model('Inscricoe');  
+          $this->presencaModel = $this->model('Presenca');  
         }
 
 
@@ -13,6 +14,12 @@
          $this->view('relatorios/inscritos',$data);
           
         }
+
+        public function presentes($inscricoes_id){
+          $data['presentes'] = $this->presencaModel->getPresencas($inscricoes_id);
+          $data['curso'] = $this->inscricoesModel->getInscricaoById($inscricoes_id);
+          $this->view('relatorios/presentes',$data);           
+         }
        
        
     }

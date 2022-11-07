@@ -43,5 +43,37 @@
         }
   }
 
+
+
+  public function getPresencas($inscricoes_id=null){
+    $this->db->query('
+                      SELECT 
+                        users.name, 
+                        users.cpf, 
+                        presenca.registro  
+                      FROM 
+                        inscricoes, 
+                        abre_presenca, 
+                        presenca, 
+                        users 
+                      WHERE 
+                        inscricoes.id = abre_presenca.inscricoes_id 
+                      AND  
+                        presenca.abre_presenca_id = abre_presenca.id 
+                      AND 
+                        users.id = presenca.user_id 
+                      AND 
+                        inscricoes.id = :id
+                    '); 
+    $this->db->bind(':id',$inscricoes_id);  
+    $result = $this->db->resultSet(); 
+    if($this->db->rowCount() > 0){
+        return $result;        
+    } else {
+        return false;
+    }           
+}
+
+
     
 }
