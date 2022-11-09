@@ -108,6 +108,8 @@ if(isset($data['error'])){
       <!-- coluna da esquerda -->
       <div class="col-3 ml-2">    
         
+      <?php if((isset($_SESSION[DB_NAME . '_user_type']))&&((($_SESSION[DB_NAME . '_user_type']) == "admin")||(($_SESSION[DB_NAME . '_user_type']) == "sec"))) : ?>
+        
         <div class="row">
           <?php if($this->inscritoModel->existeInscritos($registro->id)) : ?>
             <a href="<?php echo URLROOT; ?>/inscricoes/inscritos/<?php echo $registro->id?>" class="pull-left" target="_blank">
@@ -123,7 +125,8 @@ if(isset($data['error'])){
             </a>
           <?endif;?>
         </div>
-        
+      
+      <?php endif; ?>
       </div>
       <!-- fim coluna da esquerda -->
 
