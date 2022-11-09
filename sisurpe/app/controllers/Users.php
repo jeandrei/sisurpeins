@@ -37,7 +37,7 @@
                     }else{
                         
                         if($this->userModel->findUserByEmail($data['email'])){
-                            $data['email_err'] = 'Email já existente'; 
+                            $data['email_err'] = 'Email já cadastrado'; 
                         }
                     }                    
                 }
@@ -80,6 +80,7 @@
                     empty($data['email_err']) &&
                     empty($data['name_err']) && 
                     empty($data['password_err']) &&
+                    empty($data['cpf_err']) &&
                     empty($data['confirm_password_err']) 
                     ){
                       //Validated
