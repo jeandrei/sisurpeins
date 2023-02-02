@@ -99,7 +99,7 @@ class PDF extends FPDF
           $pdf->AddFont('Birthstone','','Birthstone-Regular.php');
           $pdf->SetFont('Birthstone','',41);  
           $pdf->SetTextColor(14,63,160);                        
-          $pdf->MultiCell(270,0,$data['usuario']->name,0,'C');
+          $pdf->MultiCell(270,0,utf8_decode($data['usuario']->name),0,'C');
           $pdf->SetFont('Arial','',20);    
           
           $pdf->MultiCell(270,10,utf8_decode('
