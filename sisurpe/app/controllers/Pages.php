@@ -13,7 +13,7 @@
                 
                 // 3 coloca os valores no array
                 $data = [
-                    'title' => 'Bem vindo!',
+                    'title' => 'Bem-vindo!',
                     'description'=> 'O SISURPE é um sistema de centralização de registros que visa facilitar os processos internos da Secretaria de Educação, bem como auxiliar no planejamento de ações estratégicas.'
                 ];
 

@@ -17,12 +17,12 @@
         <div class="row">
           <div class="col-md-6">
             <h2>Dados Anuais dos Alunos</h2>
-            <p>Se você pai e mãe tem alunos matriculados na rede municipal de ensino, realize o cadastro dos dados anuais dos seus filhos. Os dados anuais são referentes a uniforme e transporte escolar. Você também pode informar dados importantes como uso de medicamentos e restrição alimentar. </p>
+            <p>Se você pai e mãe têm alunos matriculados na rede municipal de ensino, realize o cadastro dos dados anuais dos seus filhos. Os dados anuais são referentes a uniforme e transporte escolar. Você também pode informar dados importantes como uso de medicamentos e restrição alimentar. </p>
             <p><a class="btn btn-secondary" href="<?php echo URLROOT; ?>/datausers/show" role="button">Dados Anuais &raquo;</a></p>
           </div>
           <div class="col-md-6">
             <h2>Inscrições</h2>
-            <p>As inscrições para cursos de formação da secretaria de educação são disponibilizados aqui. Você pode realizar uma inscrição, cancelar e ao final do curso emitir seu certificado.   </p>
+            <p>As inscrições para cursos de formação da Secretaria de Educação são disponibilizados aqui. Você pode realizar uma inscrição, cancelar e ao final do curso emitir seu certificado.   </p>
             <p><a class="btn btn-secondary" href="<?php echo URLROOT; ?>/inscricoes/index" role="button">Inscrições &raquo;</a></p>
           </div>
           <!-- <div class="col-md-4">
