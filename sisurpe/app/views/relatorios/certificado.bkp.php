@@ -2,47 +2,52 @@
 
 require APPROOT . '/inc/fpdf/fpdf.php'; 
 
+
+//die(var_dump($data));
+//echo $data['usuario']->name;
+
 class PDF extends FPDF
-{
-        // Page header
-        function Header()
-        {   $currentdate = date("d-m-Y");                
-            $this->SetFont('Arial','B',10); 
-            $this->Cell(120);
-            $this->Cell(260,10, utf8_decode('Data de emissão: ' . $currentdate),0,0,'C');                
-            // Arial bold 15
-            $this->SetFont('Arial','B',15);    
-            // Title
-            $this->Ln(20);  
-        }
+{            
+            
+            // Page header
+            function Header()
+            {   $currentdate = date("d-m-Y");                
+                $this->SetFont('Arial','B',10); 
+                $this->Cell(120);
+                $this->Cell(260,10, utf8_decode('Data de emissão: ' . $currentdate),0,0,'C');                
+                // Arial bold 15
+                $this->SetFont('Arial','B',15);    
+                // Title
+                $this->Ln(20);  
+            }
 
-        // Page footer
-        function Footer()
-        {
-            // Position at 1.5 cm from bottom
-            $this->SetY(-15);
-            // Arial italic 8
-            $this->SetFont('Arial','I',8);
-            // Page number
-            $this->Cell(0,10,utf8_decode('Penha/SC '),0,0,'C');                
-        }
+            // Page footer
+            function Footer()
+            {
+                // Position at 1.5 cm from bottom
+                $this->SetY(-15);
+                // Arial italic 8
+                $this->SetFont('Arial','I',8);
+                // Page number
+                $this->Cell(0,10,utf8_decode('Penha/SC '),0,0,'C');                
+            }
 
-        function BasicTable($header, $data)
-        {
-          // Header
-          foreach($header as $col)
-              $this->Cell(40,7,$col,1);
-          $this->Ln();
-          // Data
-          foreach($data as $row)
-          {
-              foreach($row as $col)
-                  $this->Cell(40,6,$col,1);
+            function BasicTable($header, $data)
+            {
+              // Header
+              foreach($header as $col)
+                  $this->Cell(40,7,$col,1);
               $this->Ln();
-          }
-        }
-
+              // Data
+              foreach($data as $row)
+              {
+                  foreach($row as $col)
+                      $this->Cell(40,6,$col,1);
+                  $this->Ln();
+              }
+            }
 }
+
 
           /* se o usuário não tem presença no curso nem carrego o certificado */
           if(!$data['presencas']){
@@ -83,7 +88,7 @@ class PDF extends FPDF
               por fim substituir a imagem certificado.jpg da pasta relatorios              
           */
           $image = APPROOT . '/views/relatorios/certificado.jpg';
-                  
+                      
           $pdf->SetFont('Arial','B',8);
           $pdf->AddPage('L');              
           $pdf->Image($image,0,0,297,210); 
@@ -111,15 +116,19 @@ class PDF extends FPDF
             /* título da pagina */
             $pdf->MultiCell(0,10,'TEMAS',0,'C');
           
-            $pdf->SetFont('Arial','B',12);
-           
+            $pdf->SetFont('Arial','B',9);
+
+            /* cabeçalho da tabela */
+            $pdf->Cell(170,18,utf8_decode('TEMA'), 1,0, 'C');
+            $pdf->Cell(80,18,utf8_decode('FORMADOR'), 1,0, 'C');
+            $pdf->Cell(20,18,utf8_decode('CH'), 1,0, 'C');
+
             $total_ch = 0;
-            foreach($data['temas'] as $row){             
-              $text  = "<Tema:> " . $row->tema . "\n";
-              $text  .= "<Formador:> " . $row->formador . "\n";
-              $text  .= "<Carga Horária:> " . $row->carga_horaria . " Horas\n\n";
-              //ESSA FUNÇÃO WRITE TEXT EU ACHEI NA INTERNET. ESTÁ EM INC,FPDF,FPDF.PHP              
-              $pdf->WriteText(utf8_decode(mb_strtoupper($text)));
+            foreach($data['temas'] as $row){
+              $pdf->Ln(); 
+              $pdf->Cell(170,18,strtoupper(utf8_decode($row->tema)), 1,0, 'C');
+              $pdf->Cell(80,18,strtoupper(utf8_decode($row->formador)), 1,0, 'C');
+              $pdf->Cell(20,18,utf8_decode($row->carga_horaria), 1,0, 'C'); 
               $total_ch = $total_ch + $row->carga_horaria;
             }
             
@@ -139,17 +148,27 @@ class PDF extends FPDF
 
             $pdf->Ln(); 
             $pdf->Cell(270,18,utf8_decode('Total Carga Horária: '. $total_ch . ' Horas, Frequência: ' . number_format($frequencia, 2, '.', '') . '%'), 1,0, 'C');
-           
+
+            $pdf->Ln(); 
+            $pdf->Ln(); 
+            $pdf->Cell(270,18,utf8_decode('Certificado registrado sob o nº__________ livro__________folha__________.'), 0,0, 'C');
           } else {
             /* se não tiver temas imprimo só o total da carga horária do curso */
             $pdf->Ln(); 
             $pdf->Cell(270,18,utf8_decode('Total Carga Horária: '. $data['curso']->carga_horaria . ' Horas, Frequência: ' . number_format($frequencia, 2, '.', '') . '%'), 1,0, 'C');
-           
+
+            $pdf->Ln(); 
+            $pdf->Ln(); 
+            $pdf->Cell(270,18,utf8_decode('Certificado registrado sob o nº__________ livro__________folha__________.'), 0,0, 'C');
           }
+           
+        
+
+                
+            
+
 
           $pdf->Output("Relatorio.pdf",'I');  
                     
 ?>
-
-
 

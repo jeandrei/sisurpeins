@@ -16,15 +16,15 @@ class PDF extends FPDF
                 $this->Image(APPROOT . '/views/relatorios/logo.png',10,6,110);
                 // Date
                 $this->SetFont('Arial','B',10); 
-                $this->Cell(120);
-                $this->Cell(220,10, utf8_decode('Data de impressão:' . $currentdate),0,0,'C');                
+                $this->Cell(80);
+                $this->Cell(180,10, utf8_decode('Data de impressão:' . $currentdate),0,0,'C');                
                 // Arial bold 15
                 $this->SetFont('Arial','B',15);    
                 // Title
                 $this->Ln(20);
                 // Move to the right
-                $this->Cell(90);
-                $this->Cell(90,10, utf8_decode("Listagem de Inscritos"),0,0,'C');
+                $this->Cell(80);
+                $this->Cell(30,10, utf8_decode("Listagem de Inscritos"),0,0,'C');
                 $this->Ln(10);                            
             }
 
@@ -44,13 +44,13 @@ class PDF extends FPDF
 // Instanciation of inherited class
 $pdf = new PDF();
 //define o tipo e o tamanho da fonte                                  
-$pdf->SetFont('Arial','B',12);
+$pdf->SetFont('Arial','B',8);
 //defino as colunas do relatório
-$colunas =array("N","Nome","CPF","Assinatura");
+$colunas =array("N","Nome","CPF");
 //largura das colunas
-$larguracoll = array(1 => 5, 2 => 150, 3 => 30, 4 => 90);
-//largura da linha
-$height = 8; 
+$larguracoll = array(1 => 5, 2 => 150, 3 => 40);
+//tamanho da fonte
+$left = 5; 
 
 
 //defino a variável escola como em branco pois depois faço a verificação se for diferente da escola do array crio uma nova página
@@ -60,7 +60,7 @@ $countescola=1;
 $countgeral=0;
 
 
-$pdf->AddPage('L');
+$pdf->AddPage('P');
 //SETA A FONTE PARA TAMANHO 8 NEGRITO
 $pdf->SetFont('Arial','B',12);
 $pdf->Cell(0, 5,utf8_decode($data['curso']->nome_curso), 0, 1, "C");
@@ -70,7 +70,7 @@ $pdf->Ln();
 foreach($colunas as $coluna){
     $i++;
     $pdf->SetFont('Arial','B',8);                   
-    $pdf->Cell($larguracoll[$i],$height,utf8_decode($coluna),1);
+    $pdf->Cell($larguracoll[$i],$left,utf8_decode($coluna),1);
 }
 
 $pdf->Ln(); 
@@ -80,13 +80,10 @@ $count=0;
 if(!empty($data['inscritos'])){
     foreach($data['inscritos'] as $row){                
         $count++;
-        $pdf->SetFont('Arial','B',8);        
-        $pdf->Cell($larguracoll[1],$height,utf8_decode($count),1);                     
-        $pdf->Cell($larguracoll[2],$height,utf8_decode(mb_strtoupper($row->name)),1); 
-        $pdf->Cell($larguracoll[3],$height,utf8_decode($row->cpf),
-        1);
-        $pdf->Cell($larguracoll[4],$height,'',
-        1);                                                     
+        $pdf->SetFont('Arial','B',8);
+        $pdf->Cell($larguracoll[1],$left,utf8_decode($count),1);                     
+        $pdf->Cell($larguracoll[2],$left,utf8_decode(mb_strtoupper($row->name)),1); 
+        $pdf->Cell($larguracoll[3],$left,utf8_decode($row->cpf),1);                                            
         
         //linha nova
         $pdf->Ln();    

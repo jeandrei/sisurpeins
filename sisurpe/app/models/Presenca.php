@@ -75,5 +75,44 @@
 }
 
 
+public function presente($abre_presenca_id,$user_id){
+  $this->db->query('
+                    SELECT 
+                      * 
+                    FROM 
+                      presenca 
+                    WHERE 
+                      abre_presenca_id = :abre_presenca_id
+                    AND 
+                      user_id = :user_id                                   
+                  ');
+    $this->db->bind(':abre_presenca_id',$abre_presenca_id);
+    $this->db->bind(':user_id',$user_id);
+
+    $row = $this->db->single();        
+    if($this->db->rowCount() > 0){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+public function removePresenca($abre_presenca_id,$user_id){
+  $this->db->query('
+                        DELETE FROM presenca WHERE
+                        abre_presenca_id = :abre_presenca_id
+                        AND 
+                          user_id = :user_id             
+    ');
+    $this->db->bind(':abre_presenca_id',$abre_presenca_id);
+    $this->db->bind(':user_id',$user_id);    
+    if($this->db->execute()){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
     
 }

@@ -85,8 +85,11 @@
           $error['inscricoes_id_err'] = 'Id obrigatório';
       }
 
+      if($this->inscritoModel->verificaJaInscrito($inscricoes_id,$_SESSION[DB_NAME . '_user_id'])){
+        $error['inscricoes_id_err'] = 'Ops! Usuário já está inscrito no curso!';  
+      }
         
-      if(empty($error['inscricoes_id_err'])){
+      if(empty($error['inscricoes_id_err'])){         
           
           if($this->inscritoModel->gravaInscricao($inscricoes_id,$_SESSION[DB_NAME . '_user_id'])){ 
               $data = [
@@ -98,7 +101,14 @@
           }                 
           
       } else {
-          return $error['inscricoes_id_err'];
+        $data = [
+          'title' => 'Inscrições Abertas',
+          'description'=> 'Inscrições Abertas',
+          'inscricoes' => $this->inscricaoModel->getInscricoes
+          ()                          
+        ];  
+        flash('mensagem', 'Ops! Usuário já inscrito no curso.','alert alert-warning');                       
+        $this->view('inscricoes/index', $data);           
       } 
     }
 
@@ -375,6 +385,40 @@
       $json_ret = $this->inscritoModel->estaInscrito($inscricoes_id,$userId);   
       echo json_encode($json_ret); 
       //return $this->inscritoModel->estaInscrito($inscricoes_id,$userId);
+    }
+
+
+    //monta o form para o usuário selecionar qual a abre inscrição ele que gerenciar
+    public function abrePresencas($inscricoes_id){
+      if($abrePresencas = $this->abrePresencaModel->getAbrePresencasInscricaoById($inscricoes_id)){
+        $data = [
+          'curso' => $this->inscricaoModel->getInscricaoById($inscricoes_id),
+          'temas' => $this->temaModel->getTemasInscricoesById($inscricoes_id),
+          'usuario' =>$this->userModel->getUserById($_SESSION[DB_NAME . '_user_id']),
+          'abre_presencas' => $abrePresencas
+        ];            
+        $this->view('inscricoes/abrePresencas', $data);
+      } else {
+        echo "Não tem nenhuma presença registrada para esta inscrição";
+      }
+     
+    }
+
+
+    public function gerenciarPresencas($abrePresenca_id){
+
+        $inscricoes_id = $this->abrePresencaModel->getInscricaoById($abrePresenca_id)->id;        
+      
+        $data = [
+          'abrePresencaId' => $abrePresenca_id,
+          'curso' => $this->abrePresencaModel->getInscricaoById($abrePresenca_id),          
+          'usuario' => $this->userModel->getUserById($_SESSION[DB_NAME . '_user_id']),
+          'inscritos' => $this->inscritoModel->getInscritos($inscricoes_id) 
+          
+        ];            
+        
+        $this->view('inscricoes/gerenciarPresencas', $data);
+      
     }
 
 

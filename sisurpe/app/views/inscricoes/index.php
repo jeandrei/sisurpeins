@@ -9,10 +9,6 @@
 <hr>
 
 
- 
-<?php  //var_dump($data);?>
-
-
 <!-- SE FOR UM USUÁRIO ADMIN OU SEC ADICIONO O BOTÃO CRIAR INSCRIÇÃO -->
 <?php if((isset($_SESSION[DB_NAME . '_user_type']))&&((($_SESSION[DB_NAME . '_user_type']) == "admin")||(($_SESSION[DB_NAME . '_user_type']) == "sec"))) : ?>
   
@@ -125,6 +121,14 @@ if(isset($data['error'])){
             </a>
           <?endif;?>
         </div>
+
+        <div class="row">
+          <?php if($this->inscritoModel->existeInscritos($registro->id)) : ?>
+            <a href="<?php echo URLROOT; ?>/inscricoes/abrePresencas/<?php echo $registro->id?>" class="pull-left">
+              Gerenciar Presenças
+            </a>
+          <?endif;?>
+        </div>
       
       <?php endif; ?>
       </div>
@@ -152,15 +156,25 @@ if(isset($data['error'])){
           <a href="<?php echo URLROOT; ?>/inscricoes/cancelar/<?php echo $registro->id?>" class="btn btn-warning">Cancelar Inscrição</a>
           <?php endif; ?>  
 
-        <?php endif; ?>
+        <?php endif; ?>       
 
 
         <!-- SE A FASE FOR CERTIFICADO -->
         <?php if($registro->fase == 'CERTIFICADO') : ?>
             <!-- SE O USUÁRIO ESTIVER INSCRITO NO CURSO IMPRIMIMOS O BOTÃO CERTIFICADO -->
             <?php if($this->inscritoModel->estaInscrito($registro->id,$_SESSION[DB_NAME . '_user_id'])) : ?>
-              <a href="<?php echo URLROOT; ?>/inscricoes/certificado/<?php echo $registro->id?>" class="btn btn-success">Certificado Disponível</a>           
-            <?php endif; ?>  
+              
+              <!-- SE TIVER PRESENÇA -->
+              <?php if($this->inscricaoModel->getPresencasUsuarioById($_SESSION[DB_NAME . '_user_id'],$registro->id)) : ?>                
+                  <a href="<?php echo URLROOT; ?>/inscricoes/certificado/<?php echo $registro->id?>" class="btn btn-success">Certificado Disponível</a>  
+              <!-- SE NÃO TEM NENHUMA PRESENÇA MARCADA -->
+              <?php else: ?>
+                <div class="alert alert-warning" role="alert">
+                  Que pena! Você se inscreveu, mas não marcou presença!
+                </div>                
+              <?php endif;?>
+            
+              <?php endif; ?>  
 
         <?php endif; ?>     
       </div><!-- fim coluna do meio -->

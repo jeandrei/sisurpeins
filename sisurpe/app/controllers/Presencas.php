@@ -129,6 +129,79 @@
         }                             
       }//add
 
+
+
+      public function update(){
+
+        if((!isLoggedIn())){                
+          redirect('users/login');
+        } 
+        elseif(($_SESSION[DB_NAME . '_user_type']) != "admin" && ($_SESSION[DB_NAME . '_user_type']) != "sec")
+        {
+            die("Você não tem acesso a esta página!");
+        }
+
+        $data=[
+          'abre_presenca_id' => $_POST['abre_presenca_id'],
+          'user_id'=>$_POST['user_id']               
+        ];      
+      
+
+      $error=[];
+     
+      if(empty($data['abre_presenca_id'])){
+          $error['abre_presenca_id_err'] = 'Erro ao tentar recuperar o id da presença!';
+      }
+
+      if(empty($data['user_id'])){
+        $error['user_id_err'] = 'Erro ao tentar recuperar o id usuário!';
+      }                 
+
+
+      if(
+          empty($error['abre_presenca_id_err']) && 
+          empty($error['user_id_err']) 
+        )
+      {                
+          try{
+              //removo a presença do usuário se ele tiver nesse curso
+              if($this->presencaModel->removePresenca($data['abre_presenca_id'],$data['user_id'])){
+                //se removeu certinho verifico se o usuário marcou ou desmarcou o checkbox
+                if($_POST['presenca'] == 'true'){
+                  //se ele marcou eu marco a presença
+                  if($this->presencaModel->register($data)){                        
+                    $json_ret = array(                                            
+                                        'error'=>false,
+                                        'classe'=>'alert alert-success',
+                                        'message'=>'Presença Confirmada',
+                                    );                     
+                    
+                    echo json_encode($json_ret); 
+                  }     
+                }
+              }  
+              
+          } catch (Exception $e) {
+              $json_ret = array(
+                      'classe'=>'alert alert-danger', 
+                      'message'=>'Erro ao gravar os dados',
+                      'error'=>$data
+                      );                     
+              echo json_encode($json_ret); 
+          }
+
+
+          
+      }   else {
+          $json_ret = array(
+              'classe'=>'alert alert-danger', 
+              'message'=>'Erro ao tentar gravar os dados',
+              'error'=>$error
+          );
+          echo json_encode($json_ret);
+      }                             
+    }//update
+
         
        
         

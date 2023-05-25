@@ -111,5 +111,27 @@
         }
     }
 
+    public function verificaJaInscrito($inscricoes_id, $user_id){
+      $this->db->query('
+                      SELECT 
+                          * 
+                      FROM 
+                          inscritos 
+                      WHERE 
+                          inscricoes_id = :inscricoes_id
+                      AND
+                          user_id = :user_id                        
+                      '); 
+      $this->db->bind(':inscricoes_id',$inscricoes_id);  
+      $this->db->bind(':user_id',$user_id);  
+      $result = $this->db->resultSet(); 
+      if($this->db->rowCount() > 0){
+          //return $result;
+          return true;
+      } else {
+          return false;
+      }           
+    }
+
 
   }

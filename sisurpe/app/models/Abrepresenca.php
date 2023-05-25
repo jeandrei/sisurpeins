@@ -92,6 +92,42 @@
           return false;
       }   
  }
+
+
+ public function getAbrePresencasInscricaoById($inscricoes_id){
+    $this->db->query("SELECT * FROM abre_presenca WHERE inscricoes_id = :inscricoes_id");
+    $this->db->bind(':inscricoes_id',$inscricoes_id); 
+    $result = $this->db->resultSet();  
+    if($this->db->rowCount() > 0){
+        return $result;
+    } else {
+        return false;
+    }   
+ }
+
+ public function getIdDaInscricao($abrePresenca_id){   
+    $this->db->query("SELECT inscricoes_id FROM abre_presenca WHERE id = :id");
+    $this->db->bind(':id',$abrePresenca_id); 
+    $data = $this->db->single();    
+    if($this->db->rowCount() > 0){
+        return $data->inscricoes_id;
+    } else {
+        return false;
+    }   
+ }
+
+
+ public function getInscricaoById($abrePresenca_id){
+    $inscricoes_id = $this->getIdDaInscricao($abrePresenca_id);
+    $this->db->query("SELECT * FROM inscricoes WHERE id = :id");
+    $this->db->bind(':id',$inscricoes_id); 
+    $data = $this->db->single();
+    if($this->db->rowCount() > 0){
+        return $data;
+    } else {
+        return false;
+    }   
+ }
     
     
 

@@ -338,8 +338,9 @@
 
     function validateTema(){
         const tema = document.getElementById('tema');        
-        if(!isEmpty(tema.value)){ 
-            const re = /^([a-zA-Zà-úÀ-Ú0-9_ ]|-|_|\s){2,255}$/;
+        if(!isEmpty(tema.value)){  
+            //mínimo 3 caracteres             
+            const re = /(.*[a-z]){3}/i;       
             if(!re.test(tema.value)){
                 tema.classList.add('is-invalid');
                 return false;

@@ -82,7 +82,7 @@ if(!empty($data['presentes'])){
         $count++;
         $pdf->SetFont('Arial','B',8);
         $pdf->Cell($larguracoll[1],$left,utf8_decode($count),1);                     
-        $pdf->Cell($larguracoll[2],$left,utf8_decode($row->name),1); 
+        $pdf->Cell($larguracoll[2],$left,utf8_decode(mb_strtoupper($row->name)),1); 
         $pdf->Cell($larguracoll[3],$left,utf8_decode($row->cpf),1);
         $pdf->Cell($larguracoll[4],$left,date("d/m/Y h:i:s", strtotime($row->registro)),1);                                       
         
