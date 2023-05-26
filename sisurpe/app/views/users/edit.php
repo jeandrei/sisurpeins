@@ -5,9 +5,9 @@
     <div class="row">
         <div class="col-md-6 mx-auto">
             <div class="card card-body bg-light mt-2">
-                <h2>Criar uma conta</h2>
+                <h2>Editar a conta</h2>
                 <p>Por favor preencha os dados abaixo para se registrar</p> 
-                <form action="<?php echo URLROOT; ?>/users/register" method="post" enctype="multipart/form-data" onsubmit="return validation(
+                <form action="<?php echo URLROOT; ?>/users/edit/<?php echo $data['user_id'];?>" method="post" enctype="multipart/form-data" onsubmit="return validation(
                                                                                                                                                [noempty=['name']],
                                                                                                                                            [validaradio=['moradia']]                                                                                                                                               
                                                                                                                                                )">   
@@ -16,7 +16,7 @@
                     <!--Nome-->
                     <div class="form-group">   
                         <label 
-                            for="name"><b class="obrigatorio">* </b>Nome Completo:
+                            for="name"><b class="obrigatorio">* </b>Nome:
                         </label>                        
                         <input 
                             type="text" 
@@ -39,13 +39,10 @@
                         <input 
                             type="text" 
                             name="cpf" 
-                            class="form-control form-control-lg cpfmask <?php echo (!empty($data['cpf_err'])) ? 'is-invalid' : ''; ?>"                             
-                            placeholder="Informe seu CPF",
+                            class="form-control form-control-lg>"   
                             value="<?php echo $data['cpf'];?>"
-                        >
-                        <span class="invalid-feedback">
-                            <?php echo $data['cpf_err']; ?>
-                        </span>
+                            disabled
+                        >                        
                     </div>
 
 
@@ -56,16 +53,36 @@
                         </label>                        
                         <input 
                             type="text" 
-                            name="email" 
-                            class="form-control form-control-lg <?php echo (!empty($data['email_err'])) ? 'is-invalid' : ''; ?>"                             
-                            placeholder="Informe seu email",
+                            name="email"
+                            class="form-control form-control-lg"
                             value="<?php echo $data['email'];?>"
+                            disabled
                         >
-                        <span class="invalid-feedback">
-                            <?php echo $data['email_err']; ?>
-                        </span>
                     </div>
-
+                    
+                    <!-- TIPO DO USUÁRIO -->          
+                    <div class="form-group"> 
+                        <label 
+                            for="usertype"><b class="obrigatorio">* </b>Tipo: 
+                        </label>
+                        <select class="form-control form-control-lg"
+                            name="usertype" 
+                            id="usertype" 
+                            class="form-control" 
+                            >                   
+                            <?php 
+                            $tipos = array('admin','sec','user');                    
+                            foreach($tipos as $tipo => $value) : ?> 
+                                <option value="<?php echo $value; ?>" 
+                                            <?php echo $value == $data['usertype'] ? 'selected':'';?>
+                                >
+                                    <?php echo $value;?>
+                                </option>
+                            <?php endforeach; ?>  
+                        </select>
+                    </div>
+                    <!-- TIPO DO USUÁRIO -->   
+                   
 
 
                     <!--PASSWORD-->
@@ -106,10 +123,7 @@
                     <!--BUTTONS-->
                     <div class="row">
                         <div class="col">                            
-                           <?php  submit('Registrar-se'); ?>                           
-                        </div>
-                        <div class="col">                            
-                            <?php linkbutton(URLROOT.'/users/login', 'Já tem uma conta? Login'); ?>
+                           <?php  submit('Atualizar'); ?>                           
                         </div>
                     </div>
 

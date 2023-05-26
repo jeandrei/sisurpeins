@@ -33,8 +33,10 @@
   
 </head>
 <body>
-<?php //require APPROOT . '/views/inc/navbar.php'; ?>
-<!-- a linha abaixo inicia um container do bootstrap ela vai fechr no arquivo footer.php-->
+  
+<!-- as mensagens são adicionadas pelo javascript nesse elemento toasts -->
+<div id="toasts"></div>
+
 <?php include APPROOT . '/views/inc/navbar.php'; ?>
   <div class="container">   
  

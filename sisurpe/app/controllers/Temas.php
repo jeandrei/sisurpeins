@@ -7,13 +7,15 @@
 
         public function index($id=null){
 
-            if((!isLoggedIn())){                
-                redirect('users/login');
-            } 
-            elseif(($_SESSION[DB_NAME . '_user_type']) != "admin" && ($_SESSION[DB_NAME . '_user_type']) != "sec")
-            {
-                die("Você não tem acesso a esta página!");
-            }
+            if((!isLoggedIn())){ 
+                flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
+                redirect('pages/index');
+                die();
+            } else if ((!isAdmin()) && (!isSec())){                
+                flash('message', 'Você não tem permissão de acesso a esta página', 'error'); 
+                redirect('pages/index'); 
+                die();
+            }   
 
             $html = "
                 <thead class='thead-dark'>
@@ -78,13 +80,15 @@
         
         public function add($inscricoes_id){
             
-            if((!isLoggedIn())){                
-                redirect('users/login');
-            } 
-            elseif(($_SESSION[DB_NAME . '_user_type']) != "admin" && ($_SESSION[DB_NAME . '_user_type']) != "sec")
-            {
-                die("Você não tem acesso a esta página!");
-            }
+            if((!isLoggedIn())){ 
+                flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
+                redirect('pages/index');
+                die();
+            } else if ((!isAdmin()) && (!isSec())){                
+                flash('message', 'Você não tem permissão de acesso a esta página', 'error'); 
+                redirect('pages/index'); 
+                die();
+            }   
 
              $data=[
                 'inscricoes_id' => $inscricoes_id,
@@ -139,13 +143,15 @@
 
         public function delete($id){
 
-            if((!isLoggedIn())){                
-                redirect('users/login');
-            } 
-            elseif(($_SESSION[DB_NAME . '_user_type']) != "admin" && ($_SESSION[DB_NAME . '_user_type']) != "sec")
-            {
-                die("Você não tem acesso a esta página!");
-            }
+            if((!isLoggedIn())){ 
+                flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
+                redirect('pages/index');
+                die();
+            } else if ((!isAdmin()) && (!isSec())){                
+                flash('message', 'Você não tem permissão de acesso a esta página', 'error'); 
+                redirect('pages/index'); 
+                die();
+            }   
 
             try{
 

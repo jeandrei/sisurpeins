@@ -20,7 +20,8 @@
                 $_SESSION[$name. '_class'] = $class;
             } elseif(empty($message) && !empty($_SESSION[$name])){
                 $class = !empty($_SESSION[$name. '_class']) ? $_SESSION[$name. '_class'] : '';
-                echo '<div class="'.$class.'" id="msg-flash">'.$_SESSION[$name].'</div>';                
+                //echo '<div class="'.$class.'" id="msg-flash">'.$_SESSION[$name].'</div>';
+                echo '<script>createNotification("'.$_SESSION[$name].'", "'.$class.'")</script>';                
                 unset($_SESSION[$name]);
                 unset($_SESSION[$name. '_class']);
             }
@@ -33,7 +34,32 @@
         } else {
             return false;
         }
-       }
+    }
+
+    function isAdmin(){
+        if((isset($_SESSION[DB_NAME . '_user_type'])) && ($_SESSION[DB_NAME . '_user_type']) == 'admin'){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    function isUser(){
+        if((isset($_SESSION[DB_NAME . '_user_type'])) && ($_SESSION[DB_NAME . '_user_type']) == 'user'){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function isSec(){
+        if((isset($_SESSION[DB_NAME . '_user_type'])) && ($_SESSION[DB_NAME . '_user_type']) == 'sec'){
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 
 ?>

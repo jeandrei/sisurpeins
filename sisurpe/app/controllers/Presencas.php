@@ -11,38 +11,42 @@
         
         public function index($abre_presenca_id){ 
           
-            if((!isLoggedIn())){                
-              redirect('users/login');
-            } 
-            elseif(($_SESSION[DB_NAME . '_user_type']) != "admin" && ($_SESSION[DB_NAME . '_user_type']) != "sec")
-            {
-                die("Você não tem acesso a esta página!");
-            }
+          if((!isLoggedIn())){ 
+            flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
+            redirect('pages/index');
+            die();
+          } else if ((!isAdmin()) && (!isSec())){                
+              flash('message', 'Você não tem permissão de acesso a esta página', 'error'); 
+              redirect('pages/index'); 
+              die();
+          }   
           
-            $inscricoes_id = $this->abrePresencaModel->getInscricaoId($abre_presenca_id)->inscricoes_id; 
-            $data = [
-                'abre_presenca_id' => $abre_presenca_id, 
-                'inscricoes_id' => $inscricoes_id,        
-                'title' => 'Registro de Presenca',
-                'description'=> 'Registre aqui sua presença',
-                'curso' => $this->inscricaoModel->getInscricaoById($inscricoes_id),
-                'presenca_em_andamento' => $this->abrePresencaModel->temPresencaEmAndamento($inscricoes_id)
-            ];            
-           
-            $this->view('presencas/index', $data);
+          $inscricoes_id = $this->abrePresencaModel->getInscricaoId($abre_presenca_id)->inscricoes_id; 
+          $data = [
+              'abre_presenca_id' => $abre_presenca_id, 
+              'inscricoes_id' => $inscricoes_id,        
+              'title' => 'Registro de Presenca',
+              'description'=> 'Registre aqui sua presença',
+              'curso' => $this->inscricaoModel->getInscricaoById($inscricoes_id),
+              'presenca_em_andamento' => $this->abrePresencaModel->temPresencaEmAndamento($inscricoes_id)
+          ];            
+          
+          $this->view('presencas/index', $data);
         }  
 
 
 
         public function fechar($abre_presenca_id){        
           
-          if((!isLoggedIn())){                
-            redirect('users/login');
-          } 
-          elseif(($_SESSION[DB_NAME . '_user_type']) != "admin" && ($_SESSION[DB_NAME . '_user_type']) != "sec")
-          {
-              die("Você não tem acesso a esta página!");
-          }
+          if((!isLoggedIn())){ 
+            flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
+            redirect('pages/index');
+            die();
+          } else if ((!isAdmin()) && (!isSec())){                
+              flash('message', 'Você não tem permissão de acesso a esta página', 'error'); 
+              redirect('pages/index'); 
+              die();
+          }   
         
           $this->abrePresencaModel->fecharPresenca($abre_presenca_id);
           $inscricoes_id = $this->abrePresencaModel->getInscricaoId($abre_presenca_id);
@@ -53,13 +57,15 @@
 
         public function add(){
 
-          if((!isLoggedIn())){                
-            redirect('users/login');
-          } 
-          elseif(($_SESSION[DB_NAME . '_user_type']) != "admin" && ($_SESSION[DB_NAME . '_user_type']) != "sec")
-          {
-              die("Você não tem acesso a esta página!");
-          }
+          if((!isLoggedIn())){ 
+            flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
+            redirect('pages/index');
+            die();
+          } else if ((!isAdmin()) && (!isSec())){                
+              flash('message', 'Você não tem permissão de acesso a esta página', 'error'); 
+              redirect('pages/index'); 
+              die();
+          }   
 
           $data=[
             'abre_presenca_id' => $_POST['abre_presenca_id'],
@@ -133,13 +139,15 @@
 
       public function update(){
 
-        if((!isLoggedIn())){                
-          redirect('users/login');
-        } 
-        elseif(($_SESSION[DB_NAME . '_user_type']) != "admin" && ($_SESSION[DB_NAME . '_user_type']) != "sec")
-        {
-            die("Você não tem acesso a esta página!");
-        }
+        if((!isLoggedIn())){ 
+          flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
+          redirect('pages/index');
+          die();
+        } else if ((!isAdmin()) && (!isSec())){                
+            flash('message', 'Você não tem permissão de acesso a esta página', 'error'); 
+            redirect('pages/index'); 
+            die();
+        }   
 
         $data=[
           'abre_presenca_id' => $_POST['abre_presenca_id'],
@@ -171,22 +179,33 @@
                   //se ele marcou eu marco a presença
                   if($this->presencaModel->register($data)){                        
                     $json_ret = array(                                            
-                                        'error'=>false,
-                                        'classe'=>'alert alert-success',
-                                        'message'=>'Presença Confirmada',
-                                    );                     
+                      'class'=>'success', 
+                      'message'=>'Presença confirmada!',
+                      'error'=>false
+                    );                     
                     
                     echo json_encode($json_ret); 
                   }     
+                } else {
+                  if($this->presencaModel->removePresenca($data['abre_presenca_id'],$data['user_id'])){
+                    $json_ret = array(                                            
+                      'class'=>'success', 
+                      'message'=>'Presença removida!',
+                      'error'=>false
+                    );                     
+                    
+                    echo json_encode($json_ret);
+                  }
                 }
               }  
               
           } catch (Exception $e) {
-              $json_ret = array(
-                      'classe'=>'alert alert-danger', 
-                      'message'=>'Erro ao gravar os dados',
-                      'error'=>$data
-                      );                     
+              $json_ret = array
+                (
+                  'class'=>'error', 
+                  'message'=>'Erro ao gravar os dados!',
+                  'error'=>$data
+                );                     
               echo json_encode($json_ret); 
           }
 
@@ -194,9 +213,9 @@
           
       }   else {
           $json_ret = array(
-              'classe'=>'alert alert-danger', 
-              'message'=>'Erro ao tentar gravar os dados',
-              'error'=>$error
+            'class'=>'error', 
+            'message'=>'Erro ao tentar gravar os dados!',
+            'error'=>$error
           );
           echo json_encode($json_ret);
       }                             

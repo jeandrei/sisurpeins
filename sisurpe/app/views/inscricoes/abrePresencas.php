@@ -22,7 +22,7 @@
         <?php foreach($data['abre_presencas'] as $row) : ?>
           <a href="<?php echo URLROOT; ?>/inscricoes/gerenciarPresencas/<?php echo $row->id?>" class="pull-left">
               Gerenciar Presenças - <?php echo $row->carga_horaria;?> Horas
-            </a>
+            </a><br>
         <?php endforeach; ?>
       <?php else: ?>
         não tem presença

@@ -122,6 +122,118 @@
             }
         }
 
+
+
+
+
+
+        public function edit($user_id){
+
+            if((!isLoggedIn())){ 
+                flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
+                redirect('pages/index');
+                die();
+            } else if ((!isAdmin()) && (!isSec())){                
+                flash('message', 'Você não tem permissão de acesso a esta página', 'error'); 
+                redirect('pages/index'); 
+                die();
+            }   
+
+            $user = $this->userModel->getUserById($user_id);           
+                        
+            // Check for POST            
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                // Process form
+
+                // Sanitize POST data
+                $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+                
+                //init data
+                $data = [
+                    'user_id' => $user_id,
+                    'name' => trim(strtoupper($_POST['name'])),
+                    'usertype' => $_POST['usertype'],
+                    'password' => trim($_POST['password']),
+                    'confirm_password' => trim($_POST['confirm_password']),
+                    'name_err' => '',
+                    'password_err' => '',
+                    'confirm_password_err' => ''
+                ]; 
+               
+
+                // Validate Name
+                if(empty($data['name'])){
+                    $data['name_err'] = 'Por favor informe o nome';
+                }
+
+                 // Validate Password
+                 if(empty($data['password'])){
+                    $data['password_err'] = 'Por favor informe a senha';
+                } elseif (strlen($data['password']) < 6){
+                    $data['password_err'] = 'Senha deve ter no mínimo 6 caracteres';
+                }
+
+                // Validate Confirm Password
+                if(empty($data['confirm_password'])){
+                    $data['confirm_password_err'] = 'Por favor confirme a senha';
+                } else {
+                    if($data['password'] != $data['confirm_password']){
+                    $data['confirm_password_err'] = 'Senha e confirmação de senha diferentes';    
+                    }
+                }
+
+                // Make sure errors are empty
+                if(           
+                    empty($data['name_err']) && 
+                    empty($data['password_err']) &&                    
+                    empty($data['confirm_password_err']) 
+                    ){
+                      //Validated
+                      
+                      // Hash Password criptografa o password
+                      $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+
+                      // Register User
+                      if($this->userModel->update($data)){
+                        // Cria a menságem antes de chamar o view va para 
+                        // views/users/login a segunda parte da menságem
+                        flash('mensagem', 'Usuário atualizado com sucesso!');                        
+                        redirect('adminusers/index');
+                      } else {
+                          die('Ops! Algo deu errado.');
+                      }
+                      
+
+                      
+                    } else {
+                      // Load the view with errors
+                      $this->view('users/register', $data);
+                    }
+            
+            } else {
+                // Init data
+                $data = [
+                    'user_id' => $user_id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'cpf' => $user->cpf,
+                    'usertype' => $user->type,
+                    'password' => '',
+                    'confirm_password' => '',
+                    'name_err' => '',
+                    'password_err' => '',
+                    'confirm_password_err' => ''
+                ];
+                // Load view
+                $this->view('users/edit', $data);
+            }
+        }
+
+
+
+
+
+
         public function login(){          
             // Check for POST            
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
@@ -341,8 +453,8 @@
                      if($this->userModel->updatePassword($data)){
                        // Cria a menságem antes de chamar o view va para 
                        // views/users/login a segunda parte da menságem
-                       flash('mensagem', 'Senha atualizada com Sucesso');                        
-                       redirect('datausers/show');
+                       flash('message', 'Senha atualizada com Sucesso');                        
+                       $this->view('users/alterasenha');
                      } else {
                          die('Ops! Algo deu errado.');
                      }
@@ -357,6 +469,16 @@
 
 
     public function admin(){
+
+        if((!isLoggedIn())){ 
+            flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
+            redirect('pages/index');
+            die();
+        } else if ((!isAdmin()) && (!isSec())){                
+            flash('message', 'Você não tem permissão de acesso a esta página', 'error'); 
+            redirect('pages/index'); 
+            die();
+        }   
 
         $limit = 10;
         $data = [
@@ -414,12 +536,22 @@
 
 
     public function getUsersCpf($cpf){
-       try {
-        $user_id = $this->userModel->getUserIdByCpf($cpf);
-        echo json_encode($user_id);         
-       } catch (Exception $e) {
-        return false;
-       }
+
+        if((!isLoggedIn())){ 
+            flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
+            redirect('pages/index');
+            die();
+        } else if ((!isAdmin()) && (!isSec())){                
+            flash('message', 'Você não tem permissão de acesso a esta página', 'error'); 
+            redirect('pages/index'); 
+            die();
+        }   
+        try {
+            $user_id = $this->userModel->getUserIdByCpf($cpf);
+            echo json_encode($user_id);         
+        } catch (Exception $e) {
+            return false;
+        }
     }
 
 

@@ -1,4 +1,7 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
+
+<?php flash('mensagem');?>
+
     <div class="row">
         <div class="col-md-6 mx-auto">        
             <div class="card card-body bg-light mt-5">
@@ -34,7 +37,7 @@
                     <!--BUTTONS-->
                     <div class="row">
                         <div class="col">
-                            <?php  submit('Eviar a senha para meu e-mail'); ?>                            
+                            <?php  submit('Enviar a senha para meu e-mail'); ?>                            
                         </div>                         
                     </div>                      
                 </form>                

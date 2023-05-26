@@ -7,63 +7,45 @@
       <div id="messageBox" style="display:none"></div>
   
 </div>
-
-
-<!-- ROW PRINCIPAL -->
-<div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 gy-2">
-  <!-- COL 1 -->
-  <div class="col-4">  
-    NOME
-  </div>
-  <!-- COL 1 -->
-  <!-- COL 1 -->
-  <div class="col-4">  
-    CPF
-  </div>
-  <!-- COL 1 -->
-  <!-- COL 1 -->
-  <div class="col-4"> 
-   PRESENTE    
-  </div>
-  <!-- COL 1 -->
-</div>
-<!-- ROW PRINCIPAL -->
-
-<?php foreach($data['inscritos'] as $row) : ?>
+<h3>Gerenciamento de presentes do curso.</h3>
 <hr>
-<!-- ROW PRINCIPAL -->
-<div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 gy-2">
-  <!-- COL 1 -->
-  <div class="col-4">  
-    <?php echo $row->name; ?>
-  </div>
-  <!-- COL 1 -->
-  <!-- COL 1 -->
-  <div class="col-4">  
-    <?php echo $row->cpf; ?>
-  </div>
-  <!-- COL 1 -->
-  <!-- COL 1 -->
-  <div class="col-4"> 
-    <div class="form-check form-switch form-check-inline">
-        <input 
-            id="mobilhado" 
-            name="mobilhado" 
-            type="checkbox" 
-            class="form-check-input" 
-            value="<?php echo $row->user_id;?>"
-            onChange="atualizaPresenca(<?php echo $row->user_id;?>,this)"
-            <?php echo ($this->presencaModel->presente($data['abrePresencaId'],$row->user_id)) ? "checked" : "";?>
+<p><b>Curso:</b> <?php echo $data['curso']->nome_curso;?></p>
+<hr>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Nome</th>
+      <th scope="col">CPF</th>
+      <th class="text-center" scope="col">Presença</th>
+    </tr>
+  </thead>
+  <tbody>
+    <?php $count = 0;?>
+    <?php foreach($data['inscritos'] as $row) : ?>
+      <?php $count++;?>
+      <tr>
+          <th scope="row"><?php echo $count;?></th>
+          <td><?php echo $row->name; ?></td>
+          <td><?php echo $row->cpf; ?></td>
+          <td class="text-center">
+            <input 
+                  id="mobilhado" 
+                  name="mobilhado" 
+                  type="checkbox" 
+                  class="form-check-input" 
+                  value="<?php echo $row->user_id;?>"
+                  onChange="atualizaPresenca(<?php echo $row->user_id;?>,this)"
+                  <?php echo ($this->presencaModel->presente($data['abrePresencaId'],$row->user_id)) ? "checked" : "";?>
 
-        >        
-    </div> 
-    
-  </div>
-  <!-- COL 1 -->
-</div>
-<!-- ROW PRINCIPAL -->
+              >        
+          </td>
+      </tr>
+    <?php endforeach; ?>
+  </tbody>
+</table>
 
-<?php endforeach; ?>
+
 <?php require APPROOT . '/views/inc/footer.php'; ?>
 
 <script> 
@@ -78,13 +60,9 @@
           user_id:user_id,
           presenca:val.checked                                       
         },         
-        success: function(retorno_php){            
-           var responseObj = JSON.parse(retorno_php); 
-            $("#messageBox")
-            .removeClass()      
-            .addClass(responseObj.classe)                           
-            .html(responseObj.message) 
-            .fadeIn(1000).fadeOut(6000);
+        success: function(retorno_php){                    
+          var responseObj = JSON.parse(retorno_php);   
+          createNotification(responseObj['message'], responseObj['class']);
         }
     });//Fecha o ajax 
 

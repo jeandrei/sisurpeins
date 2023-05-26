@@ -1,65 +1,6 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
 
-<script>  
-  function limpar(){
-          document.getElementById('name').value = "";   
-          document.getElementById('name').focus(); 
-      }  
-   
-
-//espera a página carregar completamente
-$(document).ready(function(){  
-    $('.gravar').click(function() {
-      var id=$("#id").val();
-      var type=$("#type").val();
-        //monta a url chamando o método updateStatus no controller e passa através do GET o id e o Status  
-        $.ajax({
-                  /* aqui em url passamos a url do controler e o método que iremos utilizar nesse caso controller jquerys método newEstado */
-                  /* a newEstado vai receber pelo POST o valor do input estado e por sua vez vai chamar no model addEstado($_POST['estado'])   */
-                  url: '<?php echo URLROOT; ?>/adminusers/atualizatype',
-                  /* aqui o método que utilizamos nesse caso POST */
-                  method:'POST',
-                  /* aqui as variáveis que queremos passar para o arquivo php neste caso controller/método */
-                  data:{
-                      id:id,
-                      type: type                                       
-                  },                                       
-                  /* aqui se obtiver sucesso imprimimos que os dados foram armazenados com sucesso */                   
-                  success: function(retorno_php){ 
-                  /* para poder retornar um array tranformo os dados que retornam do php em um objeto json agora para chamar a variável que vem do php */
-                  /* faz assim responseObj.variavel ex console.log(responseObj.mensagem); */
-                  /* retorno_php vem de controllers/jquerys/newEstado() */
-                  var responseObj = JSON.parse(retorno_php);                    
-                  $("#messageBox")
-                      .removeClass()
-                      /* aqui em addClass adiciono a classe que vem do php se sucesso ou danger */
-                      /* pode adicionar mais classes se precisar ficaria assim .addClass("confirmbox "+responseObj.classe) */
-                      .addClass(responseObj.classe) 
-                      /* aqui a mensagem que vem la do php responseObj.mensagem */                       
-                      .html(responseObj.mensagem) 
-                      .fadeIn(2000).fadeOut(2000);
-                       
-                  }                    
-                });  
-    }); 
-});
-
-
-
-
-
-
-</script>
-
-
-<!-- LINHA PARA A MENSÁGEM DO JQUERY -->
-<div class="container">
-    <div class="row" style="height: 50px;  margin-bottom: 25px;">
-        <div class="col-12">
-            <div role="alert" id="messageBox" style="display:none"></div>
-        </div>
-    </div>
-</div>
+<?php flash('mensagem');?>
 
 
 <h1><?php echo $data['title']; ?></h1>
@@ -71,31 +12,56 @@ $(document).ready(function(){
 ?>
 
 
-<form id="filtrar" action="<?php echo URLROOT; ?>/adminusers/index" method="post" enctype="multipart/form-data">
+<form id="filtrar" action="<?php echo URLROOT; ?>/adminusers/index" method="get" enctype="multipart/form-data">
   <div class="row">
+    
     <!-- COLUNA 1 name-->
     <div class="col-lg-4">
-            <label for="name">
-                Buscar por name
+        <label for="name">
+            Buscar por name
+        </label>
+        <input 
+            type="text" 
+            name="name" 
+            id="name" 
+            maxlength="60"
+            class="form-control"
+            value="<?php if(isset($_GET['name'])){htmlout($_GET['name']);} ?>"
+            onkeydown="upperCaseF(this)"   
+            >
+    </div>
+    <!-- COLUNA 1 name-->
+
+     <!-- TIPO DO USUÁRIO -->  
+     <div class="col-lg-2">
+            <label for="usertype">
+                Buscar tipo
             </label>
-            <input 
-                type="text" 
-                name="name" 
-                id="name" 
-                maxlength="60"
-                class="form-control"
-                value="<?php if(isset($_POST['name'])){htmlout($_POST['name']);} ?>"
-                onkeydown="upperCaseF(this)"   
-                >
-      <!--<div class="col-lg-4">-->
-      </div>
+            <select class="form-control"
+              name="usertype" 
+              id="usertype" 
+              class="form-control" 
+              >
+              <option value='NULL'>todos</option>                   
+              <?php              
+              $tipos = array('admin','sec','user');                    
+              foreach($tipos as $tipo => $value) : ?> 
+                  <option value="<?php echo $value; ?>" 
+                              <?php echo $value == $_GET['usertype'] ? 'selected':'';?>
+                  >
+                      <?php echo $value;?>
+                  </option>
+              <?php endforeach; ?>  
+          </select>
+    </div>
+    <!-- TIPO DO USUÁRIO -->                
+      
       
         <!-- LINHA PARA O BOTÃO ATUALIZAR -->
         <div class="row" style="margin-top:30px;">
             <div class="col" style="padding-left:0;">
                 <div class="form-group mx-sm-3 mb-2">
-                    <input type="submit" class="btn btn-primary mb-2" value="Atualizar">                   
-                    <input type="button" class="btn btn-primary mb-2" value="Limpar" onClick="limpar()"> 
+                    <input type="submit" class="btn btn-primary mb-2" value="Atualizar">    
                 </div>                                                
             </div>
             
@@ -127,42 +93,10 @@ $(document).ready(function(){
                       <td><?php echo $row['name']; ?></td>
                       <td><?php echo $row['email']; ?></td>
                       <td><?php echo date('d-m-Y', strtotime($row['created_at'])); ?></td>
-                      <td><?php echo $row['type']; ?></td>
-                      <td>
-                        <select class="form-control form-control-sm"
-                                    name="usertype" 
-                                    id="<?php echo  $row['id'];?>" 
-                                    class="form-control" 
-                                    onChange="
-                                            document.getElementById('id').value = <?php echo $row['id']; ?>;
-                                            document.getElementById('type').value = this.value;
-                                            ">                   
-                                    <?php 
-                                    $tipos = array('admin','sec','user');                    
-                                    foreach($tipos as $tipo => $value) : ?> 
-                                        <option value="<?php echo $value; ?>" 
-                                                    <?php echo $value == $row['type'] ? 'selected':'';?>
-                                        >
-                                            <?php echo $value;?>
-                                        </option>
-                                    <?php endforeach; ?>  
-                            </select>
-                            
-
-                          <!--JOGO O VALOR DA ID QUE ESTÁ NO SELECT ATRAVÉS DO EVENTO onChange para id PARA DEPOIS CHAMAR NO AJAX-->
-                          <input type="hidden" id="id" name="id" value="<?php echo $row['id']; ?>">
-                          <!--JOGO O VALOR DO type DO SELECT ATRAVÉS DO EVENTO onChange para type PARA DEPOIS CHAMAR NO AJAX--> 
-                          <input type="hidden" id="type" name="type" value="">
-                      </td>
-                      
-                     
-                      <!--BOTÃO DE GRAVAR-->            
+                      <td><?php echo $row['type']; ?></td>                     
+                      <!--BTN EDITAR-->            
                       <td style="text-align:right;">
-                          <button 
-                              type="button" 
-                              class="btn btn-success btn-lg fa fa-floppy-o gravar"
-                              onClick="document.getElementById('id').value = <?php echo $row['id']; ?>"> 
-                          </button>
+                          <a class="btn btn-success btn-lg fa fa-pencil" href="<?php echo URLROOT; ?>/users/edit/<?php echo $row['id'];?>" class="pull-left"></a>                          
                       </td>
             </tr>
     <?php endforeach; ?>    

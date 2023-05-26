@@ -28,8 +28,14 @@
         
     public function arquivadas(){           
       
-      if((!isLoggedIn())){                  
-        redirect('users/login');
+      if((!isLoggedIn())){ 
+        flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
+        redirect('pages/index');
+        die();
+      } else if ((!isAdmin()) && (!isSec())){                
+          flash('message', 'Você não tem permissão de acesso a esta página', 'error'); 
+          redirect('pages/index'); 
+          die();
       }   
 
       if(($_SESSION[DB_NAME . '_user_type']) != "admin" && (!$_SESSION[DB_NAME . '_user_type']) != "sec"){
@@ -148,13 +154,15 @@
 
     public function add(){ 
       
-      if((!isLoggedIn())){                  
-        redirect('users/login');
-      } 
-      elseif(($_SESSION[DB_NAME . '_user_type']) != "admin" && ($_SESSION[DB_NAME . '_user_type']) != "sec")
-      {
-        die("Você não tem acesso a esta página!");
-      }
+      if((!isLoggedIn())){ 
+        flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
+        redirect('pages/index');
+        die();
+      } else if ((!isAdmin()) && (!isSec())){                
+          flash('message', 'Você não tem permissão de acesso a esta página', 'error'); 
+          redirect('pages/index'); 
+          die();
+      }   
 
       // Check for POST            
       if($_SERVER['REQUEST_METHOD'] == 'POST'){        
@@ -240,13 +248,15 @@
 
     public function edit($id){
 
-      if((!isLoggedIn())){                  
-        redirect('users/login');
-      } 
-      elseif(($_SESSION[DB_NAME . '_user_type']) != "admin" && ($_SESSION[DB_NAME . '_user_type']) != "sec")
-      {
-        die("Você não tem acesso a esta página!");
-      }
+      if((!isLoggedIn())){ 
+        flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
+        redirect('pages/index');
+        die();
+      } else if ((!isAdmin()) && (!isSec())){                
+          flash('message', 'Você não tem permissão de acesso a esta página', 'error'); 
+          redirect('pages/index'); 
+          die();
+      }   
       
       //pego a data atual
       $dataAtual = new DateTime('now', new DateTimeZone('America/Sao_Paulo'));
@@ -361,7 +371,18 @@
     }
 
 
-    public function inscritos($inscricoes_id){      
+    public function inscritos($inscricoes_id){ 
+
+      if((!isLoggedIn())){ 
+        flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
+        redirect('pages/index');
+        die();
+      } else if ((!isAdmin()) && (!isSec())){                
+          flash('message', 'Você não tem permissão de acesso a esta página', 'error'); 
+          redirect('pages/index'); 
+          die();
+      }   
+
       $data['inscritos'] = $this->inscritoModel->getInscritos($inscricoes_id);         
       $data['curso'] = $this->inscricaoModel->getInscricaoById($inscricoes_id);
       $this->view('relatorios/inscritos',$data);
@@ -370,6 +391,17 @@
 
 
     public function presentes($inscricoes_id){
+
+      if((!isLoggedIn())){ 
+        flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
+        redirect('pages/index');
+        die();
+      } else if ((!isAdmin()) && (!isSec())){                
+          flash('message', 'Você não tem permissão de acesso a esta página', 'error'); 
+          redirect('pages/index'); 
+          die();
+      }   
+
       $data['presentes'] = $this->presencaModel->getPresencas($inscricoes_id);
       $data['curso'] = $this->inscricaoModel->getInscricaoById($inscricoes_id);
       $this->view('relatorios/presentes',$data);           
@@ -390,6 +422,17 @@
 
     //monta o form para o usuário selecionar qual a abre inscrição ele que gerenciar
     public function abrePresencas($inscricoes_id){
+
+      if((!isLoggedIn())){ 
+        flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
+        redirect('pages/index');
+        die();
+      } else if ((!isAdmin()) && (!isSec())){                
+          flash('message', 'Você não tem permissão de acesso a esta página', 'error'); 
+          redirect('pages/index'); 
+          die();
+      }   
+
       if($abrePresencas = $this->abrePresencaModel->getAbrePresencasInscricaoById($inscricoes_id)){
         $data = [
           'curso' => $this->inscricaoModel->getInscricaoById($inscricoes_id),
@@ -407,17 +450,27 @@
 
     public function gerenciarPresencas($abrePresenca_id){
 
-        $inscricoes_id = $this->abrePresencaModel->getInscricaoById($abrePresenca_id)->id;        
-      
-        $data = [
-          'abrePresencaId' => $abrePresenca_id,
-          'curso' => $this->abrePresencaModel->getInscricaoById($abrePresenca_id),          
-          'usuario' => $this->userModel->getUserById($_SESSION[DB_NAME . '_user_id']),
-          'inscritos' => $this->inscritoModel->getInscritos($inscricoes_id) 
-          
-        ];            
+      if((!isLoggedIn())){ 
+        flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
+        redirect('pages/index');
+        die();
+      } else if ((!isAdmin()) && (!isSec())){                
+          flash('message', 'Você não tem permissão de acesso a esta página', 'error'); 
+          redirect('pages/index'); 
+          die();
+      }   
+
+      $inscricoes_id = $this->abrePresencaModel->getInscricaoById($abrePresenca_id)->id;        
+    
+      $data = [
+        'abrePresencaId' => $abrePresenca_id,
+        'curso' => $this->abrePresencaModel->getInscricaoById($abrePresenca_id),          
+        'usuario' => $this->userModel->getUserById($_SESSION[DB_NAME . '_user_id']),
+        'inscritos' => $this->inscritoModel->getInscritos($inscricoes_id) 
         
-        $this->view('inscricoes/gerenciarPresencas', $data);
+      ];            
+      
+      $this->view('inscricoes/gerenciarPresencas', $data);
       
     }
 

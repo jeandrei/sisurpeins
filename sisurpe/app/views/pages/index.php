@@ -1,5 +1,6 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
-<body>    
+<?php flash('message');?>
+   
 
     <main role="main">
 
@@ -43,5 +44,5 @@
     </footer>
 
    
-  </body>
+
 <?php require APPROOT . '/views/inc/footer.php'; ?>

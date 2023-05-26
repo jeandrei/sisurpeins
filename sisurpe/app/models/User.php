@@ -29,7 +29,26 @@ class User extends Pagination{
         }
     }
 
-    // Register User
+    // Update User
+    public function update($data){       
+       
+        $this->db->query('UPDATE users SET users.name=:name, users.type=:type, users.password =:password WHERE id=:id');
+        // Bind values  
+        $this->db->bind(':id',$data['user_id']); 
+        $this->db->bind(':name',$data['name']);  
+        $this->db->bind(':type',$data['usertype']); 
+        $this->db->bind(':password',$data['password']);
+        
+
+        // Execute
+        if($this->db->execute()){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // Update Password
     public function updatepassword($data){
         $this->db->query('UPDATE users SET password =:password WHERE email=:email');
         // Bind values           
@@ -95,7 +114,7 @@ class User extends Pagination{
     }
 
     public function getUserById($id){
-        $this->db->query('SELECT name,email,cpf FROM users WHERE id = :id');
+        $this->db->query('SELECT name,email,cpf,type FROM users WHERE id = :id');
         // Bind value
         $this->db->bind(':id', $id);
 
@@ -193,6 +212,27 @@ class User extends Pagination{
         } else {
             return false;
         } 
+    }
+
+    //FUNÇÃO QUE EXECUTA A SQL PAGINATE
+   public function getUsers($page, $options){   
+  
+        $sql = ("SELECT users.id,users.name,users.email,users.type,users.created_at FROM users WHERE 1");
+
+        if(!empty($options['named_params'][':name'])){
+        $sql .= " AND users.name LIKE " . "'%" . $options['named_params'][':name'] . "%'";
+        }
+
+        if(($options['named_params'][':type']) != 'NULL' && ($options['named_params'][':type']) != ''){
+            $sql .= " AND users.type = '" . $options['named_params'][':type'] . "'";
+        }
+
+        
+        $sql .= " ORDER BY name ASC";     
+        
+
+        $paginate = new pagination($page, $sql, $options);
+        return  $paginate;
     }
 
 

@@ -3,17 +3,15 @@
 
 <div class="row align-items-center mb-3">
   <div class="col-md-12">
-           
-
-      <?php //var_dump($data); ?>
-
       
 
       <section class="h-100">
         <header class="container h-100">
           <div class="d-flex align-items-center justify-content-center h-100">
             <div class="d-flex flex-column">
-              <h1 class="text align-self-center p-2">Registro de Frequência</h1>
+              <h1 class="text align-self-center p-2">Registro de Frequência.</h1>
+              <h3 class="text align-self-center p-2">CPF SOMENTE NÚMEROS.</h3>
+              <p class="text align-self-center p-2">NÃO precisa apertar o enter.</p>
               
               
               <div class="text align-self-center p-2">                 
@@ -74,12 +72,13 @@ $(document).ready(function() {
 const searchCPF = document.getElementById("cpf");
 
 
-// 1 CHAMO A FUNÇÃO Search(e) para cada tecla pressionada
+// 1 se não for o enter CHAMO A FUNÇÃO Search(e) para cada tecla pressionada
 searchCPF.addEventListener('keyup',(e)=>{ 
-  clearMessage();
-  Search(e);
+  if(e.keyCode !== 13 || e.wich !== 13){
+    clearMessage();
+    Search(e);
+    }  
 })
-
 
 
 /* 2 aqui ele faz a busca e se achar grava no bd */
