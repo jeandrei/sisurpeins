@@ -55,6 +55,42 @@ if(isset($data['error'])){
   <div class="card mb-3">
     <!-- card-body -->
     <div class="card-body">
+
+    <!-- SE FOR UM USUÁRIO ADMIN OU SEC ADICIONO O BOTÃO EDITAR -->
+    <?php if((isset($_SESSION[DB_NAME . '_user_type']))&&((($_SESSION[DB_NAME . '_user_type']) == "admin")||(($_SESSION[DB_NAME . '_user_type']) == "sec"))) : ?>
+
+        <!-- row dos comandos -->
+        <div class="row">
+          <div class="col-12">
+              <div class="d-flex p-3 bg-dark text-white">
+                <a href="<?php echo URLROOT; ?>/inscricoes/edit/<?php echo $registro->id?>" class="btn btn-primary btn-sm m-2">
+                  <i class="fa fa-pencil"></i> Editar
+                </a> 
+                
+                <?php if($registro->fase == 'FECHADO') : ?>
+                  <a href="<?php echo URLROOT; ?>/abrepresencas/index/<?php echo $registro->id?>" class="btn btn-secondary btn-sm m-2">
+                    <i class="fa fa-check"></i> Presenças
+                  </a> 
+                <?php endif;?>
+
+                <?php if($this->inscritoModel->existeInscritos($registro->id)) : ?>
+                  <a href="<?php echo URLROOT; ?>/inscricoes/abrePresencas/<?php echo $registro->id?>" class="btn btn-success btn-sm m-2">
+                  <i class="fa fa-globe"></i> Gerenciar Presenças
+                  </a>
+                <?endif;?>
+
+                <?php if($this->abrePresencaModel->temPresencaEmAndamento($registro->id)) : ?>
+                  <span class="bg-danger btn-sm m-2">
+                   Presença em andamento
+                  </span>
+                <?endif;?>
+                
+               
+              </div>
+          </div>
+        </div>
+    <?endif;?>
+      
         <p class="card-title <?php echo(retornaClasseFase($registro->fase));?>">Fase: <?php echo($registro->fase);?></p>
         <!-- CURSO -->
         <p class="card-title"><b>Curso: </b><?php echo ($registro->nome_curso);?></p>
@@ -125,13 +161,7 @@ if(isset($data['error'])){
             <a href="<?php echo URLROOT; ?>/inscricoes/presentes/<?php echo $registro->id?>" class="card-link" target="_blank">
               Lista de Presentes
             </a>
-          <?endif;?>
-
-          <?php if($this->inscritoModel->existeInscritos($registro->id)) : ?>
-            <a href="<?php echo URLROOT; ?>/inscricoes/abrePresencas/<?php echo $registro->id?>" class="card-link">
-              Gerenciar Presenças
-            </a>
-          <?endif;?>
+          <?endif;?>          
 
       <?php endif; ?>
       </p>
