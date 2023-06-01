@@ -92,13 +92,17 @@
    
 
 
-    public function register($data){        
-        $this->db->query('INSERT INTO inscricoes (nome_curso, descricao, data_inicio,data_termino,fase) VALUES (:nome_curso, :descricao, :data_inicio, :data_termino, :fase)');
+    public function register($data){         
+        $this->db->query('INSERT INTO inscricoes (nome_curso, descricao, data_inicio,data_termino, localEvento, horario, periodo, fase) VALUES (:nome_curso, :descricao, :data_inicio, :data_termino, :localEvento, :horario, :periodo, :fase)');
         // Bind values
         $this->db->bind(':nome_curso',$data['nome_curso']);
         $this->db->bind(':descricao',$data['descricao']);        
         $this->db->bind(':data_inicio',$data['data_inicio']);
         $this->db->bind(':data_termino',$data['data_termino']);
+
+        $this->db->bind(':localEvento',$data['localEvento']);
+        $this->db->bind(':horario',$data['horario']);
+        $this->db->bind(':periodo',$data['periodo']);
         
         //Se o usuário não passar a faze da inscrição definimos como Aberto
         if($data['fase'] ==''){
@@ -124,9 +128,10 @@
                                             descricao = :descricao,
                                             data_inicio = :data_inicio, 
                                             data_termino = :data_termino, 
-                                            numero_certificado = :numero_certificado, 
-                                            livro = :livro, 
-                                            folha = :folha, 
+                                            numero_certificado = :numero_certificado,        
+                                            localEvento = :localEvento,
+                                            periodo = :periodo,
+                                            horario = :horario,
                                             fase = :fase  
                                             WHERE id = :id');
                   
@@ -137,8 +142,9 @@
         $this->db->bind(':data_inicio',$data['data_inicio']);
         $this->db->bind(':data_termino',$data['data_termino']);
         $this->db->bind(':numero_certificado',$data['numero_certificado']);
-        $this->db->bind(':livro',$data['livro']);
-        $this->db->bind(':folha',$data['folha']);
+        $this->db->bind(':localEvento',$data['localEvento']);
+        $this->db->bind(':periodo',$data['periodo']);
+        $this->db->bind(':horario',$data['horario']);        
         $this->db->bind(':fase',$data['fase']);  
 
         // Execute

@@ -30,14 +30,16 @@ class User extends Pagination{
     }
 
     // Update User
-    public function update($data){       
+    public function update($data){
+        if((!empty($data['password'])) && (!is_null($data['password'])) && ($data['password'] != ""))  {           
+            $this->updatepassword($data);
+        }
        
-        $this->db->query('UPDATE users SET users.name=:name, users.type=:type, users.password =:password WHERE id=:id');
+        $this->db->query('UPDATE users SET users.name=:name, users.type=:type  WHERE id=:id');
         // Bind values  
         $this->db->bind(':id',$data['user_id']); 
         $this->db->bind(':name',$data['name']);  
-        $this->db->bind(':type',$data['usertype']); 
-        $this->db->bind(':password',$data['password']);
+        $this->db->bind(':type',$data['usertype']);         
         
 
         // Execute

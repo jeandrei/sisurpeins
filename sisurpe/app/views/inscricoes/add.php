@@ -82,6 +82,57 @@
                     </div>  
                 </div>
 
+                <!-- LOCAL -->
+                <div class="form-group col-md-4">
+                    <label for="local"><sup class="obrigatorio">*</sup>Local</label>
+                    <input 
+                    class="form-control <?php echo (!empty($data['localEvento_err'])) ? 'is-invalid' : ''; ?>"
+                    type="text"  
+                    id="localEvento"
+                    name="localEvento"
+                    value="<?php echo $data['localEvento']; ?>"
+                    > 
+                    <div class="invalid-feedback">
+                        <?php echo $data['localEvento_err']; ?>
+                    </div>  
+                </div>
+
+                <!-- Hora início -->
+                <div class="form-group col-md-2">
+                    <label for="horario"><sup class="obrigatorio">*</sup>Horário de Início</label>
+                    <input 
+                    class="form-control <?php echo (!empty($data['horario_err'])) ? 'is-invalid' : ''; ?>"
+                    type="time"
+                    id="horario"
+                    name="horario"
+                    value="<?php echo $data['horario']; ?>"
+                    > 
+                    <div class="invalid-feedback">
+                        <?php echo $data['horario_err']; ?>
+                    </div>  
+                </div>
+
+                <!-- Período -->
+                <div class="form-group col-md-2">
+                    <label for="periodo"><sup class="obrigatorio">*</sup>Período</label>
+                    <select 
+                        name="periodo" 
+                        id="periodo" 
+                        class="form-control <?php echo (!empty($data['periodo_err'])) ? 'is-invalid' : ''; ?>"                                       
+                    >
+                        <option value="">Selecione período</option>
+                        <option value="M" <?php echo $data['periodo'] == 'M' ? 'selected':'';?>>Matutino</option>
+                        <option value="V" <?php echo $data['periodo'] == 'V' ? 'selected':'';?>>Vespertino</option> 
+                        <option value="D" <?php echo $data['periodo'] == 'D' ? 'selected':'';?>>Dia Todo</option>                                               
+                                
+                    </select>                      
+                    <div class="invalid-feedback">
+                        <?php echo $data['periodo_err']; ?>
+                    </div>  
+                </div>
+
+                
+
             </div><!-- row -->  
             
 

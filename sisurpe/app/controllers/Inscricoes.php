@@ -174,6 +174,9 @@
           'descricao' => mb_strtoupper(trim($_POST['descricao'])),
           'data_inicio' => $_POST['data_inicio'],
           'data_termino' => trim($_POST['data_termino']),
+          'localEvento' => trim($_POST['localEvento']),
+          'horario' => trim($_POST['horario']),
+          'periodo' => trim($_POST['periodo']),
           'fase' => $_POST['fase']                
         ];
                 
@@ -195,15 +198,30 @@
           if($data['data_termino'] < $data['data_inicio']){
               $data['data_termino_err'] = 'Data de termino menor que data de início';
           }
-        }         
+        } 
+        
+        if(empty($data['localEvento'])){
+          $data['localEvento_err'] = 'Por favor informe o local onde será realizado o curso';
+        } 
+
+        if(empty($data['horario'])){
+          $data['horario_err'] = 'Por favor informe o horário que iniciará o curso';
+        } 
+
+        if(empty($data['periodo'])){
+          $data['periodo_err'] = 'Por favor informe período que acontecerá o curso';
+        } 
         
         // Make sure errors are empty
         if(                    
             empty($data['nome_curso_err']) &&
             empty($data['descricao_err']) &&                  
             empty($data['data_inicio_err']) &&
-            empty($data['data_termino_err']) 
-            ){ 
+            empty($data['data_termino_err']) &&
+            empty($data['localEvento_err']) &&
+            empty($data['horario_err']) &&
+            empty($data['periodo_err'])            
+          ){ 
               
               try {                          
                 if($lastId = $this->inscricaoModel->register($data)){
@@ -236,7 +254,17 @@
           'descricao' => '',                
           'data_inicio' => '',
           'data_termino' => '',
-          'aberto' => ''
+          'localEvento' => '',
+          'horario' => '',
+          'periodo' => '',
+          'aberto' => '',
+          'nome_curso_err' => '',
+          'descricao_err' => '',              
+          'data_inicio_err' => '',
+          'data_termino_err' => '',
+          'localEvento_err' => '',
+          'horario_err' => '',
+          'periodo_err' => ''
       ];
         // Load view
         $this->view('inscricoes/add', $data);
@@ -274,6 +302,9 @@
           'data_inicio' => $_POST['data_inicio'],
           'data_termino' => trim($_POST['data_termino']),
           'data_atual' => $dataAtual,
+          'localEvento' => trim($_POST['localEvento']),
+          'horario' => trim($_POST['horario']),
+          'periodo' => trim($_POST['periodo']),
           'fase' => $_POST['fase']                
         ];
 
@@ -300,14 +331,28 @@
       
         if(empty($data['descricao'])){
             $data['descricao_err'] = 'Por favor informe a descrição do curso';
-        }       
+        }
+        if(empty($data['localEvento'])){
+          $data['localEvento_err'] = 'Por favor informe o local onde será realizado o curso';
+        } 
+
+        if(empty($data['horario'])){
+          $data['horario_err'] = 'Por favor informe o horário que iniciará o curso';
+        } 
+
+        if(empty($data['periodo'])){
+          $data['periodo_err'] = 'Por favor informe período que acontecerá o curso';
+        }        
       
         // Make sure errors are empty
         if(                    
             empty($data['nome_curso_err']) &&
-            empty($data['descricao_err']) &&
+            empty($data['descricao_err']) &&                  
             empty($data['data_inicio_err']) &&
-            empty($data['data_termino_err']) 
+            empty($data['data_termino_err']) &&
+            empty($data['localEvento_err']) &&
+            empty($data['horario_err']) &&
+            empty($data['periodo_err']) 
           ){             
               try { 
                 if($this->inscricaoModel->update($data)){                      
@@ -344,6 +389,9 @@
           'numero_certificado' => $data->numero_certificado,
           'livro' => $data->livro,
           'folha' => $data->folha,
+          'localEvento' => $data->localEvento,
+          'horario' => $data->horario,
+          'periodo' => $data->periodo,
           'fase' => $data->fase,
           'data_atual' => $dataAtual            
         ];

@@ -1,5 +1,6 @@
 <?php require APPROOT . '/views/inc/header.php';?>
 
+
 <?php flash('mensagem');?>
 
     <div class="row">
@@ -88,7 +89,7 @@
                     <!--PASSWORD-->
                     <div class="form-group">   
                         <label 
-                            for="password"><b class="obrigatorio">* </b>Senha:
+                            for="password">Senha:
                         </label>                        
                         <input 
                             type="password" 
@@ -106,7 +107,7 @@
                      <!--CONFIRM PASSWORD-->
                      <div class="form-group">   
                         <label 
-                            for="confirm_password"><b class="obrigatorio">* </b>Confirma Senha:
+                            for="confirm_password">Confirma Senha:
                         </label>                        
                         <input 
                             type="password" 

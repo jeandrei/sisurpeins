@@ -152,6 +152,8 @@
                 $data = [
                     'user_id' => $user_id,
                     'name' => trim(strtoupper($_POST['name'])),
+                    'email' => $user->email,
+                    'cpf' => $user->cpf,
                     'usertype' => $_POST['usertype'],
                     'password' => trim($_POST['password']),
                     'confirm_password' => trim($_POST['confirm_password']),
@@ -167,20 +169,23 @@
                 }
 
                  // Validate Password
-                 if(empty($data['password'])){
-                    $data['password_err'] = 'Por favor informe a senha';
-                } elseif (strlen($data['password']) < 6){
-                    $data['password_err'] = 'Senha deve ter no mínimo 6 caracteres';
+                 if(!empty($data['password'])){                    
+                    if (strlen($data['password']) < 6){
+                        $data['password_err'] = 'Senha deve ter no mínimo 6 caracteres';
+                    }
                 }
 
                 // Validate Confirm Password
-                if(empty($data['confirm_password'])){
-                    $data['confirm_password_err'] = 'Por favor confirme a senha';
-                } else {
-                    if($data['password'] != $data['confirm_password']){
-                    $data['confirm_password_err'] = 'Senha e confirmação de senha diferentes';    
+                if(!empty($data['password'])){    
+                    if(empty($data['confirm_password'])){
+                        $data['confirm_password_err'] = 'Por favor confirme a senha';
+                    } else {
+                        if($data['password'] != $data['confirm_password']){
+                        $data['confirm_password_err'] = 'Senha e confirmação de senha diferentes';    
+                        }
                     }
                 }
+                
 
                 // Make sure errors are empty
                 if(           
@@ -191,7 +196,12 @@
                       //Validated
                       
                       // Hash Password criptografa o password
-                      $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+                      if((!empty($data['password'])) && (!is_null($data['password'])) && ($data['password'] != "")){
+                        $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+                      } else {
+                        $data['password'] = null;
+                      }
+                     
 
                       // Register User
                       if($this->userModel->update($data)){
@@ -207,7 +217,7 @@
                       
                     } else {
                       // Load the view with errors
-                      $this->view('users/register', $data);
+                      $this->view('users/edit', $data);
                     }
             
             } else {
