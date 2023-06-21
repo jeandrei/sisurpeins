@@ -116,7 +116,7 @@ class User extends Pagination{
     }
 
     public function getUserById($id){
-        $this->db->query('SELECT name,email,cpf,type FROM users WHERE id = :id');
+        $this->db->query('SELECT id,name,email,cpf,type FROM users WHERE id = :id');
         // Bind value
         $this->db->bind(':id', $id);
 
@@ -155,7 +155,7 @@ class User extends Pagination{
             $mail->Host       = 'smtp.gmail.com';                    // Set the SMTP server to send through
             $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
             $mail->Username   = 'sisurpe@educapenha.com.br';                     // SMTP username
-            $mail->Password   = '@sisseduc23';                               // SMTP password
+            $mail->Password   = '@sisurpe23@';                               // SMTP password
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
             $mail->Port       = 587;                                    // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
 

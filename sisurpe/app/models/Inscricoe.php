@@ -16,6 +16,7 @@
             return false;
         }           
     }
+    
 
     public function getInscricoesArquivadas(){
         $this->db->query("SELECT * FROM inscricoes WHERE fase = 'ARQUIVADO' ORDER BY data_inicio DESC"); 

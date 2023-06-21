@@ -80,6 +80,7 @@
     }
         
 
+    /* quando a inscrição é feita pelo usuário */
     public function inscrever($inscricoes_id){
       
       if((!isLoggedIn())){                  
@@ -520,6 +521,81 @@
       
       $this->view('inscricoes/gerenciarPresencas', $data);
       
+    }
+
+
+    public function inscreverUsuario($user_Id){
+      $data = [
+        'title' => 'Inscrição de usuário',
+        'user' => $this->userModel->getUserById($user_Id),        
+        'inscricoes' => $this->inscricaoModel->getInscricoes()               
+      ];
+      $this->view('inscricoes/selecionarInscricao', $data);
+    }
+
+    /* quando a inscrição do usuário é feita pelo administrador */
+    public function registrarInscricao(){
+      
+      if(empty($_POST['userId'])){
+        $error['userId_err'] = 'Ops! Algo deu errado ao selecionar o usuário! Tente novamente.';
+      }
+      
+      if(empty($_POST['inscricaoId'])){
+        $error['inscricaoId_err'] = 'Selecione uma inscrição!';
+      }       
+      
+      $user_Id = $_POST['userId'];
+      $inscricaoId = $_POST['inscricaoId'];   
+
+
+      if(
+        empty($error['userId_err']) &&
+        empty($error['inscricaoId_err'])
+      )
+      {   
+        
+        /* primeiro verifico se o usuário já está inscrito */
+        if($this->inscritoModel->estaInscrito($inscricaoId,$user_Id)){
+          $json_ret = array(
+              'class'=>'error', 
+              'message'=>'Usuário já está inscrito!',
+              'error'=>$data
+              );                     
+          echo json_encode($json_ret); 
+          die() ;
+        }
+        
+        /* caso o usuário não esteja inscrito realizo a inscrição */
+        try{
+
+            if($this->inscritoModel->gravaInscricao($inscricaoId,$user_Id)){                        
+                $json_ret = array(                                            
+                        'class'=>'success', 
+                        'message'=>'Inscrição realizada com sucesso!',
+                        'error'=>false
+                );                     
+                
+                echo json_encode($json_ret); 
+            }     
+        } catch (Exception $e) {
+            $json_ret = array(
+                    'class'=>'error', 
+                    'message'=>'Erro ao tentar realizar a inscrição',
+                    'error'=>$data
+                    );                     
+            echo json_encode($json_ret); 
+        }
+
+
+        
+      }   else {
+          $json_ret = array(
+              'class'=>'alert alert-danger', 
+              'message'=>'Erro ao tentar realizar a inscrição tente novamente mais tarde',
+              'error'=>$error
+          );
+          echo json_encode($json_ret);
+      }         
     }
 
 

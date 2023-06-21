@@ -57,16 +57,15 @@
     <!-- TIPO DO USUÁRIO -->                
       
       
-        <!-- LINHA PARA O BOTÃO ATUALIZAR -->
-        <div class="row" style="margin-top:30px;">
-            <div class="col" style="padding-left:0;">
-                <div class="form-group mx-sm-3 mb-2">
-                    <input type="submit" class="btn btn-primary mb-2" value="Atualizar">    
-                </div>                                                
-            </div>
-            
-        <!-- FIM LINHA BOTÃO ATUALIZAR -->
-        </div>      
+    <!-- LINHA PARA O BOTÃO ATUALIZAR -->
+    <div class="row" style="margin-top:30px;">
+        <div class="col" style="padding-left:0;">
+            <div class="form-group mx-sm-3 mb-2">
+                <input type="submit" class="btn btn-primary mb-2" value="Atualizar">    
+            </div>                                                
+        </div>  
+    </div> 
+    <!-- FIM LINHA BOTÃO ATUALIZAR -->     
             
 
   <!--div class="row"-->
@@ -84,7 +83,7 @@
       <th scope="col">Email</th>           
       <th scope="col">Criado em</th> 
       <th scope="col">Tipo</th>
-      <th scope="col"></th> 
+      <th scope="col" >Ações</th> 
     </tr>
   </thead>
   <tbody>
@@ -96,7 +95,9 @@
                       <td><?php echo $row['type']; ?></td>                     
                       <!--BTN EDITAR-->            
                       <td style="text-align:right;">
-                          <a class="btn btn-success btn-lg fa fa-pencil" href="<?php echo URLROOT; ?>/users/edit/<?php echo $row['id'];?>" class="pull-left"></a>                          
+                          <a class="btn btn-success btn-sm fa fa-pencil" href="<?php echo URLROOT; ?>/users/edit/<?php echo $row['id'];?>" class="pull-left"> Editar</a>                          
+                      
+                          <a class="btn bg-warning btn-sm fa fa-share" href="<?php echo URLROOT; ?>/inscricoes/inscreverUsuario/<?php echo $row['id'];?>" class="pull-left"> Inscrever</a>                          
                       </td>
             </tr>
     <?php endforeach; ?>    

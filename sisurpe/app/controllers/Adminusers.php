@@ -61,6 +61,6 @@
         
       
         $this->view('adminusers/index', $data);
-    }
+    }   
 }   
 ?>

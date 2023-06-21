@@ -395,10 +395,10 @@
                             
                             //MANDE O EMAIL COM A SENHE
                             if($this->userModel->sendemail($data['email'], $password)){
-                                flash('register_success', 'Email enviado com sucesso!');                     
+                                flash('mensagem', 'Email enviado com sucesso!');                     
                                 redirect('users/login');
                             } else {
-                                flash('mensagem_erro', 'Erro no envio do email! Tente novamente mais tarde.','alert-danger');                     
+                                flash('mensagem', 'Erro no envio do email! Tente novamente mais tarde.','alert-danger');                     
                                 redirect('users/enviasenha');
                             }                   
                         }
