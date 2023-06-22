@@ -524,7 +524,19 @@
     }
 
 
+    /* carrega o formulário para que o  administrador selecione a inscrição que deseja inscrever um usuário*/
     public function inscreverUsuario($user_Id){
+      
+      if((!isLoggedIn())){ 
+        flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
+        redirect('pages/index');
+        die();
+      } else if ((!isAdmin()) && (!isSec())){                
+          flash('message', 'Você não tem permissão de acesso a esta página', 'error'); 
+          redirect('pages/index'); 
+          die();
+      }   
+
       $data = [
         'title' => 'Inscrição de usuário',
         'user' => $this->userModel->getUserById($user_Id),        
@@ -535,6 +547,16 @@
 
     /* quando a inscrição do usuário é feita pelo administrador */
     public function registrarInscricao(){
+
+      if((!isLoggedIn())){ 
+        flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
+        redirect('pages/index');
+        die();
+      } else if ((!isAdmin()) && (!isSec())){                
+          flash('message', 'Você não tem permissão de acesso a esta página', 'error'); 
+          redirect('pages/index'); 
+          die();
+      }   
       
       if(empty($_POST['userId'])){
         $error['userId_err'] = 'Ops! Algo deu errado ao selecionar o usuário! Tente novamente.';
@@ -559,7 +581,7 @@
           $json_ret = array(
               'class'=>'error', 
               'message'=>'Usuário já está inscrito!',
-              'error'=>$data
+              'error'=>true
               );                     
           echo json_encode($json_ret); 
           die() ;
@@ -568,31 +590,48 @@
         /* caso o usuário não esteja inscrito realizo a inscrição */
         try{
 
-            if($this->inscritoModel->gravaInscricao($inscricaoId,$user_Id)){                        
+            if($this->inscritoModel->gravaInscricao($inscricaoId,$user_Id)) {  
+              /* pego os abrepresença da inscrição */
+              $abrepresenca = $this->abrePresencaModel->getAbrePresencasInscricaoById($inscricaoId);
+              /* defino uma variável erro como null */
+              $erro_presenca == NULL;
+              /* para cada abrepresença registro a presença exemplo se for duas abrepersença de 4 horas vai registrar nas duas */
+              foreach($abrepresenca as $row){
+                $data['abre_presenca_id'] = $row->id;
+                $data['user_id'] = $user_Id;
+                if(!$this->presencaModel->register($data)){
+                  $erro_presenca = 'Houve um erro ao tentar registrar a presença!';
+                }
+              }
+              
+              /* se não tem nenhum erro dentro de erro_presenca é que deu tudo certo*/
+              if($erro_presenca == NULL){
                 $json_ret = array(                                            
-                        'class'=>'success', 
-                        'message'=>'Inscrição realizada com sucesso!',
-                        'error'=>false
-                );                     
-                
+                  'class'=>'success', 
+                  'message'=>'Inscrição realizada com sucesso!',
+                  'error'=>false
+                );                               
                 echo json_encode($json_ret); 
+              } else {
+                throw new Exception('Ops! Algo deu errado ao tentar registrar a presença!');
+              }              
+              
+            } else {
+              throw new Exception ('Ops! Algo deu errado ao tentar realizar a inscrição!');
             }     
         } catch (Exception $e) {
             $json_ret = array(
                     'class'=>'error', 
-                    'message'=>'Erro ao tentar realizar a inscrição',
-                    'error'=>$data
+                    'message'=>'Erro ao tentar realizar a inscrição!' .  $e->getMessage(),
+                    'error'=>true
                     );                     
             echo json_encode($json_ret); 
-        }
-
-
-        
+        }        
       }   else {
           $json_ret = array(
               'class'=>'alert alert-danger', 
-              'message'=>'Erro ao tentar realizar a inscrição tente novamente mais tarde',
-              'error'=>$error
+              'message'=>'Erro ao tentar realizar a inscrição tente novamente mais tarde' . $e->getMessage(),
+              'error'=>true
           );
           echo json_encode($json_ret);
       }         

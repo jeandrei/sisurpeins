@@ -92,7 +92,7 @@ function inscreveUser(){
           inscricaoId                                     
         },         
         success: function(retorno_php){ 
-            var responseObj = JSON.parse(retorno_php);             
+            var responseObj = JSON.parse(retorno_php);                     
             createNotification(responseObj['message'], responseObj['class']);
         }
     });//Fecha o ajax    
